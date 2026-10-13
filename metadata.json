@@ -1,0 +1,6 @@
+{
+  "name": "TMPROCLUB Nations League",
+  "description": "Official tournament website for TMPROCLUB Nations League featuring Groups A and B, participating national teams, fixtures, results, and standings.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
