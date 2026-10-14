@@ -4,14 +4,20 @@ interface FlagProps {
   country: string;
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  variant?: 'stadium' | 'standard';
 }
 
-export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md' }) => {
+export const Flag: React.FC<FlagProps> = ({
+  country,
+  className = '',
+  size = 'md',
+  variant = 'stadium',
+}) => {
   const sizeClasses = {
-    sm: 'w-6 h-4',
-    md: 'w-8 h-5.5',
-    lg: 'w-10 h-7',
-    xl: 'w-14 h-9.5',
+    sm: 'w-7 h-5 rounded-md',
+    md: 'w-10 h-7 rounded-lg',
+    lg: 'w-14 h-9.5 rounded-xl',
+    xl: 'w-20 h-13 rounded-2xl',
   };
 
   const normalized = country.toLowerCase().trim();
@@ -33,14 +39,14 @@ export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md'
               const angle = (i * 360) / 16;
               return (
                 <g key={i} transform={`rotate(${angle} 400 250)`}>
-                  <path d="M400,208 L405,190 L400,182 L395,190 Z" fill="#F6B40E" />
-                  <path d="M400,210 Q408,198 402,185 Q398,195 400,210" fill="#853406" opacity="0.3" />
+                  <path d="M400,206 L406,188 L400,180 L394,188 Z" fill="#F6B40E" />
+                  <path d="M400,208 Q410,195 402,182 Q396,194 400,208" fill="#853406" opacity="0.35" />
                 </g>
               );
             })}
-            <circle cx="393" cy="246" r="3" fill="#853406" />
-            <circle cx="407" cy="246" r="3" fill="#853406" />
-            <path d="M394,258 Q400,263 406,258" stroke="#853406" strokeWidth="2" fill="none" />
+            <circle cx="392" cy="246" r="3" fill="#853406" />
+            <circle cx="408" cy="246" r="3" fill="#853406" />
+            <path d="M394,258 Q400,264 406,258" stroke="#853406" strokeWidth="2" fill="none" />
           </svg>
         );
 
@@ -56,9 +62,9 @@ export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md'
       case 'netherlands':
         return (
           <svg viewBox="0 0 900 600" className="w-full h-full object-cover">
-            <rect width="900" height="200" fill="#AE1C28" />
+            <rect width="900" height="200" fill="#C8102E" />
             <rect y="200" width="900" height="200" fill="#FFFFFF" />
-            <rect y="400" width="900" height="200" fill="#21468B" />
+            <rect y="400" width="900" height="200" fill="#003882" />
           </svg>
         );
 
@@ -72,13 +78,13 @@ export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md'
                 key={i}
                 y={(i * 400) / 13}
                 width="760"
-                height={400 / 13}
+                height={400 / 13 + 0.5}
                 fill={i % 2 === 0 ? '#B22234' : '#FFFFFF'}
               />
             ))}
             {/* Canton */}
             <rect width="304" height={(400 * 7) / 13} fill="#3C3B6E" />
-            {/* Constellation pattern dots representing stars */}
+            {/* 50 Stars constellation */}
             <g fill="#FFFFFF">
               {[...Array(5)].map((_, row) => (
                 <g key={`r1-${row}`}>
@@ -86,7 +92,7 @@ export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md'
                     <polygon
                       key={`s1-${col}`}
                       points="0,-4 1.2,-1.2 4,-1.2 1.8,0.5 2.6,3.6 0,1.8 -2.6,3.6 -1.8,0.5 -4,-1.2 -1.2,-1.2"
-                      transform={`translate(${24 + col * 46}, ${20 + row * 40}) scale(1.1)`}
+                      transform={`translate(${24 + col * 46}, ${20 + row * 40}) scale(1.15)`}
                     />
                   ))}
                 </g>
@@ -97,7 +103,7 @@ export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md'
                     <polygon
                       key={`s2-${col}`}
                       points="0,-4 1.2,-1.2 4,-1.2 1.8,0.5 2.6,3.6 0,1.8 -2.6,3.6 -1.8,0.5 -4,-1.2 -1.2,-1.2"
-                      transform={`translate(${47 + col * 46}, ${40 + row * 40}) scale(1.1)`}
+                      transform={`translate(${47 + col * 46}, ${40 + row * 40}) scale(1.15)`}
                     />
                   ))}
                 </g>
@@ -121,20 +127,20 @@ export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md'
           <svg viewBox="0 0 600 400" className="w-full h-full object-cover">
             <rect width="600" height="400" fill="#003893" />
             <rect y="200" width="600" height="80" fill="#FFFFFF" />
-            <rect y="225" width="600" height="30" fill="#CF2027" />
-            {/* Circle of 10 yellow stars */}
-            <g transform="translate(200, 240)">
+            <rect y="226" width="600" height="28" fill="#CF2027" />
+            {/* Circle of 10 golden stars */}
+            <g transform="translate(210, 240)">
               {[...Array(10)].map((_, i) => {
                 const angle = (i * 360) / 10;
                 const rad = (angle * Math.PI) / 180;
-                const x = 70 * Math.sin(rad);
-                const y = -70 * Math.cos(rad);
+                const x = 72 * Math.sin(rad);
+                const y = -72 * Math.cos(rad);
                 return (
                   <polygon
                     key={i}
-                    points="0,-8 2.4,-2.4 8,-2.4 3.6,1 5.2,7.2 0,3.6 -5.2,7.2 -3.6,1 -8,-2.4 -2.4,-2.4"
+                    points="0,-9 2.7,-2.7 9,-2.7 4,1.2 5.8,8.1 0,4 -5.8,8.1 -4,1.2 -9,-2.7 -2.7,-2.7"
                     fill="#FFD100"
-                    transform={`translate(${x}, ${y}) scale(0.9)`}
+                    transform={`translate(${x}, ${y}) scale(0.95)`}
                   />
                 );
               })}
@@ -148,16 +154,35 @@ export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md'
             <rect width="750" height="125" fill="#AA151B" />
             <rect y="125" width="750" height="250" fill="#F1BF00" />
             <rect y="375" width="750" height="125" fill="#AA151B" />
-            {/* Spanish Coat of Arms emblem */}
-            <g transform="translate(190, 250) scale(0.65)">
-              <rect x="-35" y="-55" width="70" height="70" rx="8" fill="#AA151B" stroke="#000" strokeWidth="2" opacity="0.8" />
-              <circle cx="-50" cy="-20" r="12" fill="#E5E7EB" stroke="#000" strokeWidth="2" />
-              <circle cx="50" cy="-20" r="12" fill="#E5E7EB" stroke="#000" strokeWidth="2" />
-              <path d="M-30,-75 L0,-90 L30,-75 L20,-60 L-20,-60 Z" fill="#F1BF00" stroke="#000" strokeWidth="2" />
-              <path d="M-25,-45 L-5,-45 L-5,-10 L-25,-10 Z" fill="#AA151B" />
-              <path d="M5,-45 L25,-45 L25,-10 L5,-10 Z" fill="#F1BF00" />
-              <path d="M-25, -5 L-5,-5 L-5,25 L-25,25 Z" fill="#F1BF00" />
-              <path d="M5,-5 L25,-5 L25,25 L5,25 Z" fill="#AA151B" />
+            {/* Authentic Spanish Coat of Arms emblem */}
+            <g transform="translate(200, 250) scale(0.85)">
+              {/* Crown */}
+              <path d="M-30,-75 L0,-92 L30,-75 L22,-60 L-22,-60 Z" fill="#F1BF00" stroke="#78350F" strokeWidth="2.5" />
+              <circle cx="0" cy="-94" r="4" fill="#F1BF00" />
+              {/* Pillars of Hercules */}
+              <rect x="-56" y="-50" width="10" height="80" rx="3" fill="#E2E8F0" stroke="#475569" strokeWidth="2" />
+              <rect x="46" y="-50" width="10" height="80" rx="3" fill="#E2E8F0" stroke="#475569" strokeWidth="2" />
+              <path d="M-60,-15 Q-51,-5 -60,5" stroke="#AA151B" strokeWidth="3" fill="none" />
+              <path d="M50,-15 Q59,-5 50,5" stroke="#AA151B" strokeWidth="3" fill="none" />
+              {/* Shield body */}
+              <path
+                d="M-34,-55 L34,-55 L34,5 Q34,42 0,55 Q-34,42 -34,5 Z"
+                fill="#AA151B"
+                stroke="#78350F"
+                strokeWidth="3"
+              />
+              {/* Shield 4 quarters */}
+              <rect x="-30" y="-50" width="30" height="42" fill="#AA151B" />
+              <rect x="0" y="-50" width="30" height="42" fill="#F1BF00" />
+              <rect x="-30" y="-8" width="30" height="42" fill="#F1BF00" />
+              <rect x="0" y="-8" width="30" height="42" fill="#AA151B" />
+              {/* Castle silhouette in quarter 1 */}
+              <path d="M-22,-20 L-22,-40 L-8,-40 L-8,-20 Z" fill="#F1BF00" />
+              {/* Lion silhouette in quarter 2 */}
+              <circle cx="15" cy="-28" r="7" fill="#7C2D12" />
+              {/* Center inescutcheon (Bourbon-Anjou) */}
+              <ellipse cx="0" cy="-4" rx="8" ry="12" fill="#003882" stroke="#FFFFFF" strokeWidth="1.5" />
+              <circle cx="0" cy="-4" r="3" fill="#F1BF00" />
             </g>
           </svg>
         );
@@ -166,21 +191,21 @@ export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md'
         return (
           <svg viewBox="0 0 720 504" className="w-full h-full object-cover">
             <rect width="720" height="504" fill="#009739" />
-            <polygon points="360,50 670,252 360,454 50,252" fill="#FEDD00" />
-            <circle cx="360" cy="252" r="105" fill="#012169" />
-            {/* Celestial band */}
+            <polygon points="360,45 675,252 360,459 45,252" fill="#FEDD00" />
+            <circle cx="360" cy="252" r="108" fill="#012169" />
+            {/* Celestial starry band */}
             <path
-              d="M260,265 Q360,225 460,260"
+              d="M255,270 Q360,222 465,264"
               stroke="#FFFFFF"
-              strokeWidth="11"
+              strokeWidth="13"
               fill="none"
             />
-            {/* Southern Cross stars */}
-            <circle cx="340" cy="290" r="3" fill="#FFFFFF" />
-            <circle cx="360" cy="305" r="3" fill="#FFFFFF" />
-            <circle cx="380" cy="290" r="3" fill="#FFFFFF" />
-            <circle cx="360" cy="275" r="3" fill="#FFFFFF" />
-            <circle cx="370" cy="298" r="2" fill="#FFFFFF" />
+            {/* Southern Cross constellation */}
+            <circle cx="338" cy="292" r="3.5" fill="#FFFFFF" />
+            <circle cx="360" cy="310" r="3.5" fill="#FFFFFF" />
+            <circle cx="382" cy="292" r="3.5" fill="#FFFFFF" />
+            <circle cx="360" cy="274" r="3.5" fill="#FFFFFF" />
+            <circle cx="372" cy="301" r="2.5" fill="#FFFFFF" />
           </svg>
         );
 
@@ -188,21 +213,21 @@ export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md'
         return (
           <svg viewBox="0 0 880 640" className="w-full h-full object-cover">
             <rect width="880" height="640" fill="#FFFFFF" />
-            <rect y="60" width="880" height="100" fill="#0038B8" />
-            <rect y="480" width="880" height="100" fill="#0038B8" />
+            <rect y="55" width="880" height="105" fill="#0038B8" />
+            <rect y="480" width="880" height="105" fill="#0038B8" />
             {/* Star of David */}
-            <g transform="translate(440, 320) scale(1.2)">
+            <g transform="translate(440, 320) scale(1.25)">
               <polygon
-                points="0,-75 64.9,37.5 -64.9,37.5"
+                points="0,-76 65.8,38 -65.8,38"
                 fill="none"
                 stroke="#0038B8"
-                strokeWidth="14"
+                strokeWidth="15"
               />
               <polygon
-                points="0,75 64.9,-37.5 -64.9,-37.5"
+                points="0,76 65.8,-38 -65.8,-38"
                 fill="none"
                 stroke="#0038B8"
-                strokeWidth="14"
+                strokeWidth="15"
               />
             </g>
           </svg>
@@ -213,26 +238,26 @@ export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md'
           <svg viewBox="0 0 600 400" className="w-full h-full object-cover">
             <rect width="240" height="400" fill="#046A38" />
             <rect x="240" width="360" height="400" fill="#DA291C" />
-            {/* Armillary sphere and shield */}
-            <g transform="translate(240, 200) scale(0.8)">
-              <circle cx="0" cy="0" r="55" fill="none" stroke="#FED100" strokeWidth="8" />
-              <ellipse cx="0" cy="0" rx="45" ry="20" fill="none" stroke="#FED100" strokeWidth="6" />
-              <ellipse cx="0" cy="0" rx="20" ry="45" fill="none" stroke="#FED100" strokeWidth="6" />
-              <line x1="-55" y1="0" x2="55" y2="0" stroke="#FED100" strokeWidth="6" />
-              <line x1="0" y1="-55" x2="0" y2="55" stroke="#FED100" strokeWidth="6" />
-              {/* Central shield */}
+            {/* Armillary sphere and royal shield */}
+            <g transform="translate(240, 200) scale(0.9)">
+              <circle cx="0" cy="0" r="60" fill="none" stroke="#FED100" strokeWidth="8" />
+              <ellipse cx="0" cy="0" rx="48" ry="22" fill="none" stroke="#FED100" strokeWidth="6" />
+              <ellipse cx="0" cy="0" rx="22" ry="48" fill="none" stroke="#FED100" strokeWidth="6" />
+              <line x1="-60" y1="0" x2="60" y2="0" stroke="#FED100" strokeWidth="7" />
+              <line x1="0" y1="-60" x2="0" y2="60" stroke="#FED100" strokeWidth="7" />
+              {/* Central Portuguese shield */}
               <path
-                d="M-25,-30 L25,-30 L25,5 Q25,35 0,45 Q-25,35 -25,5 Z"
+                d="M-28,-32 L28,-32 L28,8 Q28,42 0,52 Q-28,42 -28,8 Z"
                 fill="#FFFFFF"
                 stroke="#DA291C"
-                strokeWidth="7"
+                strokeWidth="8"
               />
               {/* Inner blue quinas */}
-              <circle cx="0" cy="-12" r="4" fill="#002B7F" />
-              <circle cx="-12" cy="0" r="4" fill="#002B7F" />
-              <circle cx="0" cy="0" r="4" fill="#002B7F" />
-              <circle cx="12" cy="0" r="4" fill="#002B7F" />
-              <circle cx="0" cy="12" r="4" fill="#002B7F" />
+              <circle cx="0" cy="-14" r="4.5" fill="#002B7F" />
+              <circle cx="-13" cy="0" r="4.5" fill="#002B7F" />
+              <circle cx="0" cy="0" r="4.5" fill="#002B7F" />
+              <circle cx="13" cy="0" r="4.5" fill="#002B7F" />
+              <circle cx="0" cy="14" r="4.5" fill="#002B7F" />
             </g>
           </svg>
         );
@@ -251,11 +276,11 @@ export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md'
           <svg viewBox="0 0 880 640" className="w-full h-full object-cover">
             <rect width="880" height="640" fill="#BA0C2F" />
             {/* White cross */}
-            <rect x="240" y="0" width="160" height="640" fill="#FFFFFF" />
-            <rect x="0" y="240" width="880" height="160" fill="#FFFFFF" />
-            {/* Blue cross */}
-            <rect x="280" y="0" width="80" height="640" fill="#00205B" />
-            <rect x="0" y="280" width="880" height="80" fill="#00205B" />
+            <rect x="235" y="0" width="170" height="640" fill="#FFFFFF" />
+            <rect x="0" y="235" width="880" height="170" fill="#FFFFFF" />
+            {/* Dark Blue Scandinavian cross */}
+            <rect x="275" y="0" width="90" height="640" fill="#00205B" />
+            <rect x="0" y="275" width="880" height="90" fill="#00205B" />
           </svg>
         );
 
@@ -270,11 +295,14 @@ export const Flag: React.FC<FlagProps> = ({ country, className = '', size = 'md'
 
   return (
     <div
-      className={`inline-flex shrink-0 overflow-hidden rounded-[2px] shadow-sm border border-white/20 select-none ${sizeClasses[size]} ${className}`}
+      className={`relative inline-flex shrink-0 overflow-hidden select-none border-2 border-white/90 shadow-[0_4px_14px_rgba(0,0,0,0.35)] transition-transform ${sizeClasses[size]} ${className}`}
       title={`${country} Flag`}
       aria-label={`${country} National Flag`}
     >
       {renderFlagContent()}
+      
+      {/* Subtle glossy glass highlight on top half of flag (matching stadium broadcast graphics in IMG_1730) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white/25 via-transparent to-black/15 pointer-events-none" />
     </div>
   );
 };

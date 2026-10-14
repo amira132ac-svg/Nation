@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Clock } from 'lucide-react';
 import { CONFIRMED_FIXTURES, NationalTeam } from '../data/tournamentData';
 import { Language, translations } from '../data/translations';
@@ -20,6 +21,12 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
   const showGroupA = selectedGroup === 'ALL' || selectedGroup === 'A';
   const showGroupB = selectedGroup === 'ALL' || selectedGroup === 'B';
 
+  const filterTabs = [
+    { id: 'ALL', label: t.allMatchdays },
+    { id: 'A', label: t.groupA },
+    { id: 'B', label: t.groupB },
+  ] as const;
+
   return (
     <section id="fixtures" className="relative py-12 md:py-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -35,96 +42,111 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
             </div>
           </div>
 
-          {/* Filter controls */}
-          <div className="inline-flex p-1 bg-[#0A1432] border border-blue-900/60 rounded-xl shadow-md self-start sm:self-auto">
-            <button
-              onClick={() => setSelectedGroup('ALL')}
-              className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                selectedGroup === 'ALL'
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              {t.allMatchdays}
-            </button>
-            <button
-              onClick={() => setSelectedGroup('A')}
-              className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                selectedGroup === 'A'
-                  ? 'bg-yellow-400 text-slate-950 shadow-md font-black'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              {t.groupA}
-            </button>
-            <button
-              onClick={() => setSelectedGroup('B')}
-              className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                selectedGroup === 'B'
-                  ? 'bg-blue-600 text-white shadow-md font-black'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              {t.groupB}
-            </button>
+          {/* Smooth Motion Filter Controls with Sliding Indicator */}
+          <div className="relative inline-flex p-1 bg-[#0A1432] border border-blue-900/60 rounded-xl shadow-lg self-start sm:self-auto">
+            {filterTabs.map((tab) => {
+              const isActive = selectedGroup === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setSelectedGroup(tab.id)}
+                  className={`relative px-4 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer select-none z-10 ${
+                    isActive
+                      ? tab.id === 'A'
+                        ? 'text-slate-950 font-black'
+                        : 'text-white font-black'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="fixtureFilterPill"
+                      className={`absolute inset-0 rounded-lg shadow-md -z-10 ${
+                        tab.id === 'A'
+                          ? 'bg-yellow-400'
+                          : 'bg-blue-600'
+                      }`}
+                      transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                    />
+                  )}
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Official Match Grids matching IMG_1730 */}
+        {/* Official Match Grids with AnimatePresence */}
         <div className="space-y-10">
-          {/* Group A Matches */}
-          {showGroupA && (
-            <div className="space-y-3.5">
-              <div className="flex items-center justify-between pb-2 border-b border-yellow-500/30">
-                <div className="flex items-center gap-2.5">
-                  <div className="px-3 py-0.5 bg-[#FFCC00] text-slate-950 font-black text-xs uppercase tracking-wider rounded-sm shadow-sm">
-                    {t.groupA}
+          <AnimatePresence mode="wait">
+            {/* Group A Matches */}
+            {showGroupA && (
+              <motion.div
+                key="group-a-fixtures"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25 }}
+                className="space-y-3.5"
+              >
+                <div className="flex items-center justify-between pb-2 border-b border-yellow-500/30">
+                  <div className="flex items-center gap-2.5">
+                    <div className="px-3.5 py-0.5 bg-[#FFCC00] text-slate-950 font-black text-xs uppercase tracking-wider rounded shadow-[0_0_12px_rgba(255,204,0,0.4)]">
+                      {t.groupA}
+                    </div>
+                    <span className="text-xs text-slate-400 font-mono font-semibold">
+                      3 Matches
+                    </span>
                   </div>
-                  <span className="text-xs text-slate-400 font-mono font-semibold">
-                    3 Matches
-                  </span>
                 </div>
-              </div>
 
-              <div className="grid grid-cols-1 gap-3.5">
-                {groupAFixtures.map((fixture) => (
-                  <MatchCard
-                    key={fixture.id}
-                    fixture={fixture}
-                    lang={lang}
-                    onSelectTeam={onSelectTeam}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
+                <div className="grid grid-cols-1 gap-3.5">
+                  {groupAFixtures.map((fixture) => (
+                    <MatchCard
+                      key={fixture.id}
+                      fixture={fixture}
+                      lang={lang}
+                      onSelectTeam={onSelectTeam}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            )}
 
-          {/* Group B Matches */}
-          {showGroupB && (
-            <div className="space-y-3.5">
-              <div className="flex items-center justify-between pb-2 border-b border-blue-500/30">
-                <div className="flex items-center gap-2.5">
-                  <div className="px-3 py-0.5 bg-[#FFCC00] text-slate-950 font-black text-xs uppercase tracking-wider rounded-sm shadow-sm">
-                    {t.groupB}
+            {/* Group B Matches */}
+            {showGroupB && (
+              <motion.div
+                key="group-b-fixtures"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25 }}
+                className="space-y-3.5"
+              >
+                <div className="flex items-center justify-between pb-2 border-b border-blue-500/30">
+                  <div className="flex items-center gap-2.5">
+                    <div className="px-3.5 py-0.5 bg-[#FFCC00] text-slate-950 font-black text-xs uppercase tracking-wider rounded shadow-[0_0_12px_rgba(255,204,0,0.4)]">
+                      {t.groupB}
+                    </div>
+                    <span className="text-xs text-slate-400 font-mono font-semibold">
+                      3 Matches
+                    </span>
                   </div>
-                  <span className="text-xs text-slate-400 font-mono font-semibold">
-                    3 Matches
-                  </span>
                 </div>
-              </div>
 
-              <div className="grid grid-cols-1 gap-3.5">
-                {groupBFixtures.map((fixture) => (
-                  <MatchCard
-                    key={fixture.id}
-                    fixture={fixture}
-                    lang={lang}
-                    onSelectTeam={onSelectTeam}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
+                <div className="grid grid-cols-1 gap-3.5">
+                  {groupBFixtures.map((fixture) => (
+                    <MatchCard
+                      key={fixture.id}
+                      fixture={fixture}
+                      lang={lang}
+                      onSelectTeam={onSelectTeam}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>

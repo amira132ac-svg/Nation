@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { GROUPS, NationalTeam } from '../data/tournamentData';
 import { Language, translations } from '../data/translations';
 import { Flag } from './Flag';
@@ -20,7 +21,7 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({ lang, onSelectTeam
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white uppercase">
             {t.groupsTitle}
           </h2>
-          <span className="text-xs text-blue-400 font-mono font-bold">
+          <span className="text-xs text-blue-400 font-mono font-bold bg-blue-950/60 border border-blue-900/50 px-3 py-1 rounded-md">
             12 TEAMS
           </span>
         </div>
@@ -32,16 +33,18 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({ lang, onSelectTeam
             const groupTitle = isRtl ? group.nameFa : group.name;
 
             return (
-              <div
+              <motion.div
                 key={group.id}
-                className="relative flex flex-col group/card transition-all duration-300 hover:scale-[1.01]"
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="relative flex flex-col group/card"
               >
                 {/* Exterior Border Frame with Chamfer Cut at Bottom Right */}
                 <div
-                  className={`relative p-[2px] rounded-xl transition-colors duration-300 ${
+                  className={`relative p-[2px] rounded-2xl transition-all duration-300 ${
                     isGroupA
-                      ? 'bg-gradient-to-br from-yellow-400 via-amber-500 to-blue-900 shadow-[0_12px_36px_rgba(245,158,11,0.2)]'
-                      : 'bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-900 shadow-[0_12px_36px_rgba(37,99,235,0.25)]'
+                      ? 'bg-gradient-to-br from-yellow-400 via-amber-500 to-blue-900 shadow-[0_12px_36px_rgba(245,158,11,0.22)]'
+                      : 'bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-900 shadow-[0_12px_36px_rgba(37,99,235,0.28)]'
                   }`}
                   style={{
                     clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%)',
@@ -49,14 +52,14 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({ lang, onSelectTeam
                 >
                   {/* Inner Deep Navy Card */}
                   <div
-                    className="bg-[#0A1432]/98 backdrop-blur-md rounded-xl flex flex-col overflow-hidden"
+                    className="bg-[#0A1432]/98 backdrop-blur-md rounded-2xl flex flex-col overflow-hidden"
                     style={{
                       clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 23px), calc(100% - 23px) 100%, 0 100%)',
                     }}
                   >
                     {/* Header Banner - Exactly matching Image 1 */}
                     <div
-                      className={`relative flex items-center justify-between px-6 py-4 transition-colors ${
+                      className={`relative flex items-center justify-between px-6 py-4.5 transition-colors ${
                         isGroupA
                           ? 'bg-[#FFCC00] text-slate-950'
                           : 'bg-[#0052FF] text-white'
@@ -99,10 +102,12 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({ lang, onSelectTeam
                         const teamDisplayName = isRtl ? team.nameFa : team.name;
 
                         return (
-                          <div
+                          <motion.div
                             key={team.id}
+                            whileHover={{ x: isRtl ? -4 : 4 }}
+                            transition={{ duration: 0.15 }}
                             onClick={() => onSelectTeam && onSelectTeam(team)}
-                            className="flex items-center justify-between px-6 py-3.5 hover:bg-blue-600/15 cursor-pointer transition-colors duration-150 group/row"
+                            className="flex items-center justify-between px-6 py-3.5 hover:bg-blue-600/20 cursor-pointer transition-colors duration-150 group/row"
                           >
                             {/* Left: Flag & Team Name */}
                             <div className="flex items-center gap-4 min-w-0">
@@ -113,10 +118,10 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({ lang, onSelectTeam
                               <Flag
                                 country={team.flagCountry}
                                 size="md"
-                                className="group-hover/row:scale-110 transition-transform shadow-md rounded"
+                                className="group-hover/row:scale-110 transition-transform shadow-md rounded-lg"
                               />
 
-                              <span className="font-extrabold text-white text-base tracking-wide uppercase truncate group-hover/row:text-blue-300 transition-colors">
+                              <span className="font-black text-white text-base tracking-wide uppercase truncate group-hover/row:text-blue-300 transition-colors">
                                 {teamDisplayName}
                               </span>
                             </div>
@@ -125,13 +130,13 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({ lang, onSelectTeam
                             <span className="font-mono text-xs font-bold text-slate-400 group-hover/row:text-slate-200">
                               {team.code}
                             </span>
-                          </div>
+                          </motion.div>
                         );
                       })}
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

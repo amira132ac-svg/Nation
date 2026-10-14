@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   INITIAL_STANDINGS_GROUP_A,
   INITIAL_STANDINGS_GROUP_B,
@@ -18,6 +19,12 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
   const t = translations[lang];
   const isRtl = lang === 'fa';
 
+  const filterTabs = [
+    { id: 'ALL', label: t.bothGroups },
+    { id: 'A', label: t.groupA },
+    { id: 'B', label: t.groupB },
+  ] as const;
+
   const renderTable = (groupId: 'A' | 'B', groupTitle: string, rows: StandingRow[]) => {
     const isGroupA = groupId === 'A';
 
@@ -33,7 +40,7 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
                 isGroupA ? 'bg-[#FFCC00]' : 'bg-[#0052FF]'
               }`}
             />
-            <h3 className="font-extrabold text-white text-base sm:text-lg tracking-wide uppercase">
+            <h3 className="font-black text-white text-base sm:text-lg tracking-wide uppercase">
               {groupTitle}
             </h3>
           </div>
@@ -71,15 +78,15 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
                   <tr
                     key={row.team.id}
                     onClick={() => onSelectTeam && onSelectTeam(row.team)}
-                    className="hover:bg-blue-600/15 cursor-pointer transition-colors duration-150 group"
+                    className="hover:bg-blue-600/20 cursor-pointer transition-colors duration-150 group"
                   >
                     <td className="py-3 px-4 text-center text-xs font-bold text-slate-500 group-hover:text-slate-300">
                       {row.positionIndex}
                     </td>
 
                     <td className="py-3 px-4 font-sans font-medium text-white flex items-center gap-3">
-                      <Flag country={row.team.flagCountry} size="sm" className="rounded shadow" />
-                      <span className="font-extrabold text-sm group-hover:text-blue-300 transition-colors">
+                      <Flag country={row.team.flagCountry} size="sm" />
+                      <span className="font-black text-sm group-hover:text-blue-300 transition-colors">
                         {teamName}
                       </span>
                       <span className="text-xs text-slate-500 font-mono ml-auto mr-2 font-bold">
@@ -119,54 +126,65 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
             </p>
           </div>
 
-          {/* View Toggle */}
-          <div className="inline-flex p-1 bg-[#0A1432] border border-blue-900/60 rounded-xl shadow-md self-start sm:self-auto">
-            <button
-              onClick={() => setActiveGroupTab('ALL')}
-              className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                activeGroupTab === 'ALL'
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              {t.bothGroups}
-            </button>
-            <button
-              onClick={() => setActiveGroupTab('A')}
-              className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                activeGroupTab === 'A'
-                  ? 'bg-yellow-400 text-slate-950 font-black shadow-md'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              {t.groupA}
-            </button>
-            <button
-              onClick={() => setActiveGroupTab('B')}
-              className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                activeGroupTab === 'B'
-                  ? 'bg-blue-600 text-white font-black shadow-md'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              {t.groupB}
-            </button>
+          {/* Smooth Motion View Toggle */}
+          <div className="relative inline-flex p-1 bg-[#0A1432] border border-blue-900/60 rounded-xl shadow-lg self-start sm:self-auto">
+            {filterTabs.map((tab) => {
+              const isActive = activeGroupTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveGroupTab(tab.id)}
+                  className={`relative px-4 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer select-none z-10 ${
+                    isActive
+                      ? tab.id === 'A'
+                        ? 'text-slate-950 font-black'
+                        : 'text-white font-black'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="standingsFilterPill"
+                      className={`absolute inset-0 rounded-lg shadow-md -z-10 ${
+                        tab.id === 'A' ? 'bg-yellow-400' : 'bg-blue-600'
+                      }`}
+                      transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                    />
+                  )}
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Standings Tables */}
+        {/* Standings Tables with AnimatePresence */}
         <div className="space-y-8">
-          {(activeGroupTab === 'ALL' || activeGroupTab === 'A') && (
-            <div>
-              {renderTable('A', `${t.groupA}`, INITIAL_STANDINGS_GROUP_A)}
-            </div>
-          )}
+          <AnimatePresence mode="wait">
+            {(activeGroupTab === 'ALL' || activeGroupTab === 'A') && (
+              <motion.div
+                key="table-a"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                {renderTable('A', `${t.groupA}`, INITIAL_STANDINGS_GROUP_A)}
+              </motion.div>
+            )}
 
-          {(activeGroupTab === 'ALL' || activeGroupTab === 'B') && (
-            <div>
-              {renderTable('B', `${t.groupB}`, INITIAL_STANDINGS_GROUP_B)}
-            </div>
-          )}
+            {(activeGroupTab === 'ALL' || activeGroupTab === 'B') && (
+              <motion.div
+                key="table-b"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                {renderTable('B', `${t.groupB}`, INITIAL_STANDINGS_GROUP_B)}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>
