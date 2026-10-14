@@ -2,20 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { GeometricBackground } from './components/GeometricBackground';
 import { HeroSection } from './components/HeroSection';
-import { OverviewSection } from './components/OverviewSection';
-import { GroupsSection } from './components/GroupsSection';
 import { FixturesSection } from './components/FixturesSection';
-import { ResultsSection } from './components/ResultsSection';
+import { GroupsSection } from './components/GroupsSection';
 import { StandingsSection } from './components/StandingsSection';
 import { TeamsSection } from './components/TeamsSection';
-import { AboutSection } from './components/AboutSection';
 import { Footer } from './components/Footer';
 import { TeamModal } from './components/TeamModal';
 import { NationalTeam } from './data/tournamentData';
 import { Language } from './data/translations';
 
 export default function App() {
-  const [lang, setLang] = useState<Language>('fa'); // Persian default as requested
+  const [lang, setLang] = useState<Language>('fa'); // Persian default
   const [activeSection, setActiveSection] = useState<string>('home');
   const [selectedTeam, setSelectedTeam] = useState<NationalTeam | null>(null);
 
@@ -40,7 +37,7 @@ export default function App() {
 
     const element = document.getElementById(sectionId);
     if (element) {
-      const headerOffset = 70;
+      const headerOffset = 65;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -53,12 +50,12 @@ export default function App() {
 
   // Track active section on scroll
   useEffect(() => {
-    const sectionIds = ['about', 'teams', 'standings', 'results', 'fixtures', 'groups', 'overview'];
+    const sectionIds = ['teams', 'standings', 'groups', 'fixtures'];
     
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 140;
+      const scrollPosition = window.scrollY + 120;
       
-      if (window.scrollY < 300) {
+      if (window.scrollY < 260) {
         setActiveSection('home');
         return;
       }
@@ -87,7 +84,7 @@ export default function App() {
       {/* Background Graphic System Inspired by Reference Graphics */}
       <GeometricBackground />
 
-      {/* Top Bar Header with 3-zone contract & Language Toggle */}
+      {/* Top Bar Header with Language Toggle */}
       <Header
         activeSection={activeSection}
         onNavigate={handleNavigate}
@@ -95,7 +92,7 @@ export default function App() {
         onToggleLang={toggleLanguage}
       />
 
-      {/* Main Content Area */}
+      {/* Main Content Area: ONLY THE CORE ESSENTIALS */}
       <main className="flex-1 relative z-10">
         {/* 1. Hero Section */}
         <HeroSection
@@ -104,11 +101,10 @@ export default function App() {
           onNavigateToFixtures={() => handleNavigate('fixtures')}
         />
 
-        {/* 2. Tournament Overview */}
-        <OverviewSection
+        {/* 2. Official Fixtures (Front & Center!) */}
+        <FixturesSection
           lang={lang}
-          onNavigateToGroups={() => handleNavigate('groups')}
-          onNavigateToFixtures={() => handleNavigate('fixtures')}
+          onSelectTeam={(team) => setSelectedTeam(team)}
         />
 
         {/* 3. Official Groups Preview & Composition */}
@@ -117,43 +113,27 @@ export default function App() {
           onSelectTeam={(team) => setSelectedTeam(team)}
         />
 
-        {/* 4. Upcoming Fixtures Section (Matches from IMG_1730 with times TBA) */}
-        <FixturesSection
-          lang={lang}
-          onSelectTeam={(team) => setSelectedTeam(team)}
-        />
-
-        {/* 5. Match Results Section */}
-        <ResultsSection
-          lang={lang}
-        />
-
-        {/* 6. Standings Section */}
+        {/* 4. Standings Section */}
         <StandingsSection
           lang={lang}
           onSelectTeam={(team) => setSelectedTeam(team)}
         />
 
-        {/* 7. Participating National Teams Directory */}
+        {/* 5. Participating National Teams Directory */}
         <TeamsSection
           lang={lang}
           onSelectTeam={(team) => setSelectedTeam(team)}
         />
-
-        {/* 8. Tournament Information / About */}
-        <AboutSection
-          lang={lang}
-        />
       </main>
 
-      {/* 9. Professional Footer with Developed By amirr0023 & Language Switcher */}
+      {/* 6. Streamlined Footer with Developed By amirr0023 & Language Switcher */}
       <Footer
         onNavigate={handleNavigate}
         lang={lang}
         onToggleLang={toggleLanguage}
       />
 
-      {/* Team Details Modal with Verified Data Only */}
+      {/* Team Details Modal */}
       <TeamModal
         team={selectedTeam}
         lang={lang}

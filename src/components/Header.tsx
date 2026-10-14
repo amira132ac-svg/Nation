@@ -33,9 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'fixtures', label: t.navFixtures },
     { id: 'groups', label: t.navGroups },
     { id: 'standings', label: t.navStandings },
-    { id: 'results', label: t.navResults },
     { id: 'teams', label: t.navTeams },
-    { id: 'about', label: t.navAbout },
   ];
 
   const handleLinkClick = (id: string) => {
@@ -48,11 +46,11 @@ export const Header: React.FC<HeaderProps> = ({
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled
           ? 'bg-[#070D1E]/95 backdrop-blur-md border-b border-blue-900/50 py-3 shadow-xl'
-          : 'bg-[#070D1E]/80 backdrop-blur-sm border-b border-blue-950/40 py-4'
+          : 'bg-[#070D1E]/80 backdrop-blur-sm border-b border-blue-950/40 py-3.5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-6 h-12">
+        <div className="flex items-center justify-between gap-6 h-11">
           {/* Zone 1: Brand Wordmark */}
           <div
             onClick={() => handleLinkClick('home')}
@@ -62,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Zone 2: Main Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-sm font-bold text-slate-300">
+          <nav className="hidden md:flex items-center gap-7 text-sm font-bold text-slate-300">
             {navItems.map((item) => {
               const isActive = activeSection === item.id;
               return (
@@ -91,19 +89,19 @@ export const Header: React.FC<HeaderProps> = ({
               title="تغییر زبان / Switch Language"
             >
               <Globe className="w-3.5 h-3.5 text-blue-400" />
-              <span>{lang === 'en' ? 'فارسی' : 'English'}</span>
+              <span>{lang === 'en' ? 'فارسی' : 'EN'}</span>
             </button>
 
             {/* Status indicator */}
             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0A1432] border border-blue-900/60 text-xs font-semibold text-slate-300">
-              <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
               <span className="tracking-wider uppercase whitespace-nowrap text-[11px]">
                 {t.statusNotStarted}
               </span>
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="flex lg:hidden items-center">
+            <div className="flex md:hidden items-center">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-blue-900/40 transition-colors cursor-pointer"
@@ -118,19 +116,18 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#070D1E]/98 border-b border-blue-900/80 px-6 py-6 space-y-3 shadow-2xl backdrop-blur-xl animate-in slide-in-from-top duration-200">
-          <div className="flex items-center justify-between pb-3 border-b border-blue-950 mb-4">
+        <div className="md:hidden bg-[#070D1E]/98 border-b border-blue-900/80 px-6 py-5 space-y-2 shadow-2xl backdrop-blur-xl animate-in slide-in-from-top duration-200">
+          <div className="flex items-center justify-between pb-3 border-b border-blue-950 mb-3">
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase">
               <span className="w-2 h-2 rounded-full bg-amber-400" />
               <span>{t.statusNotStarted}</span>
             </div>
-            {/* Language toggle inside mobile menu */}
             <button
               onClick={onToggleLang}
               className="text-xs font-bold text-blue-400 flex items-center gap-1 px-2.5 py-1 rounded bg-blue-950/60 border border-blue-900"
             >
               <Globe className="w-3 h-3" />
-              <span>{lang === 'en' ? 'فارسی' : 'English'}</span>
+              <span>{lang === 'en' ? 'فارسی' : 'EN'}</span>
             </button>
           </div>
 
