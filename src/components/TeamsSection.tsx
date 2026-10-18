@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { GROUP_A_TEAMS, GROUP_B_TEAMS, NationalTeam } from '../data/tournamentData';
 import { Language, translations } from '../data/translations';
 import { Flag } from './Flag';
@@ -21,7 +21,14 @@ export const TeamsSection: React.FC<TeamsSectionProps> = ({ lang, onSelectTeam }
   ] as const;
 
   return (
-    <section id="teams" className="relative py-12 md:py-20">
+    <motion.section
+      id="teams"
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+      className="relative py-12 md:py-20"
+    >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-blue-900/40">
@@ -165,6 +172,6 @@ export const TeamsSection: React.FC<TeamsSectionProps> = ({ lang, onSelectTeam }
           )}
         </AnimatePresence>
       </div>
-    </section>
+    </motion.section>
   );
 };

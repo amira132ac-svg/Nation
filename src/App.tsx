@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { GeometricBackground } from './components/GeometricBackground';
 import { HeroSection } from './components/HeroSection';
+import { ResultsSection } from './components/ResultsSection';
 import { FixturesSection } from './components/FixturesSection';
-import { GroupsSection } from './components/GroupsSection';
 import { StandingsSection } from './components/StandingsSection';
+import { StatsSection } from './components/StatsSection';
 import { TeamsSection } from './components/TeamsSection';
 import { Footer } from './components/Footer';
 import { TeamModal } from './components/TeamModal';
@@ -12,7 +13,7 @@ import { NationalTeam } from './data/tournamentData';
 import { Language } from './data/translations';
 
 export default function App() {
-  const [lang, setLang] = useState<Language>('fa'); // Persian default
+  const [lang, setLang] = useState<Language>('fa'); // Persian default per user request
   const [activeSection, setActiveSection] = useState<string>('home');
   const [selectedTeam, setSelectedTeam] = useState<NationalTeam | null>(null);
 
@@ -50,10 +51,10 @@ export default function App() {
 
   // Track active section on scroll
   useEffect(() => {
-    const sectionIds = ['teams', 'standings', 'groups', 'fixtures'];
+    const sectionIds = ['teams', 'stats', 'standings', 'fixtures', 'results'];
     
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 120;
+      const scrollPosition = window.scrollY + 140;
       
       if (window.scrollY < 260) {
         setActiveSection('home');
@@ -84,7 +85,7 @@ export default function App() {
       {/* Background Graphic System Inspired by Reference Graphics */}
       <GeometricBackground />
 
-      {/* Top Bar Header with Language Toggle */}
+      {/* Top Bar Header with Language Toggle & Status */}
       <Header
         activeSection={activeSection}
         onNavigate={handleNavigate}
@@ -92,23 +93,23 @@ export default function App() {
         onToggleLang={toggleLanguage}
       />
 
-      {/* Main Content Area: ONLY THE CORE ESSENTIALS */}
+      {/* Main Content Area: Focused, clean, and energetic */}
       <main className="flex-1 relative z-10">
         {/* 1. Hero Section */}
         <HeroSection
           lang={lang}
-          onNavigateToGroups={() => handleNavigate('groups')}
+          onNavigateToResults={() => handleNavigate('results')}
           onNavigateToFixtures={() => handleNavigate('fixtures')}
         />
 
-        {/* 2. Official Fixtures (Front & Center!) */}
-        <FixturesSection
+        {/* 2. Official Match Results (Played Matches) */}
+        <ResultsSection
           lang={lang}
           onSelectTeam={(team) => setSelectedTeam(team)}
         />
 
-        {/* 3. Official Groups Preview & Composition */}
-        <GroupsSection
+        {/* 3. Official Remaining Fixtures (Time TBA) */}
+        <FixturesSection
           lang={lang}
           onSelectTeam={(team) => setSelectedTeam(team)}
         />
@@ -119,14 +120,19 @@ export default function App() {
           onSelectTeam={(team) => setSelectedTeam(team)}
         />
 
-        {/* 5. Participating National Teams Directory */}
+        {/* 5. Tournament Stats (Top Scorers & Assists) */}
+        <StatsSection
+          lang={lang}
+        />
+
+        {/* 6. Participating National Teams Directory */}
         <TeamsSection
           lang={lang}
           onSelectTeam={(team) => setSelectedTeam(team)}
         />
       </main>
 
-      {/* 6. Streamlined Footer with Developed By amirr0023 & Language Switcher */}
+      {/* 8. Streamlined Footer with Developed By amirr0023 & Language Switcher */}
       <Footer
         onNavigate={handleNavigate}
         lang={lang}

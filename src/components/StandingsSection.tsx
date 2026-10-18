@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  INITIAL_STANDINGS_GROUP_A,
-  INITIAL_STANDINGS_GROUP_B,
+  OFFICIAL_STANDINGS_GROUP_A,
+  OFFICIAL_STANDINGS_GROUP_B,
   NationalTeam,
   StandingRow,
 } from '../data/tournamentData';
@@ -31,12 +31,12 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
     return (
       <div className="bg-[#0A1432]/95 border border-blue-900/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm">
         {/* Table Group Header */}
-        <div className={`px-6 py-3.5 flex items-center justify-between border-b ${
+        <div className={`px-6 py-4 flex items-center justify-between border-b ${
           isGroupA ? 'border-yellow-500/30 bg-yellow-500/10' : 'border-blue-500/30 bg-blue-500/10'
         }`}>
           <div className="flex items-center gap-3">
             <span
-              className={`w-3.5 h-3.5 rounded-sm ${
+              className={`w-3.5 h-3.5 rounded-sm shadow-sm ${
                 isGroupA ? 'bg-[#FFCC00]' : 'bg-[#0052FF]'
               }`}
             />
@@ -44,65 +44,109 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
               {groupTitle}
             </h3>
           </div>
-          <span className="text-xs text-slate-400 font-mono">
-            {isRtl ? 'به‌روزرسانی پس از بازی‌ها' : 'Updates after matches'}
-          </span>
+          <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>{isRtl ? 'ثبت‌شده دور اول' : 'Round 1 Updated'}</span>
+          </div>
         </div>
 
         {/* Responsive Table Container */}
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
             <thead>
-              <tr className="border-b border-blue-950/80 bg-[#060D20]/80 text-xs font-bold text-slate-400 tracking-wider uppercase">
-                <th scope="col" className="py-3 px-4 w-12 text-center">
+              <tr className="border-b border-blue-950/80 bg-[#060D20]/90 text-xs font-bold text-slate-400 tracking-wider uppercase">
+                <th scope="col" className="py-3.5 px-4 w-12 text-center">
                   {t.pos}
                 </th>
-                <th scope="col" className="py-3 px-4 min-w-[180px]">
+                <th scope="col" className="py-3.5 px-4 min-w-[190px]">
                   {t.team}
                 </th>
-                <th scope="col" className="py-3 px-3 text-center w-12">{t.played}</th>
-                <th scope="col" className="py-3 px-3 text-center w-12">{t.won}</th>
-                <th scope="col" className="py-3 px-3 text-center w-12">{t.drawn}</th>
-                <th scope="col" className="py-3 px-3 text-center w-12">{t.lost}</th>
-                <th scope="col" className="py-3 px-3 text-center w-12">{t.gf}</th>
-                <th scope="col" className="py-3 px-3 text-center w-12">{t.ga}</th>
-                <th scope="col" className="py-3 px-3 text-center w-12">{t.gd}</th>
-                <th scope="col" className="py-3 px-4 text-center w-16 font-black text-slate-200">{t.pts}</th>
+                <th scope="col" className="py-3.5 px-3 text-center w-12">{t.played}</th>
+                <th scope="col" className="py-3.5 px-3 text-center w-12">{t.won}</th>
+                <th scope="col" className="py-3.5 px-3 text-center w-12">{t.drawn}</th>
+                <th scope="col" className="py-3.5 px-3 text-center w-12">{t.lost}</th>
+                <th scope="col" className="py-3.5 px-3 text-center w-12">{t.gf}</th>
+                <th scope="col" className="py-3.5 px-3 text-center w-12">{t.ga}</th>
+                <th scope="col" className="py-3.5 px-3 text-center w-12">{t.gd}</th>
+                <th scope="col" className="py-3.5 px-4 text-center w-16 font-black text-white">{t.pts}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-blue-950/60 font-mono">
-              {rows.map((row) => {
+              {rows.map((row, index) => {
                 const teamName = isRtl ? row.team.nameFa : row.team.name;
+                const isTopTwo = index < 2;
 
                 return (
-                  <tr
+                  <motion.tr
                     key={row.team.id}
                     onClick={() => onSelectTeam && onSelectTeam(row.team)}
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.1 }}
+                    transition={{
+                      duration: 0.45,
+                      delay: 0.05 + index * 0.07,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
                     className="hover:bg-blue-600/20 cursor-pointer transition-colors duration-150 group"
                   >
-                    <td className="py-3 px-4 text-center text-xs font-bold text-slate-500 group-hover:text-slate-300">
-                      {row.positionIndex}
+                    {/* Position Badge */}
+                    <td className="py-3.5 px-4 text-center">
+                      <div className={`w-6 h-6 mx-auto rounded-md flex items-center justify-center text-xs font-black ${
+                        isTopTwo
+                          ? isGroupA
+                            ? 'bg-yellow-400 text-slate-950 shadow-[0_0_8px_rgba(250,204,21,0.4)]'
+                            : 'bg-blue-600 text-white shadow-[0_0_8px_rgba(37,99,235,0.4)]'
+                          : 'text-slate-400 bg-blue-950/50'
+                      }`}>
+                        {row.positionIndex}
+                      </div>
                     </td>
 
-                    <td className="py-3 px-4 font-sans font-medium text-white flex items-center gap-3">
-                      <Flag country={row.team.flagCountry} size="sm" />
+                    {/* Team Name & Flag */}
+                    <td className="py-3.5 px-4 font-sans font-medium text-white flex items-center gap-3">
+                      <Flag country={row.team.flagCountry} size="sm" className="shrink-0" />
                       <span className="font-black text-sm group-hover:text-blue-300 transition-colors">
                         {teamName}
                       </span>
-                      <span className="text-xs text-slate-500 font-mono ml-auto mr-2 font-bold">
+                      <span className="text-xs text-slate-400 font-mono ml-auto mr-2 font-bold">
                         {row.team.code}
                       </span>
                     </td>
 
-                    <td className="py-3 px-3 text-center text-slate-500 font-semibold">{row.played ?? '—'}</td>
-                    <td className="py-3 px-3 text-center text-slate-500 font-semibold">{row.won ?? '—'}</td>
-                    <td className="py-3 px-3 text-center text-slate-500 font-semibold">{row.drawn ?? '—'}</td>
-                    <td className="py-3 px-3 text-center text-slate-500 font-semibold">{row.lost ?? '—'}</td>
-                    <td className="py-3 px-3 text-center text-slate-500 font-semibold">{row.goalsFor ?? '—'}</td>
-                    <td className="py-3 px-3 text-center text-slate-500 font-semibold">{row.goalsAgainst ?? '—'}</td>
-                    <td className="py-3 px-3 text-center text-slate-500 font-semibold">{row.goalDifference ?? '—'}</td>
-                    <td className="py-3 px-4 text-center font-black text-slate-400">{row.points ?? '—'}</td>
-                  </tr>
+                    {/* Matches Played */}
+                    <td className="py-3.5 px-3 text-center text-slate-200 font-semibold">{row.played}</td>
+                    {/* Won */}
+                    <td className="py-3.5 px-3 text-center text-slate-300 font-semibold">{row.won}</td>
+                    {/* Drawn */}
+                    <td className="py-3.5 px-3 text-center text-slate-300 font-semibold">{row.drawn}</td>
+                    {/* Lost */}
+                    <td className="py-3.5 px-3 text-center text-slate-300 font-semibold">{row.lost}</td>
+                    {/* Goals For */}
+                    <td className="py-3.5 px-3 text-center text-slate-300 font-semibold">{row.goalsFor}</td>
+                    {/* Goals Against */}
+                    <td className="py-3.5 px-3 text-center text-slate-300 font-semibold">{row.goalsAgainst}</td>
+                    {/* Goal Difference */}
+                    <td className="py-3.5 px-3 text-center font-bold">
+                      <span className={
+                        row.goalDifference > 0
+                          ? 'text-emerald-400'
+                          : row.goalDifference < 0
+                          ? 'text-rose-400'
+                          : 'text-slate-400'
+                      }>
+                        {row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}
+                      </span>
+                    </td>
+                    {/* Points */}
+                    <td className="py-3.5 px-4 text-center">
+                      <span className={`text-base font-black ${
+                        isTopTwo ? 'text-amber-400 font-extrabold' : 'text-slate-200'
+                      }`}>
+                        {row.points}
+                      </span>
+                    </td>
+                  </motion.tr>
                 );
               })}
             </tbody>
@@ -113,7 +157,14 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
   };
 
   return (
-    <section id="standings" className="relative py-12 md:py-20 bg-[#060D20]/40">
+    <motion.section
+      id="standings"
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+      className="relative py-12 md:py-20 bg-[#060D20]/40"
+    >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-blue-900/40">
@@ -122,7 +173,7 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
               {t.standingsTitle}
             </h2>
             <p className="text-xs text-slate-400 mt-1">
-              {isRtl ? 'امتیازات پس از انجام بازی‌ها ثبت خواهد شد' : 'Standings update once matches kick off'}
+              {isRtl ? 'جدول رسمی بر اساس نتایج دیدارهای دور اول' : 'Official table updated after Round 1 match results'}
             </p>
           </div>
 
@@ -169,7 +220,7 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                {renderTable('A', `${t.groupA}`, INITIAL_STANDINGS_GROUP_A)}
+                {renderTable('A', `${t.groupA}`, OFFICIAL_STANDINGS_GROUP_A)}
               </motion.div>
             )}
 
@@ -181,12 +232,12 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                {renderTable('B', `${t.groupB}`, INITIAL_STANDINGS_GROUP_B)}
+                {renderTable('B', `${t.groupB}`, OFFICIAL_STANDINGS_GROUP_B)}
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };

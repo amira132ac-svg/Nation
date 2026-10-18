@@ -28,22 +28,28 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, lang, onToggleLang }
           {/* Direct Navigation Links */}
           <nav className="flex flex-wrap items-center justify-center gap-6 text-xs font-bold text-slate-300">
             <button
+              onClick={() => onNavigate('results')}
+              className="hover:text-blue-400 transition-colors cursor-pointer"
+            >
+              {t.navResults}
+            </button>
+            <button
               onClick={() => onNavigate('fixtures')}
               className="hover:text-blue-400 transition-colors cursor-pointer"
             >
               {t.navFixtures}
             </button>
             <button
-              onClick={() => onNavigate('groups')}
-              className="hover:text-blue-400 transition-colors cursor-pointer"
-            >
-              {t.navGroups}
-            </button>
-            <button
               onClick={() => onNavigate('standings')}
               className="hover:text-blue-400 transition-colors cursor-pointer"
             >
               {t.navStandings}
+            </button>
+            <button
+              onClick={() => onNavigate('stats')}
+              className="hover:text-blue-400 transition-colors cursor-pointer"
+            >
+              {t.navStats}
             </button>
             <button
               onClick={() => onNavigate('teams')}

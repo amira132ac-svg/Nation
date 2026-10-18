@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { X, Shield } from 'lucide-react';
 import { NationalTeam } from '../data/tournamentData';
 import { Language, translations } from '../data/translations';
@@ -108,12 +108,12 @@ export const TeamModal: React.FC<TeamModalProps> = ({ team, lang, onClose }) => 
 
               <div className="p-3.5 bg-[#060D20] rounded-2xl border border-blue-950">
                 <span className="text-slate-400 block mb-1">{t.tournStatusLabel}</span>
-                <span className="text-amber-400 font-semibold block text-sm">{t.preTournament}</span>
+                <span className="text-emerald-400 font-semibold block text-sm">{t.statusInProgress}</span>
               </div>
 
               <div className="p-3.5 bg-[#060D20] rounded-2xl border border-blue-950">
                 <span className="text-slate-400 block mb-1">{t.scheduleStateLabel}</span>
-                <span className="text-slate-200 font-semibold block text-sm">{t.awaitingKickoff}</span>
+                <span className="text-slate-200 font-semibold block text-sm">{t.timeTba}</span>
               </div>
             </div>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { MatchFixture, NationalTeam } from '../data/tournamentData';
 import { Language, translations } from '../data/translations';
 import { Flag } from './Flag';
@@ -37,7 +37,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, lang, onSelectTea
       <div className="flex items-center justify-between text-xs pb-3 mb-3 border-b border-blue-950/80">
         <div className="flex items-center gap-2">
           <span className="font-extrabold text-slate-400">
-            {isRtl ? fixture.roundNameFa : fixture.roundName}
+            {isRtl ? `دیدار گروه ${fixture.group}` : `Group ${fixture.group}`}
           </span>
           {fixture.isBlockbuster && (
             <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-amber-300 bg-amber-500/20 border border-amber-500/40 px-2.5 py-0.5 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.25)]">
