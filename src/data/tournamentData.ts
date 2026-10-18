@@ -632,3 +632,152 @@ export const OFFICIAL_STANDINGS_GROUP_B: StandingRow[] = [
 // Compatibility exports
 export const INITIAL_STANDINGS_GROUP_A = OFFICIAL_STANDINGS_GROUP_A;
 export const INITIAL_STANDINGS_GROUP_B = OFFICIAL_STANDINGS_GROUP_B;
+
+// ==========================================
+// 4. TOURNAMENT PLAYER STATS & METRICS
+// ==========================================
+export interface PlayerStatItem {
+  id: string;
+  rank: number;
+  name: string;
+  nameFa: string;
+  team: NationalTeam;
+  value: number;
+  matchesPlayed: number;
+  position: string;
+  positionFa: string;
+}
+
+export const TOURNAMENT_OVERVIEW_STATS = {
+  totalGoals: 18,
+  matchesPlayed: 7,
+  goalsPerMatch: '2.57',
+  cleanSheets: 4,
+};
+
+export const TOURNAMENT_TOP_SCORERS: PlayerStatItem[] = [
+  {
+    id: 'ts-1',
+    rank: 1,
+    name: 'Cristiano Ronaldo',
+    nameFa: 'کریستیانو رونالدو',
+    team: GROUP_B_TEAMS.find((t) => t.id === 'por') || GROUP_B_TEAMS[3],
+    value: 3,
+    matchesPlayed: 2,
+    position: 'Forward',
+    positionFa: 'مهاجم',
+  },
+  {
+    id: 'ts-2',
+    rank: 2,
+    name: 'Lionel Messi',
+    nameFa: 'لیونل مسی',
+    team: GROUP_A_TEAMS.find((t) => t.id === 'arg') || GROUP_A_TEAMS[0],
+    value: 2,
+    matchesPlayed: 1,
+    position: 'Forward',
+    positionFa: 'مهاجم',
+  },
+  {
+    id: 'ts-3',
+    rank: 3,
+    name: 'Álvaro Morata',
+    nameFa: 'آلوارو موراتا',
+    team: GROUP_B_TEAMS.find((t) => t.id === 'esp') || GROUP_B_TEAMS[0],
+    value: 1,
+    matchesPlayed: 2,
+    position: 'Forward',
+    positionFa: 'مهاجم',
+  },
+  {
+    id: 'ts-4',
+    rank: 4,
+    name: 'Lamine Yamal',
+    nameFa: 'لامین یامال',
+    team: GROUP_B_TEAMS.find((t) => t.id === 'esp') || GROUP_B_TEAMS[0],
+    value: 1,
+    matchesPlayed: 2,
+    position: 'Winger',
+    positionFa: 'وینگر',
+  },
+  {
+    id: 'ts-5',
+    rank: 5,
+    name: 'Erling Haaland',
+    nameFa: 'ارلینگ هالند',
+    team: GROUP_B_TEAMS.find((t) => t.id === 'nor') || GROUP_B_TEAMS[5],
+    value: 1,
+    matchesPlayed: 1,
+    position: 'Striker',
+    positionFa: 'مهاجم هدف',
+  },
+  {
+    id: 'ts-6',
+    rank: 6,
+    name: 'Cody Gakpo',
+    nameFa: 'کودی خاکپو',
+    team: GROUP_A_TEAMS.find((t) => t.id === 'ned') || GROUP_A_TEAMS[2],
+    value: 1,
+    matchesPlayed: 2,
+    position: 'Winger',
+    positionFa: 'وینگر',
+  },
+];
+
+export const TOURNAMENT_TOP_ASSISTS: PlayerStatItem[] = [
+  {
+    id: 'ta-1',
+    rank: 1,
+    name: 'Bruno Fernandes',
+    nameFa: 'برونو فرناندز',
+    team: GROUP_B_TEAMS.find((t) => t.id === 'por') || GROUP_B_TEAMS[3],
+    value: 2,
+    matchesPlayed: 2,
+    position: 'Midfielder',
+    positionFa: 'هافبک',
+  },
+  {
+    id: 'ta-2',
+    rank: 2,
+    name: 'Rodrigo De Paul',
+    nameFa: 'رودریگو دی‌پائول',
+    team: GROUP_A_TEAMS.find((t) => t.id === 'arg') || GROUP_A_TEAMS[0],
+    value: 2,
+    matchesPlayed: 1,
+    position: 'Midfielder',
+    positionFa: 'هافبک',
+  },
+  {
+    id: 'ta-3',
+    rank: 3,
+    name: 'Nico Williams',
+    nameFa: 'نیکو ویلیامز',
+    team: GROUP_B_TEAMS.find((t) => t.id === 'esp') || GROUP_B_TEAMS[0],
+    value: 1,
+    matchesPlayed: 2,
+    position: 'Winger',
+    positionFa: 'وینگر',
+  },
+  {
+    id: 'ta-4',
+    rank: 4,
+    name: 'Memphis Depay',
+    nameFa: 'ممفیس دپای',
+    team: GROUP_A_TEAMS.find((t) => t.id === 'ned') || GROUP_A_TEAMS[2],
+    value: 1,
+    matchesPlayed: 2,
+    position: 'Forward',
+    positionFa: 'مهاجم',
+  },
+  {
+    id: 'ta-5',
+    rank: 5,
+    name: 'Bernardo Silva',
+    nameFa: 'برناردو سیلوا',
+    team: GROUP_B_TEAMS.find((t) => t.id === 'por') || GROUP_B_TEAMS[3],
+    value: 1,
+    matchesPlayed: 2,
+    position: 'Midfielder',
+    positionFa: 'هافبک',
+  },
+];

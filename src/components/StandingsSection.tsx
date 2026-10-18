@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { RefreshCw } from 'lucide-react';
 import {
   OFFICIAL_STANDINGS_GROUP_A,
   OFFICIAL_STANDINGS_GROUP_B,
@@ -8,6 +9,7 @@ import {
 } from '../data/tournamentData';
 import { Language, translations } from '../data/translations';
 import { Flag } from './Flag';
+import { StandingsTableSkeleton } from './ShimmerSkeleton';
 
 interface StandingsSectionProps {
   lang: Language;
@@ -16,8 +18,24 @@ interface StandingsSectionProps {
 
 export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSelectTeam }) => {
   const [activeGroupTab, setActiveGroupTab] = useState<'ALL' | 'A' | 'B'>('ALL');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const t = translations[lang];
   const isRtl = lang === 'fa';
+
+  // Initial render shimmer skeleton simulation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 750);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleRefresh = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 650);
+  };
 
   const filterTabs = [
     { id: 'ALL', label: t.bothGroups },
@@ -177,62 +195,101 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
             </p>
           </div>
 
-          {/* Smooth Motion View Toggle */}
-          <div className="relative inline-flex p-1 bg-[#0A1432] border border-blue-900/60 rounded-xl shadow-lg self-start sm:self-auto">
-            {filterTabs.map((tab) => {
-              const isActive = activeGroupTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveGroupTab(tab.id)}
-                  className={`relative px-4 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer select-none z-10 ${
-                    isActive
-                      ? tab.id === 'A'
-                        ? 'text-slate-950 font-black'
-                        : 'text-white font-black'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="standingsFilterPill"
-                      className={`absolute inset-0 rounded-lg shadow-md -z-10 ${
-                        tab.id === 'A' ? 'bg-yellow-400' : 'bg-blue-600'
-                      }`}
-                      transition={{ type: 'spring', stiffness: 450, damping: 35 }}
-                    />
-                  )}
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
+          {/* View Toggle & Shimmer Refresh Trigger */}
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <button
+              onClick={handleRefresh}
+              disabled={isLoading}
+              title={t.refreshData}
+              aria-label={t.refreshData}
+              className="p-2 rounded-xl bg-[#0A1432] border border-blue-900/60 text-slate-400 hover:text-white hover:border-blue-500/50 hover:bg-blue-950/60 transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+            >
+              <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin text-blue-400' : ''}`} />
+            </button>
+
+            <div className="relative inline-flex p-1 bg-[#0A1432] border border-blue-900/60 rounded-xl shadow-lg">
+              {filterTabs.map((tab) => {
+                const isActive = activeGroupTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveGroupTab(tab.id)}
+                    className={`relative px-4 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer select-none z-10 ${
+                      isActive
+                        ? tab.id === 'A'
+                          ? 'text-slate-950 font-black'
+                          : 'text-white font-black'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="standingsFilterPill"
+                        className={`absolute inset-0 rounded-lg shadow-md -z-10 ${
+                          tab.id === 'A' ? 'bg-yellow-400' : 'bg-blue-600'
+                        }`}
+                        transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                      />
+                    )}
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* Standings Tables with AnimatePresence */}
+        {/* Standings Tables with Shimmer Skeleton & AnimatePresence */}
         <div className="space-y-8">
           <AnimatePresence mode="wait">
-            {(activeGroupTab === 'ALL' || activeGroupTab === 'A') && (
+            {isLoading ? (
               <motion.div
-                key="table-a"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
+                key="standings-skeleton-view"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
+                className="space-y-8"
               >
-                {renderTable('A', `${t.groupA}`, OFFICIAL_STANDINGS_GROUP_A)}
+                {(activeGroupTab === 'ALL' || activeGroupTab === 'A') && (
+                  <StandingsTableSkeleton isGroupA={true} groupTitle={t.groupA} />
+                )}
+                {(activeGroupTab === 'ALL' || activeGroupTab === 'B') && (
+                  <StandingsTableSkeleton isGroupA={false} groupTitle={t.groupB} />
+                )}
               </motion.div>
-            )}
-
-            {(activeGroupTab === 'ALL' || activeGroupTab === 'B') && (
+            ) : (
               <motion.div
-                key="table-b"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
+                key={`standings-loaded-view-${activeGroupTab}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-8"
               >
-                {renderTable('B', `${t.groupB}`, OFFICIAL_STANDINGS_GROUP_B)}
+                {(activeGroupTab === 'ALL' || activeGroupTab === 'A') && (
+                  <motion.div
+                    key="table-a"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    {renderTable('A', `${t.groupA}`, OFFICIAL_STANDINGS_GROUP_A)}
+                  </motion.div>
+                )}
+
+                {(activeGroupTab === 'ALL' || activeGroupTab === 'B') && (
+                  <motion.div
+                    key="table-b"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    {renderTable('B', `${t.groupB}`, OFFICIAL_STANDINGS_GROUP_B)}
+                  </motion.div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>

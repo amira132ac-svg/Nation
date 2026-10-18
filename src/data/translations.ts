@@ -60,6 +60,12 @@ export interface Translations {
   player: string;
   goals: string;
   assists: string;
+  totalGoals: string;
+  matchesPlayedLabel: string;
+  goalsPerMatch: string;
+  cleanSheets: string;
+  refreshData: string;
+  syncingData: string;
 
   // Standings
   standingsBadge: string;
@@ -172,6 +178,12 @@ export const translations: Record<Language, Translations> = {
     player: "Player",
     goals: "Goals",
     assists: "Assists",
+    totalGoals: "Total Goals",
+    matchesPlayedLabel: "Matches Played",
+    goalsPerMatch: "Goals / Match",
+    cleanSheets: "Clean Sheets",
+    refreshData: "Refresh Data",
+    syncingData: "Updating...",
 
     standingsBadge: "Tournament Table",
     standingsTitle: "Official Standings",
@@ -276,6 +288,12 @@ export const translations: Record<Language, Translations> = {
     player: "بازیکن",
     goals: "گل‌ها",
     assists: "پاس گل",
+    totalGoals: "مجموع گل‌ها",
+    matchesPlayedLabel: "بازی‌های انجام شده",
+    goalsPerMatch: "میانگین گل هر بازی",
+    cleanSheets: "کلین‌شیت‌ها",
+    refreshData: "به‌روزرسانی داده‌ها",
+    syncingData: "در حال دریافت...",
 
     standingsBadge: "جدول مسابقات",
     standingsTitle: "جدول رده‌بندی",

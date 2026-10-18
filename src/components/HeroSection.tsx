@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronRight, ArrowDown, Flame, Sparkles } from 'lucide-react';
+import { ChevronRight, ArrowDown, Sparkles } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 import { TrophyArt } from './TrophyArt';
 import { Language, translations } from '../data/translations';
@@ -26,44 +26,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="absolute top-1/3 right-10 w-[400px] h-[400px] bg-yellow-400/10 rounded-full blur-[130px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-        {/* Dynamic Opening Clash Ticker Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="mb-6 inline-flex flex-wrap items-center gap-3 px-4 py-2 rounded-full bg-blue-950/70 border border-blue-800/60 backdrop-blur-md shadow-lg"
-        >
-          <div className="flex items-center gap-1.5 text-xs font-black uppercase text-amber-400">
-            <Flame className="w-4 h-4 text-amber-400 animate-pulse" />
-            <span>{isRtl ? 'نتایج زنده دور اول' : 'Round 1 Results'}</span>
-          </div>
-          <span className="text-slate-600 hidden sm:inline">|</span>
-          <div className="text-xs font-bold text-slate-200 flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-1.5">
-              <span>{isRtl ? 'آرژانتین' : 'ARG'}</span>
-              <span className="px-1.5 py-0.5 bg-emerald-500/20 text-emerald-300 rounded font-mono font-bold text-[11px]" dir="ltr">
-                4 - 0
-              </span>
-              <span>{isRtl ? 'فرانسه' : 'FRA'}</span>
-            </div>
-            <span className="text-slate-600">·</span>
-            <div className="flex items-center gap-1.5">
-              <span>{isRtl ? 'ایتالیا' : 'ITA'}</span>
-              <span className="px-1.5 py-0.5 bg-emerald-500/20 text-emerald-300 rounded font-mono font-bold text-[11px]" dir="ltr">
-                1 - 0
-              </span>
-              <span>{isRtl ? 'اسپانیا' : 'ESP'}</span>
-            </div>
-            <span className="text-slate-600">·</span>
-            <div className="flex items-center gap-1.5">
-              <span>{isRtl ? 'هلند' : 'NED'}</span>
-              <span className="px-1.5 py-0.5 bg-emerald-500/20 text-emerald-300 rounded font-mono font-bold text-[11px]" dir="ltr">
-                2 - 1
-              </span>
-              <span>{isRtl ? 'کلمبیا' : 'COL'}</span>
-            </div>
-          </div>
-        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           {/* Left Column: Editorial Headline & Actions */}

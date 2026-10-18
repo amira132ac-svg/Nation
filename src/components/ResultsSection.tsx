@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, ChevronDown, ChevronUp, Trophy, Award } from 'lucide-react';
+import { CheckCircle2, ChevronDown, ChevronUp, Award } from 'lucide-react';
 import { PLAYED_RESULTS, NationalTeam, MatchResult } from '../data/tournamentData';
 import { Language, translations } from '../data/translations';
 import { Flag } from './Flag';
@@ -10,9 +10,13 @@ interface ResultsSectionProps {
   onSelectTeam?: (team: NationalTeam) => void;
 }
 
+const INITIAL_COUNT = 2; // Show 2 matches per group initially
+
 export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTeam }) => {
   const [selectedGroup, setSelectedGroup] = useState<'ALL' | 'A' | 'B'>('ALL');
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [expandedA, setExpandedA] = useState<boolean>(false);
+  const [expandedB, setExpandedB] = useState<boolean>(false);
+
   const t = translations[lang];
   const isRtl = lang === 'fa';
 
@@ -22,14 +26,43 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
   const showGroupA = selectedGroup === 'ALL' || selectedGroup === 'A';
   const showGroupB = selectedGroup === 'ALL' || selectedGroup === 'B';
 
-  const INITIAL_COUNT = 2; // Show 2 matches per group initially
+  const initialAResults = groupAResults.slice(0, INITIAL_COUNT);
+  const remainingAResults = groupAResults.slice(INITIAL_COUNT);
 
-  const visibleGroupAResults = isExpanded ? groupAResults : groupAResults.slice(0, INITIAL_COUNT);
-  const visibleGroupBResults = isExpanded ? groupBResults : groupBResults.slice(0, INITIAL_COUNT);
+  const initialBResults = groupBResults.slice(0, INITIAL_COUNT);
+  const remainingBResults = groupBResults.slice(INITIAL_COUNT);
 
-  const hiddenCountA = groupAResults.length - visibleGroupAResults.length;
-  const hiddenCountB = groupBResults.length - visibleGroupBResults.length;
-  const totalHidden = (showGroupA ? hiddenCountA : 0) + (showGroupB ? hiddenCountB : 0);
+  const hiddenCountA = expandedA ? 0 : remainingAResults.length;
+  const hiddenCountB = expandedB ? 0 : remainingBResults.length;
+  const totalHiddenInActiveView =
+    (showGroupA ? hiddenCountA : 0) + (showGroupB ? hiddenCountB : 0);
+
+  const isAllActiveExpanded =
+    (selectedGroup === 'ALL' && expandedA && expandedB) ||
+    (selectedGroup === 'A' && expandedA) ||
+    (selectedGroup === 'B' && expandedB);
+
+  const handleToggleAll = () => {
+    if (isAllActiveExpanded) {
+      if (selectedGroup === 'ALL') {
+        setExpandedA(false);
+        setExpandedB(false);
+      } else if (selectedGroup === 'A') {
+        setExpandedA(false);
+      } else {
+        setExpandedB(false);
+      }
+    } else {
+      if (selectedGroup === 'ALL') {
+        setExpandedA(true);
+        setExpandedB(true);
+      } else if (selectedGroup === 'A') {
+        setExpandedA(true);
+      } else {
+        setExpandedB(true);
+      }
+    }
+  };
 
   const filterTabs = [
     { id: 'ALL', label: t.allResults },
@@ -47,10 +80,9 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
     const winnerName = homeWon ? homeName : awayWon ? awayName : null;
 
     return (
-      <motion.div
+      <div
         key={res.id}
-        whileHover={{ y: -2 }}
-        className="bg-[#0A1432]/95 border border-blue-900/60 hover:border-blue-600/70 rounded-2xl p-4 sm:p-5 transition-all shadow-xl flex flex-col justify-between"
+        className="bg-[#0A1432]/95 border border-blue-900/60 hover:border-blue-600/70 rounded-2xl p-4 sm:p-5 transition-all shadow-xl flex flex-col justify-between hover:shadow-[0_8px_24px_rgba(0,82,255,0.18)]"
       >
         {/* Top Status Bar: Group, Winner Badge, and FT indicator */}
         <div className="flex items-center justify-between text-xs pb-3 mb-3 border-b border-blue-950">
@@ -183,7 +215,7 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
             {res.homeScore + res.awayScore} {isRtl ? 'گل کل' : 'Total Goals'}
           </span>
         </div>
-      </motion.div>
+      </div>
     );
   };
 
@@ -264,26 +296,78 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
                       {t.groupA}
                     </div>
                     <span className="text-xs text-slate-400 font-mono font-semibold">
-                      {isExpanded
+                      {expandedA
                         ? `${groupAResults.length} ${isRtl ? 'بازی انجام شد' : 'Matches Played'}`
-                        : `${visibleGroupAResults.length} ${isRtl ? 'از ۴ بازی' : 'of 4 Matches'}`}
+                        : `${initialAResults.length} ${isRtl ? 'از ۴ بازی' : 'of 4 Matches'}`}
                     </span>
                   </div>
 
-                  {!isExpanded && (
-                    <button
-                      onClick={() => setIsExpanded(true)}
-                      className="text-xs font-bold text-yellow-400 hover:text-yellow-300 flex items-center gap-1 cursor-pointer transition-colors"
-                    >
-                      <span>{isRtl ? `+${hiddenCountA} بازی دیگر` : `+${hiddenCountA} more`}</span>
-                      <ChevronDown className="w-3.5 h-3.5" />
-                    </button>
-                  )}
+                  <button
+                    onClick={() => setExpandedA(!expandedA)}
+                    className="text-xs font-bold text-yellow-400 hover:text-yellow-300 bg-yellow-400/10 hover:bg-yellow-400/20 border border-yellow-400/30 px-3 py-1 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
+                  >
+                    <span>
+                      {expandedA
+                        ? (isRtl ? 'نمایش کمتر' : t.showLess)
+                        : (isRtl ? `+${remainingAResults.length} بازی دیگر` : `+${remainingAResults.length} more`)}
+                    </span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                        expandedA ? 'rotate-180' : 'rotate-0'
+                      }`}
+                    />
+                  </button>
                 </div>
 
+                {/* Permanent 2 initial results */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  {visibleGroupAResults.map((res) => renderMatchCard(res, true))}
+                  {initialAResults.map((res) => renderMatchCard(res, true))}
                 </div>
+
+                {/* Smooth Animated Accordion for remaining results */}
+                <AnimatePresence initial={false}>
+                  {expandedA && (
+                    <motion.div
+                      key="group-a-more-results"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{
+                        opacity: 1,
+                        height: 'auto',
+                        transition: {
+                          height: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.25, delay: 0.05 },
+                        },
+                      }}
+                      exit={{
+                        opacity: 0,
+                        height: 0,
+                        transition: {
+                          height: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.15 },
+                        },
+                      }}
+                      className="overflow-hidden"
+                    >
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-3.5">
+                        {remainingAResults.map((res, idx) => (
+                          <motion.div
+                            key={res.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -6 }}
+                            transition={{
+                              duration: 0.25,
+                              delay: idx * 0.04,
+                              ease: [0.22, 1, 0.36, 1],
+                            }}
+                          >
+                            {renderMatchCard(res, true)}
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             )}
 
@@ -303,26 +387,78 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
                       {t.groupB}
                     </div>
                     <span className="text-xs text-slate-400 font-mono font-semibold">
-                      {isExpanded
+                      {expandedB
                         ? `${groupBResults.length} ${isRtl ? 'بازی انجام شد' : 'Matches Played'}`
-                        : `${visibleGroupBResults.length} ${isRtl ? 'از ۴ بازی' : 'of 4 Matches'}`}
+                        : `${initialBResults.length} ${isRtl ? 'از ۴ بازی' : 'of 4 Matches'}`}
                     </span>
                   </div>
 
-                  {!isExpanded && (
-                    <button
-                      onClick={() => setIsExpanded(true)}
-                      className="text-xs font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1 cursor-pointer transition-colors"
-                    >
-                      <span>{isRtl ? `+${hiddenCountB} بازی دیگر` : `+${hiddenCountB} more`}</span>
-                      <ChevronDown className="w-3.5 h-3.5" />
-                    </button>
-                  )}
+                  <button
+                    onClick={() => setExpandedB(!expandedB)}
+                    className="text-xs font-bold text-blue-400 hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 px-3 py-1 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
+                  >
+                    <span>
+                      {expandedB
+                        ? (isRtl ? 'نمایش کمتر' : t.showLess)
+                        : (isRtl ? `+${remainingBResults.length} بازی دیگر` : `+${remainingBResults.length} more`)}
+                    </span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                        expandedB ? 'rotate-180' : 'rotate-0'
+                      }`}
+                    />
+                  </button>
                 </div>
 
+                {/* Permanent 2 initial results */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  {visibleGroupBResults.map((res) => renderMatchCard(res, false))}
+                  {initialBResults.map((res) => renderMatchCard(res, false))}
                 </div>
+
+                {/* Smooth Animated Accordion for remaining results */}
+                <AnimatePresence initial={false}>
+                  {expandedB && (
+                    <motion.div
+                      key="group-b-more-results"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{
+                        opacity: 1,
+                        height: 'auto',
+                        transition: {
+                          height: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.25, delay: 0.05 },
+                        },
+                      }}
+                      exit={{
+                        opacity: 0,
+                        height: 0,
+                        transition: {
+                          height: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.15 },
+                        },
+                      }}
+                      className="overflow-hidden"
+                    >
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-3.5">
+                        {remainingBResults.map((res, idx) => (
+                          <motion.div
+                            key={res.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -6 }}
+                            transition={{
+                              duration: 0.25,
+                              delay: idx * 0.04,
+                              ease: [0.22, 1, 0.36, 1],
+                            }}
+                          >
+                            {renderMatchCard(res, false)}
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             )}
           </AnimatePresence>
@@ -330,36 +466,30 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
 
         {/* Global Expand / Collapse Control */}
         <div className="mt-8 flex justify-center">
-          {!isExpanded ? (
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setIsExpanded(true)}
-              className="px-6 py-3 bg-[#0A1432] hover:bg-blue-900/50 text-white font-bold text-sm rounded-xl border border-blue-700/60 hover:border-blue-400 shadow-lg flex items-center gap-2.5 cursor-pointer transition-all"
-            >
-              <span>{t.showAllResults}</span>
-              {totalHidden > 0 && (
-                <span className="px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-blue-600/40 text-blue-300 border border-blue-500/40">
-                  +{totalHidden}
-                </span>
-              )}
-              <ChevronDown className="w-4 h-4 text-blue-400" />
-            </motion.button>
-          ) : (
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => {
-                setIsExpanded(false);
-                const el = document.getElementById('results');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="px-6 py-3 bg-[#0A1432]/80 hover:bg-blue-950 text-slate-300 hover:text-white font-bold text-sm rounded-xl border border-blue-900 hover:border-slate-700 flex items-center gap-2 cursor-pointer transition-all"
-            >
-              <span>{t.collapseResults}</span>
+          <button
+            onClick={handleToggleAll}
+            className={`px-6 py-3 font-bold text-xs rounded-xl border shadow-lg flex items-center gap-2.5 cursor-pointer transition-all ${
+              isAllActiveExpanded
+                ? 'bg-[#0A1432]/90 hover:bg-blue-900/60 text-slate-300 hover:text-white border-blue-800'
+                : 'bg-[#0A1432] hover:bg-blue-900/50 text-white border-blue-700/60 hover:border-blue-400'
+            }`}
+          >
+            <span>
+              {isAllActiveExpanded
+                ? (isRtl ? 'بستن و نمایش کمتر نتایج' : t.collapseResults)
+                : (isRtl ? 'مشاهده تمام نتایج مسابقات' : t.showAllResults)}
+            </span>
+            {totalHiddenInActiveView > 0 && !isAllActiveExpanded && (
+              <span className="px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-blue-600/40 text-blue-300 border border-blue-500/40">
+                +{totalHiddenInActiveView}
+              </span>
+            )}
+            {isAllActiveExpanded ? (
               <ChevronUp className="w-4 h-4 text-slate-400" />
-            </motion.button>
-          )}
+            ) : (
+              <ChevronDown className="w-4 h-4 text-blue-400" />
+            )}
+          </button>
         </div>
       </div>
     </motion.section>

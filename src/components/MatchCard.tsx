@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { MatchFixture, NationalTeam } from '../data/tournamentData';
 import { Language, translations } from '../data/translations';
 import { Flag } from './Flag';
-import { Clock, Flame } from 'lucide-react';
+import { Clock, Sparkles } from 'lucide-react';
 
 interface MatchCardProps {
   fixture: MatchFixture;
@@ -41,7 +41,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ fixture, lang, onSelectTea
           </span>
           {fixture.isBlockbuster && (
             <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-amber-300 bg-amber-500/20 border border-amber-500/40 px-2.5 py-0.5 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.25)]">
-              <Flame className="w-3 h-3 text-amber-400 animate-pulse" />
+              <Sparkles className="w-3 h-3 text-amber-400" />
               <span>{t.blockbusterClash}</span>
             </span>
           )}

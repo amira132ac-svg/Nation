@@ -94,24 +94,24 @@ export const TeamsSection: React.FC<TeamsSectionProps> = ({ lang, onSelectTeam }
                   return (
                     <motion.div
                       key={team.id}
-                      whileHover={{ y: -3, scale: 1.015 }}
+                      whileHover={{ y: -5, scale: 1.025 }}
                       whileTap={{ scale: 0.98 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ type: 'spring', stiffness: 360, damping: 22 }}
                       onClick={() => onSelectTeam(team)}
-                      className="bg-[#0A1432]/95 border border-blue-900/50 hover:border-yellow-400/80 rounded-2xl p-4 flex items-center justify-between cursor-pointer transition-colors hover:shadow-[0_8px_24px_rgba(245,158,11,0.22)] group"
+                      className="relative bg-[#0A1432]/95 hover:bg-[#0D1C44] border border-blue-900/50 hover:border-yellow-400/80 rounded-2xl p-4 flex items-center justify-between cursor-pointer transition-colors duration-200 hover:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.6),0_0_20px_rgba(250,204,21,0.2)] group z-0 hover:z-10"
                     >
                       <div className="flex items-center gap-3.5 min-w-0">
                         <Flag
                           country={team.flagCountry}
                           size="md"
-                          className="group-hover:scale-108 transition-transform"
+                          className="group-hover:scale-110 transition-transform duration-300"
                         />
-                        <span className="font-black text-white text-base tracking-wide uppercase truncate group-hover:text-yellow-300 transition-colors">
+                        <span className="font-black text-white text-base tracking-wide uppercase truncate group-hover:text-yellow-300 transition-colors duration-200">
                           {teamName}
                         </span>
                       </div>
 
-                      <span className="font-mono text-xs font-black text-slate-400 px-2 py-0.5 bg-blue-950/80 rounded-md border border-blue-900/60">
+                      <span className="font-mono text-xs font-black text-slate-400 group-hover:text-slate-200 px-2 py-0.5 bg-blue-950/80 group-hover:bg-blue-900/60 rounded-md border border-blue-900/60 group-hover:border-yellow-400/40 transition-all duration-200">
                         {team.code}
                       </span>
                     </motion.div>
@@ -144,24 +144,24 @@ export const TeamsSection: React.FC<TeamsSectionProps> = ({ lang, onSelectTeam }
                   return (
                     <motion.div
                       key={team.id}
-                      whileHover={{ y: -3, scale: 1.015 }}
+                      whileHover={{ y: -5, scale: 1.025 }}
                       whileTap={{ scale: 0.98 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ type: 'spring', stiffness: 360, damping: 22 }}
                       onClick={() => onSelectTeam(team)}
-                      className="bg-[#0A1432]/95 border border-blue-900/50 hover:border-blue-500 rounded-2xl p-4 flex items-center justify-between cursor-pointer transition-colors hover:shadow-[0_8px_24px_rgba(37,99,235,0.25)] group"
+                      className="relative bg-[#0A1432]/95 hover:bg-[#0D1C44] border border-blue-900/50 hover:border-blue-400/80 rounded-2xl p-4 flex items-center justify-between cursor-pointer transition-colors duration-200 hover:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.6),0_0_20px_rgba(59,130,246,0.25)] group z-0 hover:z-10"
                     >
                       <div className="flex items-center gap-3.5 min-w-0">
                         <Flag
                           country={team.flagCountry}
                           size="md"
-                          className="group-hover:scale-108 transition-transform"
+                          className="group-hover:scale-110 transition-transform duration-300"
                         />
-                        <span className="font-black text-white text-base tracking-wide uppercase truncate group-hover:text-blue-300 transition-colors">
+                        <span className="font-black text-white text-base tracking-wide uppercase truncate group-hover:text-blue-300 transition-colors duration-200">
                           {teamName}
                         </span>
                       </div>
 
-                      <span className="font-mono text-xs font-black text-slate-400 px-2 py-0.5 bg-blue-950/80 rounded-md border border-blue-900/60">
+                      <span className="font-mono text-xs font-black text-slate-400 group-hover:text-slate-200 px-2 py-0.5 bg-blue-950/80 group-hover:bg-blue-900/60 rounded-md border border-blue-900/60 group-hover:border-blue-400/40 transition-all duration-200">
                         {team.code}
                       </span>
                     </motion.div>

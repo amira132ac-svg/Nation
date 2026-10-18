@@ -11,9 +11,12 @@ interface FixturesSectionProps {
   onSelectTeam?: (team: NationalTeam) => void;
 }
 
+const INITIAL_VISIBLE_COUNT = 4;
+
 export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelectTeam }) => {
   const [selectedGroup, setSelectedGroup] = useState<'ALL' | 'A' | 'B'>('ALL');
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [expandedA, setExpandedA] = useState<boolean>(false);
+  const [expandedB, setExpandedB] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const t = translations[lang];
@@ -25,19 +28,46 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
   const showGroupA = selectedGroup === 'ALL' || selectedGroup === 'A';
   const showGroupB = selectedGroup === 'ALL' || selectedGroup === 'B';
 
-  const INITIAL_VISIBLE_COUNT = 4;
+  const initialAFixtures = groupAFixtures.slice(0, INITIAL_VISIBLE_COUNT);
+  const remainingAFixtures = groupAFixtures.slice(INITIAL_VISIBLE_COUNT);
 
-  const visibleGroupAFixtures = isExpanded
-    ? groupAFixtures
-    : groupAFixtures.slice(0, INITIAL_VISIBLE_COUNT);
+  const initialBFixtures = groupBFixtures.slice(0, INITIAL_VISIBLE_COUNT);
+  const remainingBFixtures = groupBFixtures.slice(INITIAL_VISIBLE_COUNT);
 
-  const visibleGroupBFixtures = isExpanded
-    ? groupBFixtures
-    : groupBFixtures.slice(0, INITIAL_VISIBLE_COUNT);
+  // Remaining count for each group
+  const hiddenCountA = expandedA ? 0 : remainingAFixtures.length;
+  const hiddenCountB = expandedB ? 0 : remainingBFixtures.length;
 
-  const remainingCountA = groupAFixtures.length - visibleGroupAFixtures.length;
-  const remainingCountB = groupBFixtures.length - visibleGroupBFixtures.length;
-  const totalRemainingHidden = (showGroupA ? remainingCountA : 0) + (showGroupB ? remainingCountB : 0);
+  const totalHiddenInActiveView =
+    (showGroupA ? hiddenCountA : 0) + (showGroupB ? hiddenCountB : 0);
+
+  const isAllActiveExpanded =
+    (selectedGroup === 'ALL' && expandedA && expandedB) ||
+    (selectedGroup === 'A' && expandedA) ||
+    (selectedGroup === 'B' && expandedB);
+
+  // Toggle all visible groups smoothly
+  const handleToggleAll = () => {
+    if (isAllActiveExpanded) {
+      if (selectedGroup === 'ALL') {
+        setExpandedA(false);
+        setExpandedB(false);
+      } else if (selectedGroup === 'A') {
+        setExpandedA(false);
+      } else {
+        setExpandedB(false);
+      }
+    } else {
+      if (selectedGroup === 'ALL') {
+        setExpandedA(true);
+        setExpandedB(true);
+      } else if (selectedGroup === 'A') {
+        setExpandedA(true);
+      } else {
+        setExpandedB(true);
+      }
+    }
+  };
 
   const filterTabs = [
     { id: 'ALL', label: t.allMatchdays },
@@ -103,7 +133,7 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
               })}
             </div>
 
-            {/* Open Full Schedule Modal Button ("میرن توش") */}
+            {/* Open Full Schedule Modal Button */}
             <button
               onClick={() => setIsModalOpen(true)}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-950/80 hover:bg-blue-900/90 border border-blue-800/80 hover:border-blue-500 text-xs font-bold text-blue-300 hover:text-white transition-all shadow-md cursor-pointer"
@@ -128,31 +158,39 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
                 transition={{ duration: 0.25 }}
                 className="space-y-3.5"
               >
+                {/* Group A Header Banner with Individual Expand/Collapse Button */}
                 <div className="flex items-center justify-between pb-2 border-b border-yellow-500/30">
                   <div className="flex items-center gap-2.5">
                     <div className="px-3.5 py-0.5 bg-[#FFCC00] text-slate-950 font-black text-xs uppercase tracking-wider rounded shadow-[0_0_12px_rgba(255,204,0,0.4)]">
                       {t.groupA}
                     </div>
                     <span className="text-xs text-slate-400 font-mono font-semibold">
-                      {isExpanded
+                      {expandedA
                         ? `${groupAFixtures.length} ${isRtl ? 'بازی' : 'Matches'}`
-                        : `${visibleGroupAFixtures.length} ${isRtl ? 'از ۱۱ بازی' : 'of 11 Matches'}`}
+                        : `${initialAFixtures.length} ${isRtl ? 'از ۱۱ بازی' : 'of 11 Matches'}`}
                     </span>
                   </div>
 
-                  {!isExpanded && (
-                    <button
-                      onClick={() => setIsExpanded(true)}
-                      className="text-xs font-bold text-yellow-400 hover:text-yellow-300 flex items-center gap-1 cursor-pointer transition-colors"
-                    >
-                      <span>{isRtl ? `+${remainingCountA} بازی دیگر` : `+${remainingCountA} more`}</span>
-                      <ChevronDown className="w-3.5 h-3.5" />
-                    </button>
-                  )}
+                  <button
+                    onClick={() => setExpandedA(!expandedA)}
+                    className="text-xs font-bold text-yellow-400 hover:text-yellow-300 bg-yellow-400/10 hover:bg-yellow-400/20 border border-yellow-400/30 px-3 py-1 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
+                  >
+                    <span>
+                      {expandedA
+                        ? (isRtl ? 'نمایش کمتر' : t.showLess)
+                        : (isRtl ? `+${remainingAFixtures.length} بازی دیگر این گروه` : `+${remainingAFixtures.length} more`)}
+                    </span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                        expandedA ? 'rotate-180' : 'rotate-0'
+                      }`}
+                    />
+                  </button>
                 </div>
 
+                {/* Permanent Initial Fixtures: Zero Layout Jump or Remount */}
                 <div className="grid grid-cols-1 gap-3.5">
-                  {visibleGroupAFixtures.map((fixture) => (
+                  {initialAFixtures.map((fixture) => (
                     <MatchCard
                       key={fixture.id}
                       fixture={fixture}
@@ -161,6 +199,53 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
                     />
                   ))}
                 </div>
+
+                {/* Buttery Smooth Animated Accordion for Extra Matches */}
+                <AnimatePresence initial={false}>
+                  {expandedA && (
+                    <motion.div
+                      key="group-a-more-fixtures"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{
+                        opacity: 1,
+                        height: 'auto',
+                        transition: {
+                          height: { duration: 0.42, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.28, delay: 0.05 },
+                        },
+                      }}
+                      exit={{
+                        opacity: 0,
+                        height: 0,
+                        transition: {
+                          height: { duration: 0.32, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.15 },
+                        },
+                      }}
+                      className="overflow-hidden space-y-3.5 pt-0.5"
+                    >
+                      {remainingAFixtures.map((fixture, idx) => (
+                        <motion.div
+                          key={fixture.id}
+                          initial={{ opacity: 0, y: 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{
+                            duration: 0.28,
+                            delay: idx * 0.035,
+                            ease: [0.22, 1, 0.36, 1],
+                          }}
+                        >
+                          <MatchCard
+                            fixture={fixture}
+                            lang={lang}
+                            onSelectTeam={onSelectTeam}
+                          />
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             )}
 
@@ -174,31 +259,39 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
                 transition={{ duration: 0.25 }}
                 className="space-y-3.5"
               >
+                {/* Group B Header Banner with Individual Expand/Collapse Button */}
                 <div className="flex items-center justify-between pb-2 border-b border-blue-500/30">
                   <div className="flex items-center gap-2.5">
                     <div className="px-3.5 py-0.5 bg-[#0052FF] text-white font-black text-xs uppercase tracking-wider rounded shadow-[0_0_12px_rgba(0,82,255,0.4)]">
                       {t.groupB}
                     </div>
                     <span className="text-xs text-slate-400 font-mono font-semibold">
-                      {isExpanded
+                      {expandedB
                         ? `${groupBFixtures.length} ${isRtl ? 'بازی' : 'Matches'}`
-                        : `${visibleGroupBFixtures.length} ${isRtl ? 'از ۱۱ بازی' : 'of 11 Matches'}`}
+                        : `${initialBFixtures.length} ${isRtl ? 'از ۱۱ بازی' : 'of 11 Matches'}`}
                     </span>
                   </div>
 
-                  {!isExpanded && (
-                    <button
-                      onClick={() => setIsExpanded(true)}
-                      className="text-xs font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1 cursor-pointer transition-colors"
-                    >
-                      <span>{isRtl ? `+${remainingCountB} بازی دیگر` : `+${remainingCountB} more`}</span>
-                      <ChevronDown className="w-3.5 h-3.5" />
-                    </button>
-                  )}
+                  <button
+                    onClick={() => setExpandedB(!expandedB)}
+                    className="text-xs font-bold text-blue-400 hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 px-3 py-1 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
+                  >
+                    <span>
+                      {expandedB
+                        ? (isRtl ? 'نمایش کمتر' : t.showLess)
+                        : (isRtl ? `+${remainingBFixtures.length} بازی دیگر این گروه` : `+${remainingBFixtures.length} more`)}
+                    </span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                        expandedB ? 'rotate-180' : 'rotate-0'
+                      }`}
+                    />
+                  </button>
                 </div>
 
+                {/* Permanent Initial Fixtures */}
                 <div className="grid grid-cols-1 gap-3.5">
-                  {visibleGroupBFixtures.map((fixture) => (
+                  {initialBFixtures.map((fixture) => (
                     <MatchCard
                       key={fixture.id}
                       fixture={fixture}
@@ -207,6 +300,53 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
                     />
                   ))}
                 </div>
+
+                {/* Buttery Smooth Animated Accordion for Extra Matches */}
+                <AnimatePresence initial={false}>
+                  {expandedB && (
+                    <motion.div
+                      key="group-b-more-fixtures"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{
+                        opacity: 1,
+                        height: 'auto',
+                        transition: {
+                          height: { duration: 0.42, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.28, delay: 0.05 },
+                        },
+                      }}
+                      exit={{
+                        opacity: 0,
+                        height: 0,
+                        transition: {
+                          height: { duration: 0.32, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.15 },
+                        },
+                      }}
+                      className="overflow-hidden space-y-3.5 pt-0.5"
+                    >
+                      {remainingBFixtures.map((fixture, idx) => (
+                        <motion.div
+                          key={fixture.id}
+                          initial={{ opacity: 0, y: 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{
+                            duration: 0.28,
+                            delay: idx * 0.035,
+                            ease: [0.22, 1, 0.36, 1],
+                          }}
+                        >
+                          <MatchCard
+                            fixture={fixture}
+                            lang={lang}
+                            onSelectTeam={onSelectTeam}
+                          />
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             )}
           </AnimatePresence>
@@ -214,27 +354,27 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
 
         {/* Expand / Collapse & Modal Actions Banner */}
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-          {/* Toggle Expand / Collapse Button */}
+          {/* Main Smooth Toggle Expand / Collapse Button */}
           <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className={`w-full sm:w-auto px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer ${
-              isExpanded
-                ? 'bg-blue-950/90 hover:bg-blue-900 border border-blue-800 text-slate-200'
+            onClick={handleToggleAll}
+            className={`w-full sm:w-auto px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2.5 shadow-lg cursor-pointer ${
+              isAllActiveExpanded
+                ? 'bg-[#0A1432] hover:bg-blue-900/60 border border-blue-800 text-slate-200 hover:text-white'
                 : 'bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-[0_6px_20px_rgba(37,99,235,0.4)] hover:scale-[1.01]'
             }`}
           >
-            {isExpanded ? (
+            {isAllActiveExpanded ? (
               <>
                 <ChevronUp className="w-4 h-4 text-blue-400" />
-                <span>{t.showLess}</span>
+                <span>{isRtl ? 'بستن و نمایش کمتر بازی‌ها' : t.showLess}</span>
               </>
             ) : (
               <>
-                <ChevronDown className="w-4 h-4 text-white animate-bounce" />
+                <ChevronDown className="w-4 h-4 text-white" />
                 <span>
                   {isRtl
-                    ? `مشاهده سایر بازی‌های باقی‌مانده (${totalRemainingHidden} مسابقه دیگر)`
-                    : `View Remaining Fixtures (${totalRemainingHidden} more)`}
+                    ? `مشاهده تمام بازی‌های باقی‌مانده (${totalHiddenInActiveView} مسابقه دیگر)`
+                    : `View Remaining Fixtures (${totalHiddenInActiveView} more)`}
                 </span>
               </>
             )}
@@ -251,7 +391,7 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
         </div>
       </div>
 
-      {/* Full Schedule Modal ("میرن توش") */}
+      {/* Full Schedule Modal */}
       <FullScheduleModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
