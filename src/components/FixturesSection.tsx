@@ -46,14 +46,12 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white uppercase">
               {t.fixturesTitle}
             </h2>
-            <div className="flex items-center gap-2 mt-1.5 text-xs text-amber-400 font-semibold">
+            <div className="flex items-center gap-2 mt-1.5 text-xs text-emerald-400 font-semibold">
               <Clock className="w-3.5 h-3.5" />
-              <span>{t.timeTba}</span>
-              <span className="text-slate-600">·</span>
-              <span className="text-slate-400">
+              <span>
                 {isRtl
-                  ? `${REMAINING_FIXTURES.length} بازی باقیمانده (از ۳۰ بازی مرحله گروهی)`
-                  : `${REMAINING_FIXTURES.length} Remaining Fixtures (of 30 Group Matches)`}
+                  ? 'مرحله گروهی تکمیل شد (۳۰ از ۳۰ مسابقه برگزار شده)'
+                  : 'Group Stage Completed (30 of 30 Matches Played)'}
               </span>
             </div>
           </div>
@@ -94,7 +92,7 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
             <button
               onClick={() => setIsModalOpen(true)}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-950/80 hover:bg-blue-900/90 border border-blue-800/80 hover:border-blue-500 text-xs font-bold text-blue-300 hover:text-white transition-all shadow-md cursor-pointer"
-              title={isRtl ? 'مشاهده بازی‌های باقیمانده در پنجره کامل' : 'Open Remaining Schedule'}
+              title={isRtl ? 'مشاهده وضعیت برنامه مسابقات' : 'Open Schedule Status'}
             >
               <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
               <span>{isRtl ? 'مشاهده در پنجره کامل' : 'Full View'}</span>
@@ -120,24 +118,50 @@ export const FixturesSection: React.FC<FixturesSectionProps> = ({ lang, onSelect
                     <div className="px-3.5 py-0.5 bg-[#FFCC00] text-slate-950 font-black text-xs uppercase tracking-wider rounded shadow-[0_0_12px_rgba(255,204,0,0.35)]">
                       {t.groupA}
                     </div>
-                    <span className="text-xs text-slate-400 font-mono font-semibold">
-                      {isRtl
-                        ? `${groupAFixtures.length} دیدار معوقه باقیمانده`
-                        : `${groupAFixtures.length} Remaining Matches`}
+                    <span className="text-xs text-emerald-400 font-mono font-semibold">
+                      {isRtl ? 'تکمیل شده (۱۵ از ۱۵ بازی انجام شد)' : 'Completed (15 of 15 Played)'}
                     </span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-3.5">
-                  {groupAFixtures.map((fixture) => (
-                    <MatchCard
-                      key={fixture.id}
-                      fixture={fixture}
-                      lang={lang}
-                      onSelectTeam={onSelectTeam}
-                    />
-                  ))}
-                </div>
+                {groupAFixtures.length === 0 ? (
+                  <div className="bg-[#0A1432]/80 border border-emerald-500/25 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+                        <CheckCircle2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-black text-white">
+                          {isRtl
+                            ? 'تمامی ۱۵ مسابقه مرحله گروهی در گروه A به پایان رسیده است'
+                            : 'All 15 Group A Stage Matches Completed'}
+                        </h4>
+                        <p className="text-xs text-slate-400 mt-0.5">
+                          {isRtl
+                            ? 'هیچ بازی باقی‌مانده‌ای در گروه A وجود ندارد. نتایج کامل را در بخش نتایج بالا مشاهده کنید.'
+                            : 'No remaining fixtures in Group A. View all 15 final scores in the Results section above.'}
+                        </p>
+                      </div>
+                    </div>
+                    <a
+                      href="#results"
+                      className="px-4 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-xs font-bold text-emerald-300 transition-colors shrink-0"
+                    >
+                      {isRtl ? 'مشاهده نتایج گروه A' : 'View Group A Results'}
+                    </a>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-3.5">
+                    {groupAFixtures.map((fixture) => (
+                      <MatchCard
+                        key={fixture.id}
+                        fixture={fixture}
+                        lang={lang}
+                        onSelectTeam={onSelectTeam}
+                      />
+                    ))}
+                  </div>
+                )}
               </motion.div>
             )}
 

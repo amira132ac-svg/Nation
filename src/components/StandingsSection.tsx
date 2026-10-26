@@ -62,13 +62,9 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
               {groupTitle}
             </h3>
           </div>
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-300 bg-blue-950/70 px-3 py-1 rounded-md border border-blue-800/50">
+          <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-md border border-emerald-500/25">
             <span>
-              {isGroupA
-                ? isRtl
-                  ? '۱۳ از ۱۵ مسابقه برگزار شده'
-                  : '13 / 15 Matches Played'
-                : isRtl
+              {isRtl
                 ? 'تکمیل شده • ۱۵ از ۱۵ مسابقه'
                 : 'Completed • 15 / 15 Matches'}
             </span>

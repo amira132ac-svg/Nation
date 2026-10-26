@@ -290,6 +290,10 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
                       {t.groupA}
                     </h3>
                     <span className="text-slate-600">·</span>
+                    <span className="text-xs text-emerald-400 font-bold">
+                      {isRtl ? 'تکمیل شده' : 'Completed'}
+                    </span>
+                    <span className="text-slate-600">·</span>
                     <span className="text-xs text-slate-400 font-mono tabular-nums">
                       {expandedA
                         ? `${groupAResults.length} ${isRtl ? 'بازی انجام شد' : 'Matches Played'}`
@@ -493,7 +497,7 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
                   ? 'بستن و نمایش خلاصه نتایج'
                   : t.collapseResults
                 : isRtl
-                ? `مشاهده تمام ۲۸ نتیجه ثبت‌شده (${totalHiddenInActiveView} بازی دیگر)`
+                ? `مشاهده تمام ${PLAYED_RESULTS.length} نتیجه ثبت‌شده (${totalHiddenInActiveView} بازی دیگر)`
                 : `${t.showAllResults} (+${totalHiddenInActiveView})`}
             </span>
             {isAllActiveExpanded ? (

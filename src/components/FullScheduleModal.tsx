@@ -158,20 +158,12 @@ export const FullScheduleModal: React.FC<FullScheduleModalProps> = ({
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3.5 divide-y-0">
             {filteredFixtures.length === 0 ? (
               <div className="text-center py-14 text-slate-400 text-xs flex flex-col items-center gap-2">
-                {groupFilter === 'B' ? (
-                  <>
-                    <CheckCircle2 className="w-8 h-8 text-emerald-400 mb-1" />
-                    <span className="text-sm font-bold text-white">
-                      {isRtl
-                        ? 'تمامی ۱۵ مسابقه گروه B برگزار و تکمیل شده است.'
-                        : 'All 15 matches in Group B have been completed.'}
-                    </span>
-                  </>
-                ) : (
-                  <span>
-                    {isRtl ? 'هیچ بازی با این مشخصات یافت نشد.' : 'No matches found matching your search.'}
-                  </span>
-                )}
+                <CheckCircle2 className="w-8 h-8 text-emerald-400 mb-1" />
+                <span className="text-sm font-bold text-white">
+                  {isRtl
+                    ? 'تمامی ۳۰ مسابقه مرحله گروهی در هر دو گروه A و B برگزار و تکمیل شده است.'
+                    : 'All 30 group stage matches in Group A and Group B have been completed.'}
+                </span>
               </div>
             ) : (
               filteredFixtures.map((fixture) => (

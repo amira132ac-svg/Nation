@@ -62,7 +62,7 @@ export interface StandingRow {
 export const TOURNAMENT_NAME = "TMPROCLUB NATIONS LEAGUE";
 export const TOURNAMENT_SUBTITLE = "International Football. One Competition.";
 export const TOURNAMENT_ORGANIZER = "TMPROCLUB";
-export const TOURNAMENT_STATUS = "TOURNAMENT IN PROGRESS";
+export const TOURNAMENT_STATUS = "GROUP STAGE COMPLETED";
 export const TOTAL_TEAMS = 12;
 
 export const GROUP_A_TEAMS: NationalTeam[] = [
@@ -99,10 +99,10 @@ const getTeam = (key: string): NationalTeam => {
 };
 
 // ==========================================
-// 1. OFFICIAL COMPLETED MATCH RESULTS (28 Matches)
+// 1. OFFICIAL COMPLETED MATCH RESULTS (30 Matches — Both Groups Completed)
 // ==========================================
 export const PLAYED_RESULTS: MatchResult[] = [
-  // 🔵 GROUP A (13 Matches Played)
+  // 🔵 GROUP A (15 Matches Played — Group Completed)
   {
     id: 'res-a1',
     matchNumber: 1,
@@ -272,6 +272,32 @@ export const PLAYED_RESULTS: MatchResult[] = [
     winnerId: 'arg',
     goalSummaryFa: 'آرژانتین ۲ - ۱ کیپ ورد',
     goalSummaryEn: 'Argentina 2 - 1 Cape Verde',
+  },
+  {
+    id: 'res-a14',
+    matchNumber: 14,
+    group: 'A',
+    homeTeam: getTeam('france'),
+    awayTeam: getTeam('colombia'),
+    homeScore: 2,
+    awayScore: 2,
+    isFinished: true,
+    winnerId: null,
+    goalSummaryFa: 'فرانسه ۲ - ۲ کلمبیا (تساوی)',
+    goalSummaryEn: 'France 2 - 2 Colombia (Draw)',
+  },
+  {
+    id: 'res-a15',
+    matchNumber: 15,
+    group: 'A',
+    homeTeam: getTeam('cape verde'),
+    awayTeam: getTeam('france'),
+    homeScore: 1,
+    awayScore: 1,
+    isFinished: true,
+    winnerId: null,
+    goalSummaryFa: 'کیپ ورد ۱ - ۱ فرانسه (تساوی)',
+    goalSummaryEn: 'Cape Verde 1 - 1 France (Draw)',
   },
 
   // 🔵 GROUP B (15 Matches Played — Group Completed)
@@ -476,32 +502,9 @@ export const PLAYED_RESULTS: MatchResult[] = [
 ];
 
 // ==========================================
-// 2. REMAINING UPCOMING FIXTURES (2 Matches Remaining in Group A)
+// 2. REMAINING UPCOMING FIXTURES (0 Remaining — All 30 Group Matches Completed)
 // ==========================================
-export const REMAINING_FIXTURES: MatchFixture[] = [
-  // Group A (2 remaining matches; Group B is 100% completed)
-  {
-    id: 'fix-a1',
-    group: 'A',
-    homeTeam: getTeam('france'),
-    awayTeam: getTeam('colombia'),
-    kickoffDate: null,
-    kickoffTime: null,
-    venue: null,
-    isConfirmed: true,
-    isBlockbuster: true,
-  },
-  {
-    id: 'fix-a2',
-    group: 'A',
-    homeTeam: getTeam('france'),
-    awayTeam: getTeam('cape verde'),
-    kickoffDate: null,
-    kickoffTime: null,
-    venue: null,
-    isConfirmed: true,
-  },
-];
+export const REMAINING_FIXTURES: MatchFixture[] = [];
 
 // Compatibility export
 export const CONFIRMED_FIXTURES: MatchFixture[] = REMAINING_FIXTURES;
@@ -528,15 +531,15 @@ export const GROUPS: GroupData[] = [
 ];
 
 // ==========================================
-// 3. OFFICIAL CALCULATED STANDINGS
+// 3. OFFICIAL CALCULATED STANDINGS (COMPLETED)
 // ==========================================
-// GROUP A:
+// GROUP A (COMPLETED):
 // 1. Netherlands: P: 5 | Pts: 11 | GD: +11 (W:3, D:2, L:0, GF:16, GA:5)
 // 2. USA:         P: 5 | Pts: 11 | GD: +5  (W:3, D:2, L:0, GF:8,  GA:3)
 // 3. Argentina:   P: 5 | Pts: 9  | GD: -1  (W:3, D:0, L:2, GF:10, GA:11)
-// 4. Colombia:    P: 4 | Pts: 3  | GD: -5  (W:1, D:0, L:3, GF:3,  GA:8)
-// 5. France:      P: 3 | Pts: 1  | GD: -5  (W:0, D:1, L:2, GF:3,  GA:8)
-// 6. Cape Verde:  P: 4 | Pts: 1  | GD: -6  (W:0, D:1, L:3, GF:1,  GA:7)
+// 4. Colombia:    P: 5 | Pts: 4  | GD: -5  (W:1, D:1, L:3, GF:5,  GA:10)
+// 5. France:      P: 5 | Pts: 3  | GD: -5  (W:0, D:3, L:2, GF:6,  GA:11)
+// 6. Cape Verde:  P: 5 | Pts: 2  | GD: -6  (W:0, D:2, L:3, GF:2,  GA:8)
 export const OFFICIAL_STANDINGS_GROUP_A: StandingRow[] = [
   {
     positionIndex: 1,
@@ -580,40 +583,40 @@ export const OFFICIAL_STANDINGS_GROUP_A: StandingRow[] = [
   {
     positionIndex: 4,
     team: getTeam('colombia'),
-    played: 4,
+    played: 5,
     won: 1,
-    drawn: 0,
+    drawn: 1,
     lost: 3,
-    goalsFor: 3,
-    goalsAgainst: 8,
+    goalsFor: 5,
+    goalsAgainst: 10,
     goalDifference: -5,
-    points: 3,
+    points: 4,
     isQualified: true,
   },
   {
     positionIndex: 5,
     team: getTeam('france'),
-    played: 3,
+    played: 5,
     won: 0,
-    drawn: 1,
+    drawn: 3,
     lost: 2,
-    goalsFor: 3,
-    goalsAgainst: 8,
+    goalsFor: 6,
+    goalsAgainst: 11,
     goalDifference: -5,
-    points: 1,
+    points: 3,
     isQualified: false,
   },
   {
     positionIndex: 6,
     team: getTeam('cape verde'),
-    played: 4,
+    played: 5,
     won: 0,
-    drawn: 1,
+    drawn: 2,
     lost: 3,
-    goalsFor: 1,
-    goalsAgainst: 7,
+    goalsFor: 2,
+    goalsAgainst: 8,
     goalDifference: -6,
-    points: 1,
+    points: 2,
     isQualified: false,
   },
 ];
@@ -726,8 +729,8 @@ export interface PlayerStatItem {
 }
 
 export const TOURNAMENT_OVERVIEW_STATS = {
-  totalGoals: 84,
-  matchesPlayed: 28,
+  totalGoals: 90,
+  matchesPlayed: 30,
   goalsPerMatch: '3.00',
   cleanSheets: 18,
 };

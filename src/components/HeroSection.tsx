@@ -147,7 +147,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {PLAYED_RESULTS.length} <span className="text-sm font-normal text-slate-500">/ 30</span>
             </div>
             <div className="text-xs text-slate-500 mt-0.5">
-              {isRtl ? '۱۳ بازی گروه A · ۱۵ بازی گروه B' : '13 Group A · 15 Group B'}
+              {isRtl ? '۱۵ بازی گروه A · ۱۵ بازی گروه B' : '15 Group A · 15 Group B'}
+            </div>
+          </div>
+
+          <div>
+            <div className="text-xs font-medium text-slate-400">
+              {isRtl ? 'وضعیت گروه A' : 'Group A Status'}
+            </div>
+            <div className="mt-1 text-xl sm:text-2xl font-black text-amber-400">
+              {isRtl ? 'تکمیل شده' : 'Completed'}
+            </div>
+            <div className="text-xs text-slate-500 mt-0.5">
+              {isRtl ? 'صدرنشین: هلند (۱۱ امتیاز)' : 'Leader: Netherlands (11 Pts)'}
             </div>
           </div>
 
@@ -155,23 +167,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="text-xs font-medium text-slate-400">
               {isRtl ? 'وضعیت گروه B' : 'Group B Status'}
             </div>
-            <div className="mt-1 text-xl sm:text-2xl font-black text-amber-400">
+            <div className="mt-1 text-xl sm:text-2xl font-black text-sky-400">
               {isRtl ? 'تکمیل شده' : 'Completed'}
             </div>
             <div className="text-xs text-slate-500 mt-0.5">
               {isRtl ? 'صدرنشین: اسرائیل (۱۵ امتیاز)' : 'Leader: Israel (15 Pts)'}
-            </div>
-          </div>
-
-          <div>
-            <div className="text-xs font-medium text-slate-400">
-              {isRtl ? 'بازی‌های باقی‌مانده گروه A' : 'Remaining Group A Fixtures'}
-            </div>
-            <div className="mt-1 text-2xl sm:text-3xl font-black text-sky-400 font-mono tabular-nums">
-              {REMAINING_FIXTURES.length}
-            </div>
-            <div className="text-xs text-slate-500 mt-0.5">
-              {isRtl ? 'صدرنشین فعلی: هلند (۱۱ امتیاز)' : 'Current Leader: Netherlands (11 Pts)'}
             </div>
           </div>
         </div>
