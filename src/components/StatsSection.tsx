@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart3, Award, Users, RefreshCw, Flame, Shield, Activity, Target } from 'lucide-react';
+import { BarChart3, Award, Users, RefreshCw, Clock } from 'lucide-react';
 import {
   TOURNAMENT_TOP_SCORERS,
   TOURNAMENT_TOP_ASSISTS,
-  TOURNAMENT_OVERVIEW_STATS,
   PlayerStatItem,
 } from '../data/tournamentData';
 import { Language, translations } from '../data/translations';
@@ -129,69 +128,6 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ lang }) => {
               transition={{ duration: 0.3 }}
               className="space-y-8"
             >
-              {/* 4 Tournament Overview Metric Cards */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-                <div className="bg-[#0A1432]/90 border border-blue-900/50 rounded-xl p-4 sm:p-5 hover:border-blue-700/60 transition-colors">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-slate-400">{t.totalGoals}</span>
-                    <div className="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-                      <Flame className="w-4 h-4" />
-                    </div>
-                  </div>
-                  <div className="text-2xl sm:text-3xl font-black text-white font-mono">
-                    {TOURNAMENT_OVERVIEW_STATS.totalGoals}
-                  </div>
-                  <span className="text-[11px] text-slate-500 mt-1 block">
-                    {isRtl ? 'در بازی‌های دور اول' : 'In Round 1 matches'}
-                  </span>
-                </div>
-
-                <div className="bg-[#0A1432]/90 border border-blue-900/50 rounded-xl p-4 sm:p-5 hover:border-blue-700/60 transition-colors">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-slate-400">{t.matchesPlayedLabel}</span>
-                    <div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-                      <Activity className="w-4 h-4" />
-                    </div>
-                  </div>
-                  <div className="text-2xl sm:text-3xl font-black text-white font-mono">
-                    {TOURNAMENT_OVERVIEW_STATS.matchesPlayed}
-                  </div>
-                  <span className="text-[11px] text-slate-500 mt-1 block">
-                    {isRtl ? 'ثبت‌شده در جدول' : 'Officially recorded'}
-                  </span>
-                </div>
-
-                <div className="bg-[#0A1432]/90 border border-blue-900/50 rounded-xl p-4 sm:p-5 hover:border-blue-700/60 transition-colors">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-slate-400">{t.goalsPerMatch}</span>
-                    <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-                      <Target className="w-4 h-4" />
-                    </div>
-                  </div>
-                  <div className="text-2xl sm:text-3xl font-black text-white font-mono">
-                    {TOURNAMENT_OVERVIEW_STATS.goalsPerMatch}
-                  </div>
-                  <span className="text-[11px] text-slate-500 mt-1 block">
-                    {isRtl ? 'نرخ گلزنی بالا' : 'High scoring rate'}
-                  </span>
-                </div>
-
-                <div className="bg-[#0A1432]/90 border border-blue-900/50 rounded-xl p-4 sm:p-5 hover:border-blue-700/60 transition-colors">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-slate-400">{t.cleanSheets}</span>
-                    <div className="w-7 h-7 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
-                      <Shield className="w-4 h-4" />
-                    </div>
-                  </div>
-                  <div className="text-2xl sm:text-3xl font-black text-white font-mono">
-                    {TOURNAMENT_OVERVIEW_STATS.cleanSheets}
-                  </div>
-                  <span className="text-[11px] text-slate-500 mt-1 block">
-                    {isRtl ? 'کلین‌شیت دفاعی' : 'Defensive shutouts'}
-                  </span>
-                </div>
-              </div>
-
               {/* Leaderboard Container */}
               <div className="bg-[#0A1432]/95 border border-blue-900/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm p-5 sm:p-8">
                 {/* Header of Leaderboard */}
@@ -209,91 +145,99 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ lang }) => {
                         {activeTab === 'scorers' ? t.topScorers : t.topAssists}
                       </h3>
                       <span className="text-xs text-slate-400">
-                        {isRtl ? 'برترین‌های لیگ ملت‌های TMPROCLUB' : 'TMPROCLUB Nations League Leaders'}
+                        {isRtl ? 'لیگ ملت‌های TMPROCLUB' : 'TMPROCLUB Nations League'}
                       </span>
                     </div>
                   </div>
 
-                  <span className="text-xs font-mono text-blue-400 bg-blue-950/80 px-3 py-1 rounded-md border border-blue-800/40 font-bold">
-                    {activeTab === 'scorers' ? t.goals : t.assists}
-                  </span>
+                  {currentList.length > 0 && (
+                    <span className="text-xs font-mono text-blue-400 bg-blue-950/80 px-3 py-1 rounded-md border border-blue-800/40 font-bold">
+                      {activeTab === 'scorers' ? t.goals : t.assists}
+                    </span>
+                  )}
                 </div>
 
-                {/* Player Rankings List */}
-                <div className="divide-y divide-blue-950/60">
-                  {currentList.map((player, index) => {
-                    const playerName = isRtl ? player.nameFa : player.name;
-                    const teamName = isRtl ? player.team.nameFa : player.team.name;
-                    const positionLabel = isRtl ? player.positionFa : player.position;
-                    const percent = Math.round((player.value / maxValue) * 100);
+                {/* Player Rankings List or Clean Empty State */}
+                {currentList.length === 0 ? (
+                  <div className="py-12 sm:py-16 text-center flex flex-col items-center justify-center">
+                    <div className="w-14 h-14 rounded-2xl bg-blue-950/70 border border-blue-900/60 flex items-center justify-center text-blue-400 mb-4 shadow-inner">
+                      <Clock className="w-7 h-7 text-blue-400/80" />
+                    </div>
+                    <h4 className="text-base sm:text-lg font-bold text-white mb-2">
+                      {activeTab === 'scorers'
+                        ? (isRtl ? 'آمار برترین گلزنان هنوز ثبت نشده است' : 'No top scorers recorded yet')
+                        : (isRtl ? 'آمار برترین پاسورها هنوز ثبت نشده است' : 'No top assists recorded yet')}
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-400 max-w-md leading-relaxed">
+                      {activeTab === 'scorers' ? t.statsEmptyScorers : t.statsEmptyAssists}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="divide-y divide-blue-950/60">
+                    {currentList.map((player, index) => {
+                      const playerName = isRtl ? player.nameFa : player.name;
+                      const teamName = isRtl ? player.team.nameFa : player.team.name;
+                      const positionLabel = isRtl ? player.positionFa : player.position;
+                      const percent = Math.round((player.value / maxValue) * 100);
 
-                    // Top 3 medals styling
-                    const rankStyle =
-                      index === 0
-                        ? 'bg-yellow-400 text-slate-950 font-black shadow-[0_0_10px_rgba(250,204,21,0.4)]'
-                        : index === 1
-                        ? 'bg-slate-300 text-slate-950 font-black shadow-[0_0_8px_rgba(203,213,225,0.4)]'
-                        : index === 2
-                        ? 'bg-amber-700 text-white font-black shadow-[0_0_8px_rgba(180,83,9,0.4)]'
-                        : 'bg-blue-950/70 text-slate-400 font-mono font-bold border border-blue-900/40';
+                      const rankStyle =
+                        index === 0
+                          ? 'bg-yellow-400 text-slate-950 font-black shadow-[0_0_10px_rgba(250,204,21,0.4)]'
+                          : index === 1
+                          ? 'bg-slate-300 text-slate-950 font-black shadow-[0_0_8px_rgba(203,213,225,0.4)]'
+                          : index === 2
+                          ? 'bg-amber-700 text-white font-black shadow-[0_0_8px_rgba(180,83,9,0.4)]'
+                          : 'bg-blue-950/70 text-slate-400 font-mono font-bold border border-blue-900/40';
 
-                    return (
-                      <motion.div
-                        key={player.id}
-                        initial={{ opacity: 0, x: isRtl ? 15 : -15 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.35, delay: index * 0.05 }}
-                        className="py-3.5 flex items-center justify-between gap-3 sm:gap-4 hover:bg-blue-900/20 px-2 rounded-xl transition-colors group"
-                      >
-                        {/* Left: Rank & Player info */}
-                        <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-                          {/* Rank badge */}
-                          <div
-                            className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs shrink-0 ${rankStyle}`}
-                          >
-                            {player.rank}
+                      return (
+                        <motion.div
+                          key={player.id}
+                          initial={{ opacity: 0, x: isRtl ? 15 : -15 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.35, delay: index * 0.05 }}
+                          className="py-3.5 flex items-center justify-between gap-3 sm:gap-4 hover:bg-blue-900/20 px-2 rounded-xl transition-colors group"
+                        >
+                          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                            <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs shrink-0 ${rankStyle}`}>
+                              {player.rank}
+                            </div>
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-2">
+                                <span className="font-black text-white text-sm sm:text-base truncate group-hover:text-blue-300 transition-colors">
+                                  {playerName}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-400">
+                                <Flag country={player.team.flagCountry} size="sm" className="shrink-0" />
+                                <span className="font-semibold text-slate-300">{teamName}</span>
+                                <span className="text-slate-500">•</span>
+                                <span className="text-slate-400 text-[11px]">{positionLabel}</span>
+                              </div>
+                            </div>
                           </div>
 
-                          {/* Player and team info */}
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <span className="font-black text-white text-sm sm:text-base truncate group-hover:text-blue-300 transition-colors">
-                                {playerName}
+                          <div className="flex items-center gap-3 sm:gap-5 shrink-0">
+                            <div className="hidden sm:block w-28 md:w-44 bg-blue-950/80 h-2 rounded-full overflow-hidden border border-blue-900/40">
+                              <div
+                                className="h-full rounded-full bg-gradient-to-r from-blue-500 to-amber-400 transition-all duration-700"
+                                style={{ width: `${percent}%` }}
+                              />
+                            </div>
+
+                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-950/80 border border-blue-800/50 group-hover:border-blue-500/50 transition-colors">
+                              <span className="text-base sm:text-lg font-black text-amber-400 font-mono">
+                                {player.value}
+                              </span>
+                              <span className="text-[11px] text-slate-400 font-semibold">
+                                {activeTab === 'scorers' ? t.goalWord : t.assists}
                               </span>
                             </div>
-                            <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-400">
-                              <Flag country={player.team.flagCountry} size="sm" className="shrink-0" />
-                              <span className="font-semibold text-slate-300">{teamName}</span>
-                              <span className="text-slate-500">•</span>
-                              <span className="text-slate-400 text-[11px]">{positionLabel}</span>
-                            </div>
                           </div>
-                        </div>
-
-                        {/* Right: Progress bar & Value badge */}
-                        <div className="flex items-center gap-3 sm:gap-5 shrink-0">
-                          {/* Visual progress bar */}
-                          <div className="hidden sm:block w-28 md:w-44 bg-blue-950/80 h-2 rounded-full overflow-hidden border border-blue-900/40">
-                            <div
-                              className="h-full rounded-full bg-gradient-to-r from-blue-500 to-amber-400 transition-all duration-700"
-                              style={{ width: `${percent}%` }}
-                            />
-                          </div>
-
-                          {/* Stat pill */}
-                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-950/80 border border-blue-800/50 group-hover:border-blue-500/50 transition-colors">
-                            <span className="text-base sm:text-lg font-black text-amber-400 font-mono">
-                              {player.value}
-                            </span>
-                            <span className="text-[11px] text-slate-400 font-semibold">
-                              {activeTab === 'scorers' ? t.goalWord : t.assists}
-                            </span>
-                          </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </motion.div>
           )}

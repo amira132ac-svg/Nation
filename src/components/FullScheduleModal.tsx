@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, Calendar, Clock, Filter } from 'lucide-react';
+import { X, Search, Calendar, Clock, CheckCircle2 } from 'lucide-react';
 import { REMAINING_FIXTURES, NationalTeam, MatchFixture } from '../data/tournamentData';
 import { Language, translations } from '../data/translations';
 import { MatchCard } from './MatchCard';
@@ -24,6 +24,9 @@ export const FullScheduleModal: React.FC<FullScheduleModalProps> = ({
   const isRtl = lang === 'fa';
 
   if (!isOpen) return null;
+
+  const groupACount = REMAINING_FIXTURES.filter((f) => f.group === 'A').length;
+  const groupBCount = REMAINING_FIXTURES.filter((f) => f.group === 'B').length;
 
   // Filter fixtures based on group tab and search query
   const filteredFixtures = REMAINING_FIXTURES.filter((fixture: MatchFixture) => {
@@ -74,14 +77,14 @@ export const FullScheduleModal: React.FC<FullScheduleModalProps> = ({
               </div>
               <div>
                 <h3 className="text-lg sm:text-xl font-black text-white uppercase tracking-tight">
-                  {isRtl ? 'برنامه کامل تمام مسابقات باقی‌مانده' : 'Complete Tournament Fixtures List'}
+                  {isRtl ? 'برنامه مسابقات باقی‌مانده مرحله گروهی' : 'Remaining Tournament Fixtures'}
                 </h3>
                 <div className="flex items-center gap-2 text-xs text-amber-400 font-semibold mt-0.5">
                   <Clock className="w-3.5 h-3.5" />
                   <span>{t.timeTba}</span>
                   <span className="text-slate-600">·</span>
                   <span className="text-slate-300">
-                    {REMAINING_FIXTURES.length} {isRtl ? 'مسابقه کل' : 'Total Matches'}
+                    {REMAINING_FIXTURES.length} {isRtl ? 'مسابقه باقیمانده' : 'Remaining Matches'}
                   </span>
                 </div>
               </div>
@@ -100,9 +103,11 @@ export const FullScheduleModal: React.FC<FullScheduleModalProps> = ({
           <div className="p-4 sm:px-6 bg-[#081026] border-b border-blue-900/40 flex flex-col sm:flex-row items-center gap-3 shrink-0">
             {/* Search Input */}
             <div className="relative w-full sm:flex-1">
-              <Search className={`absolute top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 ${
-                isRtl ? 'right-3.5' : 'left-3.5'
-              }`} />
+              <Search
+                className={`absolute top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 ${
+                  isRtl ? 'right-3.5' : 'left-3.5'
+                }`}
+              />
               <input
                 type="text"
                 value={searchQuery}
@@ -124,7 +129,7 @@ export const FullScheduleModal: React.FC<FullScheduleModalProps> = ({
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
-                {t.allMatchdays} (22)
+                {t.allMatchdays} ({REMAINING_FIXTURES.length})
               </button>
               <button
                 onClick={() => setGroupFilter('A')}
@@ -134,7 +139,7 @@ export const FullScheduleModal: React.FC<FullScheduleModalProps> = ({
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
-                {t.groupA} (11)
+                {t.groupA} ({groupACount})
               </button>
               <button
                 onClick={() => setGroupFilter('B')}
@@ -144,7 +149,7 @@ export const FullScheduleModal: React.FC<FullScheduleModalProps> = ({
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
-                {t.groupB} (11)
+                {t.groupB} ({groupBCount})
               </button>
             </div>
           </div>
@@ -152,8 +157,21 @@ export const FullScheduleModal: React.FC<FullScheduleModalProps> = ({
           {/* Fixtures List Scroll Area */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3.5 divide-y-0">
             {filteredFixtures.length === 0 ? (
-              <div className="text-center py-14 text-slate-400 text-xs">
-                {isRtl ? 'هیچ بازی با این مشخصات یافت نشد.' : 'No matches found matching your search.'}
+              <div className="text-center py-14 text-slate-400 text-xs flex flex-col items-center gap-2">
+                {groupFilter === 'B' ? (
+                  <>
+                    <CheckCircle2 className="w-8 h-8 text-emerald-400 mb-1" />
+                    <span className="text-sm font-bold text-white">
+                      {isRtl
+                        ? 'تمامی ۱۵ مسابقه گروه B برگزار و تکمیل شده است.'
+                        : 'All 15 matches in Group B have been completed.'}
+                    </span>
+                  </>
+                ) : (
+                  <span>
+                    {isRtl ? 'هیچ بازی با این مشخصات یافت نشد.' : 'No matches found matching your search.'}
+                  </span>
+                )}
               </div>
             ) : (
               filteredFixtures.map((fixture) => (

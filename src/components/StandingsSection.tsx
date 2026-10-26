@@ -62,9 +62,16 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
               {groupTitle}
             </h3>
           </div>
-          <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>{isRtl ? 'ثبت‌شده دور اول' : 'Round 1 Updated'}</span>
+          <div className="flex items-center gap-2 text-xs font-mono text-slate-300 bg-blue-950/70 px-3 py-1 rounded-md border border-blue-800/50">
+            <span>
+              {isGroupA
+                ? isRtl
+                  ? '۱۳ از ۱۵ مسابقه برگزار شده'
+                  : '13 / 15 Matches Played'
+                : isRtl
+                ? 'تکمیل شده • ۱۵ از ۱۵ مسابقه'
+                : 'Completed • 15 / 15 Matches'}
+            </span>
           </div>
         </div>
 
@@ -73,7 +80,7 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
           <table className="w-full text-left text-sm whitespace-nowrap">
             <thead>
               <tr className="border-b border-blue-950/80 bg-[#060D20]/90 text-xs font-bold text-slate-400 tracking-wider uppercase">
-                <th scope="col" className="py-3.5 px-4 w-12 text-center">
+                <th scope="col" className="py-3.5 px-4 w-14 text-center">
                   {t.pos}
                 </th>
                 <th scope="col" className="py-3.5 px-4 min-w-[190px]">
@@ -92,7 +99,7 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
             <tbody className="divide-y divide-blue-950/60 font-mono">
               {rows.map((row, index) => {
                 const teamName = isRtl ? row.team.nameFa : row.team.name;
-                const isTopTwo = index < 2;
+                const isLeader = index === 0;
 
                 return (
                   <motion.tr
@@ -110,13 +117,15 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
                   >
                     {/* Position Badge */}
                     <td className="py-3.5 px-4 text-center">
-                      <div className={`w-6 h-6 mx-auto rounded-md flex items-center justify-center text-xs font-black ${
-                        isTopTwo
-                          ? isGroupA
-                            ? 'bg-yellow-400 text-slate-950 shadow-[0_0_8px_rgba(250,204,21,0.4)]'
-                            : 'bg-blue-600 text-white shadow-[0_0_8px_rgba(37,99,235,0.4)]'
-                          : 'text-slate-400 bg-blue-950/50'
-                      }`}>
+                      <div
+                        className={`w-6 h-6 mx-auto rounded-md flex items-center justify-center text-xs font-black shadow-sm ${
+                          isLeader
+                            ? isGroupA
+                              ? 'bg-yellow-400 text-slate-950 shadow-[0_0_8px_rgba(250,204,21,0.45)]'
+                              : 'bg-blue-600 text-white shadow-[0_0_8px_rgba(37,99,235,0.45)]'
+                            : 'text-slate-300 bg-blue-950/70 border border-blue-900/50'
+                        }`}
+                      >
                         {row.positionIndex}
                       </div>
                     </td>
@@ -159,7 +168,7 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
                     {/* Points */}
                     <td className="py-3.5 px-4 text-center">
                       <span className={`text-base font-black ${
-                        isTopTwo ? 'text-amber-400 font-extrabold' : 'text-slate-200'
+                        isLeader ? 'text-amber-400 font-extrabold' : 'text-slate-200'
                       }`}>
                         {row.points}
                       </span>
@@ -191,7 +200,9 @@ export const StandingsSection: React.FC<StandingsSectionProps> = ({ lang, onSele
               {t.standingsTitle}
             </h2>
             <p className="text-xs text-slate-400 mt-1">
-              {isRtl ? 'جدول رسمی بر اساس نتایج دیدارهای دور اول' : 'Official table updated after Round 1 match results'}
+              {isRtl
+                ? 'جدول رسمی و به‌روزرسانی شده مرحله گروهی TM PROCLUBS NATIONS LEAGUE'
+                : 'Official updated group stage standings — TM PROCLUBS NATIONS LEAGUE'}
             </p>
           </div>
 

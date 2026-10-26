@@ -20,261 +20,436 @@ export const TrophyArt: React.FC<TrophyArtProps> = ({
   return (
     <motion.div
       className={`relative flex items-center justify-center select-none ${dimensions[size]} ${className}`}
-      initial={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ scale: 1.03 }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* Dynamic Ambient Stadium Lights behind Trophy */}
-      <div className="absolute inset-0 bg-blue-600/30 rounded-full blur-[100px] pointer-events-none transform -translate-y-6 scale-95 animate-pulse-glow" />
-      <div className="absolute -inset-6 bg-gradient-to-t from-blue-700/20 via-sky-400/20 to-transparent rounded-full blur-[70px] pointer-events-none" />
-      <div className="absolute top-1/4 -right-8 w-40 h-40 bg-amber-400/15 rounded-full blur-[60px] pointer-events-none" />
+      {/* Multi-layered Championship Studio Rim Lighting */}
+      <div
+        className="absolute inset-x-8 top-6 bottom-12 rounded-full pointer-events-none opacity-85"
+        style={{
+          background:
+            'radial-gradient(ellipse at 50% 38%, rgba(251, 191, 36, 0.28) 0%, rgba(59, 130, 246, 0.22) 45%, rgba(7, 13, 30, 0) 75%)',
+          filter: 'blur(42px)',
+        }}
+      />
 
-      {/* Photorealistic Nations League Spiral Trophy Vector Art */}
+      {/* Symmetrical 3D-Shaded Championship Cup Vector Masterpiece */}
       <svg
-        viewBox="0 0 520 720"
-        className="w-full h-full drop-shadow-[0_30px_50px_rgba(0,10,40,0.9)] filter"
+        viewBox="0 0 520 680"
+        className="w-full h-full drop-shadow-[0_28px_48px_rgba(0,6,24,0.95)]"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          {/* Hyper-realistic Chrome & Silver Gradients with Mirror Blue Reflections */}
-          <linearGradient id="chromeFlute" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#0B152B" />
-            <stop offset="12%" stopColor="#3B82F6" />
+          {/* Mirror-Polished Sterling Silver Gradient */}
+          <linearGradient id="sterlingSilver" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#1E293B" />
+            <stop offset="14%" stopColor="#94A3B8" />
             <stop offset="28%" stopColor="#FFFFFF" />
-            <stop offset="42%" stopColor="#CBD5E1" />
-            <stop offset="55%" stopColor="#1E3A8A" />
-            <stop offset="70%" stopColor="#93C5FD" />
-            <stop offset="85%" stopColor="#FFFFFF" />
-            <stop offset="100%" stopColor="#070E22" />
+            <stop offset="44%" stopColor="#E2E8F0" />
+            <stop offset="56%" stopColor="#475569" />
+            <stop offset="72%" stopColor="#F8FAFC" />
+            <stop offset="88%" stopColor="#CBD5E1" />
+            <stop offset="100%" stopColor="#0F172A" />
           </linearGradient>
 
-          <linearGradient id="silverGloss" x1="20%" y1="0%" x2="80%" y2="100%">
+          {/* Left Helical Wing Silver-Blue Gradient */}
+          <linearGradient id="leftWingSilver" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#FFFFFF" />
-            <stop offset="15%" stopColor="#E2E8F0" />
-            <stop offset="35%" stopColor="#94A3B8" />
-            <stop offset="50%" stopColor="#1E40AF" />
-            <stop offset="65%" stopColor="#0F172A" />
-            <stop offset="80%" stopColor="#BFDBFE" />
-            <stop offset="100%" stopColor="#FFFFFF" />
+            <stop offset="22%" stopColor="#E2E8F0" />
+            <stop offset="48%" stopColor="#93C5FD" />
+            <stop offset="74%" stopColor="#1E3A8A" />
+            <stop offset="100%" stopColor="#0F172A" />
           </linearGradient>
 
-          <linearGradient id="spiralCore" x1="10%" y1="0%" x2="90%" y2="100%">
-            <stop offset="0%" stopColor="#F8FAFC" />
-            <stop offset="22%" stopColor="#60A5FA" />
-            <stop offset="48%" stopColor="#1D4ED8" />
-            <stop offset="75%" stopColor="#0B132B" />
-            <stop offset="90%" stopColor="#93C5FD" />
-            <stop offset="100%" stopColor="#FFFFFF" />
-          </linearGradient>
-
-          <linearGradient id="outerCrown" x1="0%" y1="30%" x2="100%" y2="70%">
+          {/* Right Helical Wing Silver-Gold Gradient */}
+          <linearGradient id="rightWingSilver" x1="100%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#FFFFFF" />
-            <stop offset="20%" stopColor="#DBEAFE" />
-            <stop offset="45%" stopColor="#2563EB" />
-            <stop offset="70%" stopColor="#0F172A" />
-            <stop offset="88%" stopColor="#E2E8F0" />
-            <stop offset="100%" stopColor="#FFFFFF" />
+            <stop offset="20%" stopColor="#FEF9C3" />
+            <stop offset="45%" stopColor="#CBD5E1" />
+            <stop offset="72%" stopColor="#334155" />
+            <stop offset="100%" stopColor="#090F24" />
           </linearGradient>
 
-          <linearGradient id="pedestalSteel" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#334155" />
-            <stop offset="25%" stopColor="#F1F5F9" />
-            <stop offset="50%" stopColor="#64748B" />
-            <stop offset="75%" stopColor="#FFFFFF" />
-            <stop offset="100%" stopColor="#1E293B" />
+          {/* 24K Championship Gold Gradient */}
+          <linearGradient id="royalGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFFBEB" />
+            <stop offset="18%" stopColor="#FDE047" />
+            <stop offset="42%" stopColor="#F59E0B" />
+            <stop offset="68%" stopColor="#B45309" />
+            <stop offset="86%" stopColor="#FBBF24" />
+            <stop offset="100%" stopColor="#FEF08A" />
           </linearGradient>
 
-          <linearGradient id="rimSpecular" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
-            <stop offset="50%" stopColor="#93C5FD" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.95" />
+          {/* Horizontal Gold Rim Gradient */}
+          <linearGradient id="goldHorizontal" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#78350F" />
+            <stop offset="20%" stopColor="#FBBF24" />
+            <stop offset="35%" stopColor="#FEF08A" />
+            <stop offset="50%" stopColor="#D97706" />
+            <stop offset="68%" stopColor="#FEF08A" />
+            <stop offset="85%" stopColor="#F59E0B" />
+            <stop offset="100%" stopColor="#78350F" />
           </linearGradient>
 
-          <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="4" result="blur" />
+          {/* Deep Obsidian Pedestal Gradient */}
+          <linearGradient id="obsidianBase" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#030712" />
+            <stop offset="22%" stopColor="#1E293B" />
+            <stop offset="38%" stopColor="#334155" />
+            <stop offset="52%" stopColor="#0F172A" />
+            <stop offset="76%" stopColor="#1E293B" />
+            <stop offset="100%" stopColor="#020617" />
+          </linearGradient>
+
+          {/* 3D Championship Globe Core */}
+          <radialGradient id="globeSphere" cx="42%" cy="35%" r="62%">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="20%" stopColor="#FEF08A" />
+            <stop offset="48%" stopColor="#F59E0B" />
+            <stop offset="78%" stopColor="#92400E" />
+            <stop offset="100%" stopColor="#451A03" />
+          </radialGradient>
+
+          {/* Inner Royal Navy Cavity */}
+          <linearGradient id="deepCavity" x1="50%" y1="0%" x2="50%" y2="100%">
+            <stop offset="0%" stopColor="#09132E" />
+            <stop offset="50%" stopColor="#172554" />
+            <stop offset="100%" stopColor="#04091A" />
+          </linearGradient>
+
+          {/* Specular Glow Filter */}
+          <filter id="specularGlow" x="-25%" y="-25%" width="150%" height="150%">
+            <feGaussianBlur stdDeviation="3.5" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
         </defs>
 
-        {/* --- TROPHY BASE & STEM --- */}
-        <g id="trophy-base">
-          {/* Base bottom rim */}
-          <ellipse cx="260" cy="682" rx="42" ry="10" fill="#040814" />
+        {/* ============================================================ */}
+        {/* 1. STAGE SHADOW & MULTI-TIERED OBSIDIAN/GOLD PEDESTAL BASE   */}
+        {/* ============================================================ */}
+        <g id="pedestal-assembly">
+          {/* Floor Ambient Shadow */}
+          <ellipse cx="260" cy="642" rx="142" ry="18" fill="#020510" opacity="0.85" />
+          <ellipse cx="260" cy="638" rx="118" ry="11" fill="url(#goldHorizontal)" opacity="0.28" />
+
+          {/* Lower Tier Plinth */}
           <path
-            d="M218 648 L302 648 L290 682 L230 682 Z"
-            fill="url(#pedestalSteel)"
-            stroke="#94A3B8"
+            d="M142 604 L378 604 L392 632 C392 642 332 650 260 650 C188 650 128 642 128 632 Z"
+            fill="url(#obsidianBase)"
+            stroke="url(#goldHorizontal)"
             strokeWidth="1.5"
           />
-          {/* Base top collar */}
-          <ellipse cx="260" cy="648" rx="46" ry="8" fill="url(#pedestalSteel)" />
-          {/* Chrome bevel rim lines */}
-          <line x1="238" y1="648" x2="244" y2="680" stroke="#FFFFFF" strokeWidth="2.5" opacity="0.9" />
-          <line x1="280" y1="648" x2="274" y2="680" stroke="#1D4ED8" strokeWidth="3" opacity="0.75" />
-        </g>
-
-        {/* --- LOWER FLUTED CHALICE (Tapering from base to middle) --- */}
-        <g id="lower-body">
-          {/* Backside inner shadow */}
-          <path
-            d="M205 645 C185 550 160 420 185 295 C195 265 235 270 260 305 C275 340 270 490 255 645 Z"
-            fill="#050C1F"
-            opacity="0.9"
+          <ellipse
+            cx="260"
+            cy="604"
+            rx="118"
+            ry="13"
+            fill="url(#obsidianBase)"
+            stroke="url(#goldHorizontal)"
+            strokeWidth="1.5"
           />
 
-          {/* Main front flaring silver chalice */}
+          {/* Middle Tier Pedestal Drum (Holds Championship Nameplate) */}
           <path
-            d="M215 645 L305 645 C350 520 405 375 425 255 C370 295 240 295 185 255 C165 375 195 530 215 645 Z"
-            fill="url(#chromeFlute)"
-            stroke="url(#rimSpecular)"
+            d="M162 542 L358 542 L370 602 C370 611 320 618 260 618 C200 618 150 611 150 602 Z"
+            fill="url(#obsidianBase)"
+            stroke="#475569"
+            strokeWidth="1"
+          />
+
+          {/* Gold Championship Engraving Plate on Pedestal */}
+          <path
+            d="M182 558 C215 564 305 564 338 558 L344 592 C308 599 212 599 176 592 Z"
+            fill="url(#goldHorizontal)"
+            stroke="#FEF08A"
+            strokeWidth="1.2"
+          />
+          <path
+            d="M186 562 C216 567 304 567 334 562 L339 588 C305 594 215 594 181 588 Z"
+            fill="#070E24"
+          />
+          <text
+            x="260"
+            y="575"
+            textAnchor="middle"
+            fill="#FDE047"
+            fontSize="9.5"
+            fontWeight="900"
+            letterSpacing="2.8"
+            fontFamily="system-ui, -apple-system, sans-serif"
+          >
+            TM PROCLUBS
+          </text>
+          <text
+            x="260"
+            y="586"
+            textAnchor="middle"
+            fill="#E2E8F0"
+            fontSize="7"
+            fontWeight="700"
+            letterSpacing="3.2"
+            fontFamily="system-ui, -apple-system, sans-serif"
+          >
+            NATIONS LEAGUE
+          </text>
+
+          {/* Upper Pedestal Collar Ring (Gold & Sterling Silver Bevel) */}
+          <ellipse
+            cx="260"
+            cy="542"
+            rx="98"
+            ry="11"
+            fill="url(#sterlingSilver)"
+            stroke="url(#goldHorizontal)"
+            strokeWidth="2"
+          />
+          <path
+            d="M182 520 L338 520 L350 541 C350 547 310 551 260 551 C210 551 170 547 170 541 Z"
+            fill="url(#sterlingSilver)"
+          />
+          <ellipse
+            cx="260"
+            cy="520"
+            rx="78"
+            ry="9"
+            fill="url(#goldHorizontal)"
+            stroke="#FFFBEB"
+            strokeWidth="1.2"
+          />
+        </g>
+
+        {/* ============================================================ */}
+        {/* 2. SCULPTED TWIN HANDLES / AERODYNAMIC CHAMPIONSHIP WINGS    */}
+        {/* ============================================================ */}
+        <g id="championship-handles">
+          {/* Left Outer Handle Wing */}
+          <path
+            d="M158 142 C96 146 82 222 114 286 C136 330 176 358 206 382 L214 360 C188 338 154 312 136 272 C112 220 122 166 168 162 Z"
+            fill="url(#leftWingSilver)"
+            stroke="#FFFFFF"
+            strokeWidth="1.6"
+          />
+          {/* Left Handle Inner Gold Trim */}
+          <path
+            d="M166 158 C118 164 108 220 132 274 C150 314 184 340 212 362"
+            stroke="url(#royalGold)"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+
+          {/* Right Outer Handle Wing */}
+          <path
+            d="M362 142 C424 146 438 222 406 286 C384 330 344 358 314 382 L306 360 C332 338 366 312 384 272 C408 220 398 166 352 162 Z"
+            fill="url(#rightWingSilver)"
+            stroke="#FFFFFF"
+            strokeWidth="1.6"
+          />
+          {/* Right Handle Inner Gold Trim */}
+          <path
+            d="M354 158 C402 164 412 220 388 274 C370 314 336 340 308 362"
+            stroke="url(#royalGold)"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+        </g>
+
+        {/* ============================================================ */}
+        {/* 3. INNER CHALICE CAVITY & 3D GOLDEN GLOBE CORE               */}
+        {/* ============================================================ */}
+        <g id="inner-chalice-and-globe">
+          {/* Deep Royal Navy Inner Chalice Backdrop */}
+          <path
+            d="M155 112 C155 245 202 365 225 516 L295 516 C318 365 365 245 365 112 Z"
+            fill="url(#deepCavity)"
+          />
+
+          {/* Inner Backside Gold Flutes */}
+          <path
+            d="M195 106 C215 190 235 300 245 516 L275 516 C285 300 305 190 325 106 Z"
+            fill="url(#royalGold)"
+            opacity="0.35"
+          />
+
+          {/* 3D Championship World Globe Suspended in Upper Cradle */}
+          <circle
+            cx="260"
+            cy="210"
+            r="74"
+            fill="url(#globeSphere)"
+            stroke="#FEF08A"
+            strokeWidth="2"
+          />
+
+          {/* Globe Latitude & Longitude Gold Filigree Rings */}
+          <ellipse
+            cx="260"
+            cy="210"
+            rx="74"
+            ry="26"
+            stroke="#FFFBEB"
+            strokeWidth="1.3"
+            strokeDasharray="4 3"
+            opacity="0.7"
+          />
+          <ellipse
+            cx="260"
+            cy="210"
+            rx="36"
+            ry="74"
+            stroke="#FFFBEB"
+            strokeWidth="1.3"
+            opacity="0.65"
+          />
+          <line
+            x1="260"
+            y1="136"
+            x2="260"
+            y2="284"
+            stroke="#FFFBEB"
+            strokeWidth="1.4"
+            opacity="0.65"
+          />
+
+          {/* Globe Specular Highlight */}
+          <ellipse
+            cx="236"
+            cy="176"
+            rx="26"
+            ry="14"
+            transform="rotate(-24 236 176)"
+            fill="#FFFFFF"
+            opacity="0.55"
+            filter="url(#specularGlow)"
+          />
+        </g>
+
+        {/* ============================================================ */}
+        {/* 4. SYMMETRICAL HELICAL SILVER-PLATINUM CHALICE RIBBONS       */}
+        {/* ============================================================ */}
+        <g id="helical-chalice-ribbons">
+          {/* Left Sweeping Helical Blade (Wraps from Base to Upper Left Crown) */}
+          <path
+            d="M188 518 C196 420 182 332 146 218 C134 176 138 132 154 102 C182 138 214 198 238 282 C256 346 258 432 248 518 Z"
+            fill="url(#leftWingSilver)"
+            stroke="#FFFFFF"
             strokeWidth="1.8"
           />
 
-          {/* High-gloss specular reflections on lower body */}
+          {/* Right Sweeping Helical Blade (Wraps from Base to Upper Right Crown) */}
           <path
-            d="M235 645 C250 515 275 405 305 282 L332 282 C302 405 275 515 250 645 Z"
-            fill="#FFFFFF"
-            opacity="0.32"
-          />
-          {/* Razor-sharp specular light line */}
-          <path
-            d="M212 305 C202 405 208 505 220 635"
+            d="M332 518 C324 420 338 332 374 218 C386 176 382 132 366 102 C338 138 306 198 282 282 C264 346 262 432 272 518 Z"
+            fill="url(#rightWingSilver)"
             stroke="#FFFFFF"
-            strokeWidth="4"
-            strokeLinecap="round"
-            filter="url(#softGlow)"
+            strokeWidth="1.8"
           />
-          {/* Blue reflection band */}
+
+          {/* Center Ascending V-Pillar (Interlocks the Helical Ribbons at X=260) */}
           <path
-            d="M360 315 C390 415 392 500 385 585"
-            stroke="#60A5FA"
+            d="M214 520 C224 410 218 318 186 226 C218 258 244 292 260 328 C276 292 302 258 334 226 C302 318 296 410 306 520 Z"
+            fill="url(#sterlingSilver)"
+            stroke="url(#goldHorizontal)"
+            strokeWidth="1.8"
+          />
+
+          {/* Central Gold Spine Highlight */}
+          <path
+            d="M260 316 L268 435 L260 520 L252 435 Z"
+            fill="url(#royalGold)"
+            opacity="0.92"
+          />
+
+          {/* Razor-Sharp Specular Edge Lines on Ribbons */}
+          <path
+            d="M154 106 C180 144 212 204 235 288 C252 350 254 432 245 514"
+            stroke="#FFFFFF"
             strokeWidth="3.5"
             strokeLinecap="round"
-            opacity="0.6"
+            filter="url(#specularGlow)"
+          />
+          <path
+            d="M366 106 C340 144 308 204 285 288 C268 350 266 432 275 514"
+            stroke="#FEF08A"
+            strokeWidth="2.8"
+            strokeLinecap="round"
+            opacity="0.9"
           />
         </g>
 
-        {/* --- MIDDLE SPIRAL WRAP (Ascending Helical Ribbon) --- */}
-        <g id="middle-spiral">
-          {/* Inner spiral cavity */}
-          <path
-            d="M185 255 C215 285 295 300 390 268 C420 215 415 125 370 68 C315 88 245 88 200 68 C158 115 158 205 185 255 Z"
-            fill="url(#spiralCore)"
-            opacity="0.95"
+        {/* ============================================================ */}
+        {/* 5. UPPER ROYAL CROWN RIM & CENTRAL CHAMPIONSHIP CREST        */}
+        {/* ============================================================ */}
+        <g id="upper-crown-and-crest">
+          {/* Upper Chalice Crown Opening Ellipse */}
+          <ellipse
+            cx="260"
+            cy="102"
+            rx="108"
+            ry="22"
+            fill="url(#obsidianBase)"
+            stroke="url(#goldHorizontal)"
+            strokeWidth="3"
           />
-
-          {/* Outer sweeping ribbon wrap */}
-          <path
-            d="M165 268 C245 328 375 328 450 252 C468 175 448 102 380 58 C328 115 235 120 165 268 Z"
-            fill="url(#silverGloss)"
-            stroke="#FFFFFF"
-            strokeWidth="2.2"
-          />
-
-          {/* Top Lip of the Ribbon */}
-          <path
-            d="M165 268 C245 325 370 325 450 252"
-            stroke="#FFFFFF"
-            strokeWidth="5"
-            strokeLinecap="round"
-            filter="url(#softGlow)"
-          />
-          <path
-            d="M175 276 C250 330 365 330 440 260"
+          <ellipse
+            cx="260"
+            cy="102"
+            rx="96"
+            ry="15"
+            fill="#050B1C"
             stroke="#93C5FD"
-            strokeWidth="2.5"
-            opacity="0.9"
-          />
-        </g>
-
-        {/* --- TOP HELICAL CROWN & CHALICE OPENING --- */}
-        <g id="top-crown">
-          {/* Top ascending ribbon loop */}
-          <path
-            d="M192 78 C235 105 325 105 372 78 C388 38 360 8 305 4 C250 4 210 35 192 78 Z"
-            fill="url(#outerCrown)"
-            stroke="#FFFFFF"
-            strokeWidth="2"
-          />
-          {/* Chalice inner bowl */}
-          <ellipse cx="282" cy="34" rx="48" ry="17" fill="url(#pedestalSteel)" opacity="0.9" />
-          <ellipse cx="282" cy="34" rx="38" ry="12" fill="#070D1E" opacity="0.75" />
-          
-          {/* Crown upper rim glint */}
-          <path
-            d="M235 22 Q285 14 330 22"
-            stroke="#FFFFFF"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            filter="url(#softGlow)"
-          />
-        </g>
-
-        {/* --- GEOMETRIC FACET ENGRAVINGS (Matching IMG_1728) --- */}
-        <g stroke="#FFFFFF" strokeWidth="1" opacity="0.32" strokeLinecap="round">
-          {/* Facets on lower chalice */}
-          <line x1="240" y1="410" x2="270" y2="445" />
-          <line x1="270" y1="445" x2="250" y2="490" />
-          <line x1="250" y1="490" x2="295" y2="525" />
-          <line x1="295" y1="525" x2="265" y2="570" />
-          <line x1="300" y1="375" x2="335" y2="420" />
-          <line x1="335" y1="420" x2="310" y2="465" />
-          <line x1="310" y1="465" x2="355" y2="505" />
-          <line x1="355" y1="505" x2="330" y2="550" />
-          {/* Facets on upper spiral ribbon */}
-          <line x1="195" y1="175" x2="225" y2="208" />
-          <line x1="225" y1="208" x2="248" y2="185" />
-          <line x1="248" y1="185" x2="278" y2="228" />
-        </g>
-
-        {/* --- CIRCULAR NATIONS LEAGUE METALLIC MEDALLION SEAL --- */}
-        <g id="trophy-medallion" transform="translate(325, 235)">
-          {/* Drop shadow */}
-          <circle cx="0" cy="0" r="46" fill="#050A19" opacity="0.75" />
-          {/* Outer high-polish silver ring */}
-          <circle cx="0" cy="0" r="44" fill="url(#pedestalSteel)" stroke="#FFFFFF" strokeWidth="2.5" />
-          {/* Deep blue inner circular seal */}
-          <circle cx="0" cy="0" r="38" fill="url(#chromeFlute)" stroke="#93C5FD" strokeWidth="1.5" />
-          {/* Inner ring */}
-          <circle cx="0" cy="0" r="34" fill="url(#spiralCore)" />
-          {/* Relief continent / map globe outline */}
-          <path
-            d="M-20 -10 Q-10 -22 4 -18 Q18 -14 22 -4 Q24 12 12 22 Q-6 26 -16 16 Q-24 6 -20 -10 Z"
-            fill="#FFFFFF"
-            opacity="0.9"
-          />
-          <path
-            d="M-2 -8 L8 -12 L14 -3 L5 9 L-5 5 Z"
-            fill="#1E3A8A"
+            strokeWidth="1"
             opacity="0.8"
           />
-          {/* Glint curve on medallion */}
+
+          {/* Sculpted Crown Front Arch Rim */}
           <path
-            d="M-30 -20 A34 34 0 0 1 22 -26"
+            d="M152 102 C182 128 338 128 368 102 C356 134 316 146 260 146 C204 146 164 134 152 102 Z"
+            fill="url(#sterlingSilver)"
+            stroke="#FFFFFF"
+            strokeWidth="1.8"
+          />
+
+          {/* Center Medallion Shield (Anchored Symmetrically at X=260, Y=306) */}
+          <g transform="translate(260, 306)">
+            {/* Medallion Outer Shadow */}
+            <circle cx="0" cy="4" r="42" fill="#020617" opacity="0.75" />
+            {/* Outer Gold Bezel */}
+            <circle
+              cx="0"
+              cy="0"
+              r="39"
+              fill="url(#royalGold)"
+              stroke="#FFFFFF"
+              strokeWidth="2"
+            />
+            {/* Inner Deep Navy Enamel Ring */}
+            <circle
+              cx="0"
+              cy="0"
+              r="32"
+              fill="#071029"
+              stroke="#FDE047"
+              strokeWidth="1.2"
+            />
+            {/* 8-Pointed Faceted Championship Star */}
+            <polygon
+              points="0,-24 6,-7 24,-7 10,4 15,21 0,11 -15,21 -10,4 -24,-7 -6,-7"
+              fill="url(#royalGold)"
+              stroke="#FFFBEB"
+              strokeWidth="1"
+            />
+            <circle cx="0" cy="1" r="6" fill="#FFFFFF" opacity="0.9" />
+          </g>
+
+          {/* Upper Crown Rim Specular Glint */}
+          <path
+            d="M180 116 Q260 134 340 116"
             stroke="#FFFFFF"
             strokeWidth="3.5"
             strokeLinecap="round"
-            opacity="0.95"
-            filter="url(#softGlow)"
+            filter="url(#specularGlow)"
           />
-        </g>
-
-        {/* --- STARBURST SPECULAR FLARES --- */}
-        <g transform="translate(375, 205)">
-          <circle cx="0" cy="0" r="9" fill="#FFFFFF" opacity="0.85" filter="url(#softGlow)" />
-          <line x1="-22" y1="0" x2="22" y2="0" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" />
-          <line x1="0" y1="-22" x2="0" y2="22" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" />
-          <line x1="-12" y1="-12" x2="12" y2="12" stroke="#BFDBFE" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="12" y1="-12" x2="-12" y2="12" stroke="#BFDBFE" strokeWidth="1.5" strokeLinecap="round" />
-        </g>
-
-        {/* Lower Left Subtle Edge Flare */}
-        <g transform="translate(182, 265)">
-          <circle cx="0" cy="0" r="5" fill="#FFFFFF" opacity="0.8" />
-          <line x1="-12" y1="0" x2="12" y2="0" stroke="#FFFFFF" strokeWidth="1.8" strokeLinecap="round" />
-          <line x1="0" y1="-12" x2="0" y2="12" stroke="#FFFFFF" strokeWidth="1.8" strokeLinecap="round" />
         </g>
       </svg>
     </motion.div>

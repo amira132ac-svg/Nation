@@ -71,6 +71,8 @@ export interface Translations {
   standingsBadge: string;
   standingsTitle: string;
   bothGroups: string;
+  knockoutQualified: string;
+  eliminatedNotice: string;
   pos: string;
   team: string;
   played: string;
@@ -188,6 +190,8 @@ export const translations: Record<Language, Translations> = {
     standingsBadge: "Tournament Table",
     standingsTitle: "Official Standings",
     bothGroups: "Both Groups",
+    knockoutQualified: "Qualified for knockout stage",
+    eliminatedNotice: "Eliminated from competition",
     pos: "Pos.",
     team: "Team",
     played: "P",
@@ -298,6 +302,8 @@ export const translations: Record<Language, Translations> = {
     standingsBadge: "جدول مسابقات",
     standingsTitle: "جدول رده‌بندی",
     bothGroups: "هر دو گروه",
+    knockoutQualified: "صعود به مرحله حذفی",
+    eliminatedNotice: "عدم صعود از مرحله گروهی",
     pos: "رتبه",
     team: "تیم",
     played: "بازی",

@@ -139,25 +139,6 @@ export const StandingsTableSkeleton: React.FC<{ isGroupA?: boolean; groupTitle?:
 export const StatsSectionSkeleton: React.FC = () => {
   return (
     <div className="space-y-8">
-      {/* 4 Overview Metric Cards Skeleton */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-        {[1, 2, 3, 4].map((i) => (
-          <div
-            key={i}
-            className="bg-[#0A1432]/90 border border-blue-900/50 rounded-xl p-4 sm:p-5 flex flex-col justify-between"
-          >
-            <div className="flex items-center justify-between mb-3">
-              <ShimmerBox className="w-20 sm:w-24 h-3.5" rounded="rounded" />
-              <ShimmerBox className="w-6 h-6 rounded-lg" />
-            </div>
-            <div className="space-y-2">
-              <ShimmerBox className="w-16 h-7 sm:h-8" rounded="rounded-md" />
-              <ShimmerBox className="w-28 h-2.5" rounded="rounded" />
-            </div>
-          </div>
-        ))}
-      </div>
-
       {/* Leaderboard Table Skeleton */}
       <div className="bg-[#0A1432]/95 border border-blue-900/50 rounded-2xl overflow-hidden shadow-2xl p-6 sm:p-8 space-y-4">
         <div className="flex items-center justify-between pb-4 border-b border-blue-900/40">

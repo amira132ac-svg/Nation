@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, ChevronDown, ChevronUp, Award } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { PLAYED_RESULTS, NationalTeam, MatchResult } from '../data/tournamentData';
 import { Language, translations } from '../data/translations';
 import { Flag } from './Flag';
@@ -10,7 +10,7 @@ interface ResultsSectionProps {
   onSelectTeam?: (team: NationalTeam) => void;
 }
 
-const INITIAL_COUNT = 2; // Show 2 matches per group initially
+const INITIAL_COUNT = 4; // Show 4 matches per group initially
 
 export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTeam }) => {
   const [selectedGroup, setSelectedGroup] = useState<'ALL' | 'A' | 'B'>('ALL');
@@ -64,6 +64,7 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
     }
   };
 
+
   const filterTabs = [
     { id: 'ALL', label: t.allResults },
     { id: 'A', label: t.groupA },
@@ -76,84 +77,81 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
     const homeWon = res.homeScore > res.awayScore;
     const awayWon = res.awayScore > res.homeScore;
     const isDraw = res.homeScore === res.awayScore;
-
     const winnerName = homeWon ? homeName : awayWon ? awayName : null;
 
     return (
       <div
         key={res.id}
-        className="bg-[#0A1432]/95 border border-blue-900/60 hover:border-blue-600/70 rounded-2xl p-4 sm:p-5 transition-all shadow-xl flex flex-col justify-between hover:shadow-[0_8px_24px_rgba(0,82,255,0.18)]"
+        className="bg-[#0A1432]/95 border border-blue-900/50 hover:border-blue-500/60 rounded-2xl p-4 sm:p-5 transition-all duration-200 flex flex-col justify-between"
       >
-        {/* Top Status Bar: Group, Winner Badge, and FT indicator */}
-        <div className="flex items-center justify-between text-xs pb-3 mb-3 border-b border-blue-950">
-          <div className="flex items-center gap-2">
-            <span
-              className={`px-2 py-0.5 rounded text-[11px] font-black font-mono tracking-wider uppercase ${
-                isGroupA
-                  ? 'bg-yellow-400/20 text-yellow-300 border border-yellow-400/30'
-                  : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'
-              }`}
-            >
+        {/* Top Unboxed Metadata Row (Zero-Pill Discipline) */}
+        <div className="flex items-center justify-between text-xs pb-3 mb-3 border-b border-blue-950/80 text-slate-400">
+          <div className="flex items-center gap-2 min-w-0 truncate">
+            {res.matchNumber && (
+              <>
+                <span className="font-mono tabular-nums font-bold text-slate-500">
+                  #{res.matchNumber}
+                </span>
+                <span aria-hidden="true" className="text-slate-600">·</span>
+              </>
+            )}
+            <span className={isGroupA ? 'text-amber-400 font-bold' : 'text-sky-400 font-bold'}>
               {isRtl ? `گروه ${res.group}` : `Group ${res.group}`}
             </span>
-
-            {/* Clear Winner / Outcome Badge */}
+            <span aria-hidden="true" className="text-slate-600">·</span>
             {winnerName ? (
-              <span className="flex items-center gap-1 font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/25 text-[11px]">
-                <Award className="w-3 h-3 text-emerald-400" />
-                <span>
-                  {isRtl ? `برد ${winnerName}` : `${winnerName} Won`}
-                </span>
+              <span className="font-semibold text-emerald-400 truncate">
+                {isRtl ? `برد ${winnerName}` : `${winnerName} Won`}
               </span>
             ) : (
-              <span className="font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded-full border border-sky-500/25 text-[11px]">
-                {isRtl ? 'نتیجه تساوی' : 'Draw'}
+              <span className="font-semibold text-slate-300">
+                {isRtl ? 'تساوی' : 'Draw'}
               </span>
             )}
           </div>
 
-          <span className="font-bold text-slate-400 bg-blue-950 px-2 py-0.5 rounded border border-blue-900 text-[11px] font-mono">
-            {t.fullTime}
-          </span>
+          <div className="flex items-center gap-1.5 shrink-0 font-mono text-[11px] text-slate-400">
+            {res.isTechnical && (
+              <>
+                <span className="text-amber-400 font-sans font-bold">
+                  {isRtl ? 'فنی' : 'Tech.'}
+                </span>
+                <span aria-hidden="true" className="text-slate-600">·</span>
+              </>
+            )}
+            <span>{t.fullTime}</span>
+          </div>
         </div>
 
-        {/* Clear Two-Row Team Scoreboard: Zero Confusion of Who Scored What */}
-        <div className="space-y-2 py-1">
+        {/* Two-Row Official Scoreboard */}
+        <div className="space-y-2 py-0.5">
           {/* Home Team Row */}
           <div
             onClick={() => onSelectTeam && onSelectTeam(res.homeTeam)}
             className={`flex items-center justify-between p-2.5 rounded-xl transition-colors cursor-pointer ${
               homeWon
-                ? 'bg-emerald-500/10 border border-emerald-500/35 hover:bg-emerald-500/15'
-                : 'bg-blue-950/40 border border-blue-900/40 hover:bg-blue-900/30'
+                ? 'bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/15'
+                : 'bg-blue-950/40 border border-blue-900/30 hover:bg-blue-900/30'
             }`}
           >
             <div className="flex items-center gap-3 min-w-0">
               <Flag country={res.homeTeam.flagCountry} size="md" className="shrink-0" />
-              <div className="flex items-center gap-2 truncate">
-                <span
-                  className={`text-sm font-black uppercase truncate ${
-                    homeWon ? 'text-white' : 'text-slate-300'
-                  }`}
-                >
-                  {homeName}
-                </span>
-                {homeWon && (
-                  <span className="px-1.5 py-0.5 text-[10px] font-extrabold rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shrink-0">
-                    {t.winner}
-                  </span>
-                )}
-              </div>
+              <span
+                className={`text-sm font-black truncate ${
+                  homeWon ? 'text-white' : 'text-slate-300'
+                }`}
+              >
+                {homeName}
+              </span>
             </div>
 
-            {/* Home Score Box */}
             <div
-              className={`w-9 h-9 rounded-lg flex items-center justify-center font-black font-mono text-base shrink-0 shadow-inner ${
+              className={`w-9 h-9 rounded-lg flex items-center justify-center font-black font-mono tabular-nums text-base shrink-0 ${
                 homeWon
-                  ? 'bg-emerald-500 text-slate-950 shadow-[0_0_12px_rgba(16,185,129,0.35)]'
+                  ? 'bg-emerald-500 text-slate-950'
                   : isDraw
-                  ? 'bg-blue-900 text-blue-100 border border-blue-700/60'
-                  : 'bg-blue-950 text-slate-400 border border-blue-900'
+                  ? 'bg-blue-900/80 text-blue-100'
+                  : 'bg-blue-950 text-slate-400'
               }`}
             >
               {res.homeScore}
@@ -165,36 +163,28 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
             onClick={() => onSelectTeam && onSelectTeam(res.awayTeam)}
             className={`flex items-center justify-between p-2.5 rounded-xl transition-colors cursor-pointer ${
               awayWon
-                ? 'bg-emerald-500/10 border border-emerald-500/35 hover:bg-emerald-500/15'
-                : 'bg-blue-950/40 border border-blue-900/40 hover:bg-blue-900/30'
+                ? 'bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/15'
+                : 'bg-blue-950/40 border border-blue-900/30 hover:bg-blue-900/30'
             }`}
           >
             <div className="flex items-center gap-3 min-w-0">
               <Flag country={res.awayTeam.flagCountry} size="md" className="shrink-0" />
-              <div className="flex items-center gap-2 truncate">
-                <span
-                  className={`text-sm font-black uppercase truncate ${
-                    awayWon ? 'text-white' : 'text-slate-300'
-                  }`}
-                >
-                  {awayName}
-                </span>
-                {awayWon && (
-                  <span className="px-1.5 py-0.5 text-[10px] font-extrabold rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shrink-0">
-                    {t.winner}
-                  </span>
-                )}
-              </div>
+              <span
+                className={`text-sm font-black truncate ${
+                  awayWon ? 'text-white' : 'text-slate-300'
+                }`}
+              >
+                {awayName}
+              </span>
             </div>
 
-            {/* Away Score Box */}
             <div
-              className={`w-9 h-9 rounded-lg flex items-center justify-center font-black font-mono text-base shrink-0 shadow-inner ${
+              className={`w-9 h-9 rounded-lg flex items-center justify-center font-black font-mono tabular-nums text-base shrink-0 ${
                 awayWon
-                  ? 'bg-emerald-500 text-slate-950 shadow-[0_0_12px_rgba(16,185,129,0.35)]'
+                  ? 'bg-emerald-500 text-slate-950'
                   : isDraw
-                  ? 'bg-blue-900 text-blue-100 border border-blue-700/60'
-                  : 'bg-blue-950 text-slate-400 border border-blue-900'
+                  ? 'bg-blue-900/80 text-blue-100'
+                  : 'bg-blue-950 text-slate-400'
               }`}
             >
               {res.awayScore}
@@ -202,17 +192,17 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
           </div>
         </div>
 
-        {/* Goal Breakdown Strip: Explicit text stating who scored how many goals */}
-        <div className="mt-3 pt-2.5 border-t border-blue-950/80 flex items-center justify-between gap-2 text-xs">
-          <div className="flex items-center gap-2 text-slate-300 min-w-0">
-            <span className="text-sm shrink-0">⚽</span>
-            <span className="font-semibold truncate text-[11px] sm:text-xs text-slate-200">
-              {isRtl ? res.goalSummaryFa : res.goalSummaryEn}
-            </span>
-          </div>
-
-          <span className="text-[10px] font-mono text-slate-500 shrink-0">
-            {res.homeScore + res.awayScore} {isRtl ? 'گل کل' : 'Total Goals'}
+        {/* Clean Summary Footer Strip */}
+        <div className="mt-3 pt-2.5 border-t border-blue-950/70 flex items-center justify-between gap-2 text-xs text-slate-400">
+          <span className="font-medium truncate text-slate-300">
+            {isRtl ? res.goalSummaryFa : res.goalSummaryEn}
+          </span>
+          <span className="text-[11px] font-mono tabular-nums text-slate-500 shrink-0">
+            {res.isTechnical
+              ? isRtl
+                ? 'نتیجه فنی ۳-۰'
+                : 'Technical 3-0'
+              : `${res.homeScore + res.awayScore} ${isRtl ? 'گل' : 'Goals'}`}
           </span>
         </div>
       </div>
@@ -222,109 +212,120 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
   return (
     <motion.section
       id="results"
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, amount: 0.08 }}
+      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       className="relative py-12 md:py-20"
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 pb-4 border-b border-blue-900/40">
           <div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white uppercase">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white">
               {t.resultsTitle}
             </h2>
-            <div className="flex items-center gap-2 mt-1.5 text-xs text-emerald-400 font-semibold">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>{isRtl ? 'نتایج رسمی ثبت‌شده مسابقات با تفکیک دقیق گل‌ها' : 'Official Registered Match Results with Goal Breakdown'}</span>
-              <span className="text-slate-600">·</span>
-              <span className="text-slate-400 font-mono">
+            <div className="flex flex-wrap items-center gap-2 mt-1.5 text-xs text-slate-400">
+              <span className="text-emerald-400 font-semibold">
+                {isRtl ? 'ثبت رسمی فدراسیون TM PROCLUBS' : 'Official TM PROCLUBS Match Registry'}
+              </span>
+              <span aria-hidden="true">·</span>
+              <span className="font-mono tabular-nums">
                 {PLAYED_RESULTS.length} {isRtl ? 'بازی انجام‌شده' : 'Matches Completed'}
               </span>
             </div>
           </div>
 
-          {/* Filter controls with smooth motion */}
-          <div className="relative inline-flex p-1 bg-[#0A1432] border border-blue-900/60 rounded-xl shadow-lg self-start sm:self-auto">
-            {filterTabs.map((tab) => {
-              const isActive = selectedGroup === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setSelectedGroup(tab.id)}
-                  className={`relative px-4 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer select-none z-10 ${
-                    isActive
-                      ? tab.id === 'A'
-                        ? 'text-slate-950 font-black'
-                        : 'text-white font-black'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="resultsFilterPill"
-                      className={`absolute inset-0 rounded-lg shadow-md -z-10 ${
-                        tab.id === 'A' ? 'bg-yellow-400' : 'bg-blue-600'
-                      }`}
-                      transition={{ type: 'spring', stiffness: 450, damping: 35 }}
-                    />
-                  )}
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
+          {/* Filter Tabs */}
+          <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
+            <div className="relative inline-flex p-1 bg-[#0A1432] border border-blue-900/60 rounded-xl">
+              {filterTabs.map((tab) => {
+                const isActive = selectedGroup === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setSelectedGroup(tab.id)}
+                    className={`relative px-4 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer select-none z-10 whitespace-nowrap shrink-0 ${
+                      isActive
+                        ? tab.id === 'A'
+                          ? 'text-slate-950 font-black'
+                          : 'text-white font-black'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="resultsFilterPill"
+                        className={`absolute inset-0 rounded-lg -z-10 ${
+                          tab.id === 'A' ? 'bg-yellow-400' : 'bg-blue-600'
+                        }`}
+                        transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                      />
+                    )}
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
         {/* Results Grids */}
         <div className="space-y-10">
           <AnimatePresence mode="wait">
-            {/* Group A Results */}
+            {/* Group A Results (13 Matches) */}
             {showGroupA && (
               <motion.div
                 key="group-a-results"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25 }}
+                transition={{ duration: 0.22 }}
                 className="space-y-3.5"
               >
-                <div className="flex items-center justify-between pb-2 border-b border-yellow-500/30">
+                <div className="flex items-center justify-between pb-2.5 border-b border-yellow-500/30">
                   <div className="flex items-center gap-2.5">
-                    <div className="px-3.5 py-0.5 bg-[#FFCC00] text-slate-950 font-black text-xs uppercase tracking-wider rounded shadow-[0_0_12px_rgba(255,204,0,0.4)]">
+                    <span className="w-3 h-3 rounded-sm bg-[#FFCC00]" />
+                    <h3 className="text-base font-black text-white tracking-wide">
                       {t.groupA}
-                    </div>
-                    <span className="text-xs text-slate-400 font-mono font-semibold">
+                    </h3>
+                    <span className="text-slate-600">·</span>
+                    <span className="text-xs text-slate-400 font-mono tabular-nums">
                       {expandedA
                         ? `${groupAResults.length} ${isRtl ? 'بازی انجام شد' : 'Matches Played'}`
-                        : `${initialAResults.length} ${isRtl ? 'از ۴ بازی' : 'of 4 Matches'}`}
+                        : `${initialAResults.length} ${isRtl ? `از ${groupAResults.length} بازی` : `of ${groupAResults.length} Matches`}`}
                     </span>
                   </div>
 
-                  <button
-                    onClick={() => setExpandedA(!expandedA)}
-                    className="text-xs font-bold text-yellow-400 hover:text-yellow-300 bg-yellow-400/10 hover:bg-yellow-400/20 border border-yellow-400/30 px-3 py-1 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
-                  >
-                    <span>
-                      {expandedA
-                        ? (isRtl ? 'نمایش کمتر' : t.showLess)
-                        : (isRtl ? `+${remainingAResults.length} بازی دیگر` : `+${remainingAResults.length} more`)}
-                    </span>
-                    <ChevronDown
-                      className={`w-3.5 h-3.5 transition-transform duration-300 ${
-                        expandedA ? 'rotate-180' : 'rotate-0'
-                      }`}
-                    />
-                  </button>
+                  {remainingAResults.length > 0 && (
+                    <button
+                      onClick={() => setExpandedA(!expandedA)}
+                      className="text-xs font-bold text-amber-400 hover:text-amber-300 bg-amber-400/10 hover:bg-amber-400/20 border border-amber-400/30 px-3 py-1 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap shrink-0"
+                    >
+                      <span>
+                        {expandedA
+                          ? isRtl
+                            ? 'نمایش کمتر'
+                            : t.showLess
+                          : isRtl
+                          ? `+${remainingAResults.length} بازی دیگر`
+                          : `+${remainingAResults.length} more`}
+                      </span>
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                          expandedA ? 'rotate-180' : 'rotate-0'
+                        }`}
+                      />
+                    </button>
+                  )}
                 </div>
 
-                {/* Permanent 2 initial results */}
+                {/* Permanent 4 initial results */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   {initialAResults.map((res) => renderMatchCard(res, true))}
                 </div>
 
-                {/* Smooth Animated Accordion for remaining results */}
+                {/* Smooth Accordion for remaining Group A results */}
                 <AnimatePresence initial={false}>
                   {expandedA && (
                     <motion.div
@@ -334,8 +335,8 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
                         opacity: 1,
                         height: 'auto',
                         transition: {
-                          height: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
-                          opacity: { duration: 0.25, delay: 0.05 },
+                          height: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.25, delay: 0.04 },
                         },
                       }}
                       exit={{
@@ -356,8 +357,8 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -6 }}
                             transition={{
-                              duration: 0.25,
-                              delay: idx * 0.04,
+                              duration: 0.24,
+                              delay: idx * 0.03,
                               ease: [0.22, 1, 0.36, 1],
                             }}
                           >
@@ -371,51 +372,63 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
               </motion.div>
             )}
 
-            {/* Group B Results */}
+            {/* Group B Results (15 Matches — Completed) */}
             {showGroupB && (
               <motion.div
                 key="group-b-results"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25 }}
+                transition={{ duration: 0.22 }}
                 className="space-y-3.5"
               >
-                <div className="flex items-center justify-between pb-2 border-b border-blue-500/30">
+                <div className="flex items-center justify-between pb-2.5 border-b border-blue-500/30">
                   <div className="flex items-center gap-2.5">
-                    <div className="px-3.5 py-0.5 bg-[#0052FF] text-white font-black text-xs uppercase tracking-wider rounded shadow-[0_0_12px_rgba(0,82,255,0.4)]">
+                    <span className="w-3 h-3 rounded-sm bg-[#0052FF]" />
+                    <h3 className="text-base font-black text-white tracking-wide">
                       {t.groupB}
-                    </div>
-                    <span className="text-xs text-slate-400 font-mono font-semibold">
+                    </h3>
+                    <span className="text-slate-600">·</span>
+                    <span className="text-xs text-emerald-400 font-bold">
+                      {isRtl ? 'تکمیل شده' : 'Completed'}
+                    </span>
+                    <span className="text-slate-600">·</span>
+                    <span className="text-xs text-slate-400 font-mono tabular-nums">
                       {expandedB
                         ? `${groupBResults.length} ${isRtl ? 'بازی انجام شد' : 'Matches Played'}`
-                        : `${initialBResults.length} ${isRtl ? 'از ۴ بازی' : 'of 4 Matches'}`}
+                        : `${initialBResults.length} ${isRtl ? `از ${groupBResults.length} بازی` : `of ${groupBResults.length} Matches`}`}
                     </span>
                   </div>
 
-                  <button
-                    onClick={() => setExpandedB(!expandedB)}
-                    className="text-xs font-bold text-blue-400 hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 px-3 py-1 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
-                  >
-                    <span>
-                      {expandedB
-                        ? (isRtl ? 'نمایش کمتر' : t.showLess)
-                        : (isRtl ? `+${remainingBResults.length} بازی دیگر` : `+${remainingBResults.length} more`)}
-                    </span>
-                    <ChevronDown
-                      className={`w-3.5 h-3.5 transition-transform duration-300 ${
-                        expandedB ? 'rotate-180' : 'rotate-0'
-                      }`}
-                    />
-                  </button>
+                  {remainingBResults.length > 0 && (
+                    <button
+                      onClick={() => setExpandedB(!expandedB)}
+                      className="text-xs font-bold text-blue-400 hover:text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 px-3 py-1 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap shrink-0"
+                    >
+                      <span>
+                        {expandedB
+                          ? isRtl
+                            ? 'نمایش کمتر'
+                            : t.showLess
+                          : isRtl
+                          ? `+${remainingBResults.length} بازی دیگر`
+                          : `+${remainingBResults.length} more`}
+                      </span>
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                          expandedB ? 'rotate-180' : 'rotate-0'
+                        }`}
+                      />
+                    </button>
+                  )}
                 </div>
 
-                {/* Permanent 2 initial results */}
+                {/* Permanent 4 initial results */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   {initialBResults.map((res) => renderMatchCard(res, false))}
                 </div>
 
-                {/* Smooth Animated Accordion for remaining results */}
+                {/* Smooth Accordion for remaining Group B results */}
                 <AnimatePresence initial={false}>
                   {expandedB && (
                     <motion.div
@@ -425,8 +438,8 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
                         opacity: 1,
                         height: 'auto',
                         transition: {
-                          height: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
-                          opacity: { duration: 0.25, delay: 0.05 },
+                          height: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+                          opacity: { duration: 0.25, delay: 0.04 },
                         },
                       }}
                       exit={{
@@ -447,8 +460,8 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -6 }}
                             transition={{
-                              duration: 0.25,
-                              delay: idx * 0.04,
+                              duration: 0.24,
+                              delay: idx * 0.03,
                               ease: [0.22, 1, 0.36, 1],
                             }}
                           >
@@ -468,7 +481,7 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
         <div className="mt-8 flex justify-center">
           <button
             onClick={handleToggleAll}
-            className={`px-6 py-3 font-bold text-xs rounded-xl border shadow-lg flex items-center gap-2.5 cursor-pointer transition-all ${
+            className={`px-6 py-3 font-bold text-xs rounded-xl border flex items-center gap-2.5 cursor-pointer transition-all whitespace-nowrap shrink-0 ${
               isAllActiveExpanded
                 ? 'bg-[#0A1432]/90 hover:bg-blue-900/60 text-slate-300 hover:text-white border-blue-800'
                 : 'bg-[#0A1432] hover:bg-blue-900/50 text-white border-blue-700/60 hover:border-blue-400'
@@ -476,18 +489,17 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({ lang, onSelectTe
           >
             <span>
               {isAllActiveExpanded
-                ? (isRtl ? 'بستن و نمایش کمتر نتایج' : t.collapseResults)
-                : (isRtl ? 'مشاهده تمام نتایج مسابقات' : t.showAllResults)}
+                ? isRtl
+                  ? 'بستن و نمایش خلاصه نتایج'
+                  : t.collapseResults
+                : isRtl
+                ? `مشاهده تمام ۲۸ نتیجه ثبت‌شده (${totalHiddenInActiveView} بازی دیگر)`
+                : `${t.showAllResults} (+${totalHiddenInActiveView})`}
             </span>
-            {totalHiddenInActiveView > 0 && !isAllActiveExpanded && (
-              <span className="px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-blue-600/40 text-blue-300 border border-blue-500/40">
-                +{totalHiddenInActiveView}
-              </span>
-            )}
             {isAllActiveExpanded ? (
               <ChevronUp className="w-4 h-4 text-slate-400" />
             ) : (
-              <ChevronDown className="w-4 h-4 text-blue-400" />
+              <ChevronDown className="w-4 h-4 text-amber-400" />
             )}
           </button>
         </div>
