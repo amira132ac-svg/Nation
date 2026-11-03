@@ -118,6 +118,26 @@ export interface Translations {
   goalSummary: string;
   wonBy: string;
 
+  // Knockout & Final
+  navKnockout: string;
+  navPoll: string;
+  knockoutBadge: string;
+  knockoutTitle: string;
+  quarterFinalsTitle: string;
+  semiFinalsTitle: string;
+  grandFinalTitle: string;
+  bestOfThreeNotice: string;
+  qualifiedBadge: string;
+  grandFinalShowdown: string;
+  votePromptTitle: string;
+  votePromptSubtitle: string;
+  voteForWinner: string;
+  votedSuccess: string;
+  changePrediction: string;
+  totalVotesCount: string;
+  predictionRegular: string;
+  predictionPenalties: string;
+
   // Footer
   rightsReserved: string;
   developedBy: string;
@@ -233,6 +253,26 @@ export const translations: Record<Language, Translations> = {
     goalSummary: "Goals Breakdown",
     wonBy: "Won by",
 
+    // Knockout & Final
+    navKnockout: "Knockout Stage",
+    navPoll: "Grand Final",
+    knockoutBadge: "Official Knockout Stage Results",
+    knockoutTitle: "Knockout Stage",
+    quarterFinalsTitle: "Quarter-Finals (Best of 3)",
+    semiFinalsTitle: "Semi-Finals (Best of 3)",
+    grandFinalTitle: "Grand Final",
+    bestOfThreeNotice: "Best of 3 Series Format",
+    qualifiedBadge: "QUALIFIED",
+    grandFinalShowdown: "Grand Final Showdown",
+    votePromptTitle: "TM PROCLUB NATIONS LEAGUE FINAL",
+    votePromptSubtitle: "The road to the trophy is complete. Italy vs Brazil.",
+    voteForWinner: "Grand Finalist",
+    votedSuccess: "Finalists Confirmed",
+    changePrediction: "Match Details",
+    totalVotesCount: "Series Format",
+    predictionRegular: "Best of 3",
+    predictionPenalties: "Knockout Final",
+
     rightsReserved: "All rights reserved.",
     developedBy: "Developed By amirr0023",
     languageSelect: "Language",
@@ -344,6 +384,26 @@ export const translations: Record<Language, Translations> = {
     noGoals: "بدون گل",
     goalSummary: "تفکیک گل‌ها و برنده",
     wonBy: "برد",
+
+    // Knockout & Final
+    navKnockout: "مرحله حذفی",
+    navPoll: "فینال بزرگ",
+    knockoutBadge: "نتایج رسمی مرحله حذفی",
+    knockoutTitle: "مرحله حذفی مسابقات",
+    quarterFinalsTitle: "یک‌چهارم نهایی (بهترین از ۳ بازی)",
+    semiFinalsTitle: "نیمه‌نهایی (بهترین از ۳ بازی)",
+    grandFinalTitle: "فینال بزرگ",
+    bestOfThreeNotice: "فرمت سری بهترین از ۳ بازی (Best of 3)",
+    qualifiedBadge: "صعود کرد",
+    grandFinalShowdown: "دیدار فینال بزرگ",
+    votePromptTitle: "فینال بزرگ لیگ ملت‌های TM PROCLUB",
+    votePromptSubtitle: "مسیر رسیدن به جام تکمیل شد. نبرد نهایی قهرمانی: ایتالیا 🇮🇹 در برابر برزیل 🇧🇷",
+    voteForWinner: "فینالیست جام",
+    votedSuccess: "فینالیست‌ها مشخص شدند",
+    changePrediction: "جزئیات بازی",
+    totalVotesCount: "فرمت فینال",
+    predictionRegular: "وقت قانونی",
+    predictionPenalties: "ضیافت پنالتی‌ها",
 
     rightsReserved: "تمامی حقوق محفوظ است.",
     developedBy: "Developed By amirr0023",

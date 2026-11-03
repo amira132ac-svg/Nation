@@ -62,8 +62,38 @@ export interface StandingRow {
 export const TOURNAMENT_NAME = "TMPROCLUB NATIONS LEAGUE";
 export const TOURNAMENT_SUBTITLE = "International Football. One Competition.";
 export const TOURNAMENT_ORGANIZER = "TMPROCLUB";
-export const TOURNAMENT_STATUS = "GROUP STAGE COMPLETED";
+export const TOURNAMENT_STATUS = "GRAND FINAL: ITALY VS BRAZIL";
 export const TOTAL_TEAMS = 12;
+
+export interface KnockoutSubMatch {
+  matchNumber: number;
+  homeScore: number;
+  awayScore: number;
+  homePenalties?: number;
+  awayPenalties?: number;
+  isTechnical?: boolean;
+  technicalWinner?: 'home' | 'away';
+  noteFa?: string;
+  noteEn?: string;
+}
+
+export interface KnockoutSeries {
+  id: string;
+  round: 'quarter' | 'semi' | 'final';
+  roundTitleFa: string;
+  roundTitleEn: string;
+  formatFa: string;
+  formatEn: string;
+  team1: NationalTeam;
+  team2: NationalTeam;
+  team1SeriesScore: number;
+  team2SeriesScore: number;
+  winnerTeamId: string | null;
+  isCompleted: boolean;
+  matches: KnockoutSubMatch[];
+  summaryFa: string;
+  summaryEn: string;
+}
 
 export const GROUP_A_TEAMS: NationalTeam[] = [
   { id: 'arg', name: 'Argentina', nameFa: 'آرژانتین', code: 'ARG', group: 'A', drawIndex: 1, flagCountry: 'argentina' },
@@ -738,3 +768,233 @@ export const TOURNAMENT_OVERVIEW_STATS = {
 export const TOURNAMENT_TOP_SCORERS: PlayerStatItem[] = [];
 
 export const TOURNAMENT_TOP_ASSISTS: PlayerStatItem[] = [];
+
+// ==========================================
+// 5. OFFICIAL KNOCKOUT STAGE (BEST OF 3) & GRAND FINAL
+// ==========================================
+
+export const QUARTER_FINALS: KnockoutSeries[] = [
+  {
+    id: 'qf-1',
+    round: 'quarter',
+    roundTitleFa: 'یک‌چهارم نهایی - بازی اول',
+    roundTitleEn: 'Quarter-Final 1',
+    formatFa: 'بهترین از ۳ بازی (Best of 3)',
+    formatEn: 'Best of 3',
+    team1: getTeam('italy'),
+    team2: getTeam('argentina'),
+    team1SeriesScore: 2,
+    team2SeriesScore: 0,
+    winnerTeamId: 'ita',
+    isCompleted: true,
+    summaryFa: 'ایتالیا با برد ۲-۰ در سری صعود کرد',
+    summaryEn: 'ITALY QUALIFIED – 2-0',
+    matches: [
+      {
+        matchNumber: 1,
+        homeScore: 2,
+        awayScore: 0,
+        noteFa: 'بازی ۱: ایتالیا ۲ – ۰ آرژانتین',
+        noteEn: 'Match 1: Italy 2–0 Argentina',
+      },
+      {
+        matchNumber: 2,
+        homeScore: 5,
+        awayScore: 1,
+        noteFa: 'بازی ۲: ایتالیا ۵ – ۱ آرژانتین',
+        noteEn: 'Match 2: Italy 5–1 Argentina',
+      },
+    ],
+  },
+  {
+    id: 'qf-2',
+    round: 'quarter',
+    roundTitleFa: 'یک‌چهارم نهایی - بازی دوم',
+    roundTitleEn: 'Quarter-Final 2',
+    formatFa: 'بهترین از ۳ بازی (Best of 3)',
+    formatEn: 'Best of 3',
+    team1: getTeam('netherlands'),
+    team2: getTeam('spain'),
+    team1SeriesScore: 2,
+    team2SeriesScore: 0,
+    winnerTeamId: 'ned',
+    isCompleted: true,
+    summaryFa: 'هلند با برد ۲-۰ در سری صعود کرد',
+    summaryEn: 'NETHERLANDS QUALIFIED – 2-0',
+    matches: [
+      {
+        matchNumber: 1,
+        homeScore: 3,
+        awayScore: 1,
+        noteFa: 'بازی ۱: هلند ۳ – ۱ اسپانیا',
+        noteEn: 'Match 1: Netherlands 3–1 Spain',
+      },
+      {
+        matchNumber: 2,
+        homeScore: 8,
+        awayScore: 0,
+        noteFa: 'بازی ۲: هلند ۸ – ۰ اسپانیا',
+        noteEn: 'Match 2: Netherlands 8–0 Spain',
+      },
+    ],
+  },
+  {
+    id: 'qf-3',
+    round: 'quarter',
+    roundTitleFa: 'یک‌چهارم نهایی - بازی سوم',
+    roundTitleEn: 'Quarter-Final 3',
+    formatFa: 'بهترین از ۳ بازی (Best of 3)',
+    formatEn: 'Best of 3',
+    team1: getTeam('brazil'),
+    team2: getTeam('usa'),
+    team1SeriesScore: 2,
+    team2SeriesScore: 0,
+    winnerTeamId: 'bra',
+    isCompleted: true,
+    summaryFa: 'برزیل با برد ۲-۰ در سری صعود کرد',
+    summaryEn: 'BRAZIL QUALIFIED – 2-0',
+    matches: [
+      {
+        matchNumber: 1,
+        homeScore: 1,
+        awayScore: 0,
+        noteFa: 'بازی ۱: برزیل ۱ – ۰ آمریکا',
+        noteEn: 'Match 1: Brazil 1–0 USA',
+      },
+      {
+        matchNumber: 2,
+        homeScore: 1,
+        awayScore: 1,
+        homePenalties: 5,
+        awayPenalties: 3,
+        noteFa: 'بازی ۲: برزیل ۱ – ۱ آمریکا (پنالتی ۵–۳ به سود برزیل)',
+        noteEn: 'Match 2: Brazil 1–1 USA (5–3 PEN)',
+      },
+    ],
+  },
+  {
+    id: 'qf-4',
+    round: 'quarter',
+    roundTitleFa: 'یک‌چهارم نهایی - بازی چهارم',
+    roundTitleEn: 'Quarter-Final 4',
+    formatFa: 'بهترین از ۳ بازی (Best of 3)',
+    formatEn: 'Best of 3',
+    team1: getTeam('israel'),
+    team2: getTeam('colombia'),
+    team1SeriesScore: 1,
+    team2SeriesScore: 0,
+    winnerTeamId: 'isr',
+    isCompleted: true,
+    summaryFa: 'اسرائیل با برد ۱-۰ فنی صعود کرد',
+    summaryEn: 'ISRAEL QUALIFIED – 1-0',
+    matches: [
+      {
+        matchNumber: 1,
+        homeScore: 3,
+        awayScore: 0,
+        isTechnical: true,
+        technicalWinner: 'home',
+        noteFa: 'کلمبیا: باخت فنی (۳–۰) · اسرائیل: برد فنی',
+        noteEn: 'Colombia: Technical Defeat (3–0) · Israel: Technical Victory',
+      },
+    ],
+  },
+];
+
+export const SEMI_FINALS: KnockoutSeries[] = [
+  {
+    id: 'sf-1',
+    round: 'semi',
+    roundTitleFa: 'نیمه‌نهایی - بازی اول',
+    roundTitleEn: 'Semi-Final 1',
+    formatFa: 'بهترین از ۳ بازی (Best of 3)',
+    formatEn: 'Best of 3',
+    team1: getTeam('italy'),
+    team2: getTeam('netherlands'),
+    team1SeriesScore: 2,
+    team2SeriesScore: 1,
+    winnerTeamId: 'ita',
+    isCompleted: true,
+    summaryFa: 'ایتالیا با برتری ۲-۱ در سری به فینال رسید',
+    summaryEn: 'ITALY QUALIFIED – 2-1',
+    matches: [
+      {
+        matchNumber: 1,
+        homeScore: 3,
+        awayScore: 0,
+        isTechnical: true,
+        technicalWinner: 'home',
+        noteFa: 'بازی ۱: ایتالیا ۳ – ۰ هلند (فنی)',
+        noteEn: 'Match 1: Italy 3–0 Netherlands (Technical)',
+      },
+      {
+        matchNumber: 2,
+        homeScore: 1,
+        awayScore: 2,
+        noteFa: 'بازی ۲: ایتالیا ۱ – ۲ هلند',
+        noteEn: 'Match 2: Italy 1–2 Netherlands',
+      },
+      {
+        matchNumber: 3,
+        homeScore: 0,
+        awayScore: 0,
+        homePenalties: 4,
+        awayPenalties: 2,
+        noteFa: 'بازی ۳: ایتالیا ۰ – ۰ هلند (پنالتی ۴–۲ به سود ایتالیا)',
+        noteEn: 'Match 3: Italy 0–0 Netherlands (4–2 PEN)',
+      },
+    ],
+  },
+  {
+    id: 'sf-2',
+    round: 'semi',
+    roundTitleFa: 'نیمه‌نهایی - بازی دوم',
+    roundTitleEn: 'Semi-Final 2',
+    formatFa: 'بهترین از ۳ بازی (Best of 3)',
+    formatEn: 'Best of 3',
+    team1: getTeam('brazil'),
+    team2: getTeam('israel'),
+    team1SeriesScore: 2,
+    team2SeriesScore: 1,
+    winnerTeamId: 'bra',
+    isCompleted: true,
+    summaryFa: 'برزیل با برتری ۲-۱ در سری به فینال رسید',
+    summaryEn: 'BRAZIL QUALIFIED – 2-1',
+    matches: [
+      {
+        matchNumber: 1,
+        homeScore: 1,
+        awayScore: 2,
+        noteFa: 'بازی ۱: برزیل ۱ – ۲ اسرائیل',
+        noteEn: 'Match 1: Brazil 1–2 Israel',
+      },
+      {
+        matchNumber: 2,
+        homeScore: 1,
+        awayScore: 0,
+        noteFa: 'بازی ۲: برزیل ۱ – ۰ اسرائیل',
+        noteEn: 'Match 2: Brazil 1–0 Israel',
+      },
+      {
+        matchNumber: 3,
+        homeScore: 1,
+        awayScore: 0,
+        noteFa: 'بازی ۳: برزیل ۱ – ۰ اسرائیل',
+        noteEn: 'Match 3: Brazil 1–0 Israel',
+      },
+    ],
+  },
+];
+
+export const GRAND_FINAL_MATCH = {
+  id: 'final-grand',
+  titleFa: 'فینال بزرگ لیگ ملت‌های TM PROCLUB',
+  titleEn: 'TM PROCLUB NATIONS LEAGUE GRAND FINAL',
+  team1: getTeam('italy'),
+  team2: getTeam('brazil'),
+  statusFa: 'فینالیست‌ها مشخص شدند · مسیر جام تکمیل شد',
+  statusEn: 'FINALISTS CONFIRMED · The road to the trophy is complete',
+  descriptionFa: 'ایتالیا 🇮🇹 در برابر برزیل 🇧🇷 برای کسب عنوان قهرمانی رقابت خواهند کرد.',
+  descriptionEn: 'Italy 🇮🇹 vs Brazil 🇧🇷 will battle for the ultimate championship crown.',
+};
+

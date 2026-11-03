@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Globe, Home, Trophy, Calendar, Table, BarChart3, Users, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Globe, Home, Trophy, Calendar, Table, BarChart3, Users, ChevronLeft, ChevronRight, Flame, Sparkles } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 import { Language, translations } from '../data/translations';
 
@@ -42,8 +42,9 @@ export const Header: React.FC<HeaderProps> = ({
 
   const navItems = [
     { id: 'home', label: t.navHome, icon: Home },
-    { id: 'results', label: t.navResults, icon: Trophy },
-    { id: 'fixtures', label: t.navFixtures, icon: Calendar },
+    { id: 'final-poll', label: t.navPoll, icon: Flame, isSpecial: true },
+    { id: 'knockout', label: t.navKnockout, icon: Trophy },
+    { id: 'results', label: t.navResults, icon: Calendar },
     { id: 'standings', label: t.navStandings, icon: Table },
     { id: 'stats', label: t.navStats, icon: BarChart3 },
     { id: 'teams', label: t.navTeams, icon: Users },
@@ -80,10 +81,15 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   key={item.id}
                   onClick={() => handleLinkClick(item.id)}
-                  className={`relative py-1 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                    isActive ? 'text-white' : 'hover:text-white text-slate-400'
+                  className={`relative py-1 flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                    isActive
+                      ? 'text-white'
+                      : item.isSpecial
+                      ? 'text-amber-400 hover:text-amber-300 font-black'
+                      : 'hover:text-white text-slate-400'
                   }`}
                 >
+                  {item.isSpecial && <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />}
                   <span>{item.label}</span>
                   {isActive && (
                     <motion.span
@@ -98,7 +104,7 @@ export const Header: React.FC<HeaderProps> = ({
           </nav>
 
           {/* Zone 3: Language Switcher & Mobile Menu Toggle */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2.5 shrink-0">
             <button
               onClick={onToggleLang}
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#0A1432] hover:bg-blue-600/20 border border-blue-800/60 hover:border-blue-400 text-xs font-bold text-slate-200 hover:text-white transition-all cursor-pointer whitespace-nowrap shrink-0"

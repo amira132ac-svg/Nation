@@ -9,12 +9,16 @@ interface HeroSectionProps {
   lang: Language;
   onNavigateToResults: () => void;
   onNavigateToFixtures: () => void;
+  onNavigateToPoll?: () => void;
+  onNavigateToKnockout?: () => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
   lang,
   onNavigateToResults,
   onNavigateToFixtures,
+  onNavigateToPoll,
+  onNavigateToKnockout,
 }) => {
   const t = translations[lang];
   const isRtl = lang === 'fa';
@@ -26,6 +30,28 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="absolute top-1/4 right-12 w-[420px] h-[420px] bg-amber-400/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 my-auto">
+        {/* Top Grand Final Flash Alert */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 inline-flex flex-wrap items-center gap-3 px-4 py-2 rounded-2xl bg-gradient-to-r from-amber-500/20 via-blue-600/20 to-amber-500/20 border border-amber-400/40 text-xs sm:text-sm shadow-lg cursor-pointer hover:border-amber-400 transition-all"
+          onClick={onNavigateToPoll}
+        >
+          <span className="flex h-2.5 w-2.5 relative">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+          </span>
+          <span className="font-black text-amber-300">
+            {isRtl ? '🏆 فینال بزرگ تأیید شد:' : '🏆 GRAND FINAL CONFIRMED:'}
+          </span>
+          <span className="font-bold text-white">
+            🇮🇹 {isRtl ? 'ایتالیا' : 'Italy'} vs {isRtl ? 'برزیل' : 'Brazil'} 🇧🇷
+          </span>
+          <span className="text-amber-400/90 underline font-black">
+            {isRtl ? 'مشاهده بازی فینال ←' : 'View Final Match →'}
+          </span>
+        </motion.div>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left Column: Official Federation Typography & Primary Actions */}
           <motion.div
@@ -34,11 +60,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7 flex flex-col items-start text-start space-y-6"
           >
-            {/* Clean Unboxed Editorial Kicker (Zero-Pill Discipline) */}
+            {/* Clean Unboxed Editorial Kicker */}
             <div className="flex flex-wrap items-center gap-2.5 text-xs sm:text-sm font-semibold tracking-wider text-amber-400/95">
               <span>{t.organizer}</span>
               <span aria-hidden="true" className="text-slate-600">·</span>
-              <span className="text-sky-300">{t.statusInProgress}</span>
+              <span className="text-emerald-400 font-bold">
+                {isRtl ? 'مرحله حذفی تکمیل شد · فینال بزرگ' : 'KNOCKOUT COMPLETED · GRAND FINAL'}
+              </span>
               <span aria-hidden="true" className="text-slate-600">·</span>
               <span className="text-slate-400 font-mono tabular-nums">2026</span>
             </div>
@@ -54,17 +82,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             {/* Concrete Editorial Subtitle */}
             <p className="text-base sm:text-lg md:text-xl font-medium text-slate-300 max-w-xl leading-relaxed">
               {isRtl
-                ? 'پرتال رسمی نتایج، جدول رده‌بندی و برنامه مسابقات لیگ ملت‌های TM PROCLUBS با حضور ۱۲ تیم ملی در دو گروه ۶ تیمی.'
-                : 'Official match results, group standings, and tournament schedule of the TM PROCLUBS Nations League featuring 12 national teams.'}
+                ? 'پرتال رسمی نتایج لیگ ملت‌های TM PROCLUBS: نتایج کامل مراحل یک‌چهارم و نیمه‌نهایی، بازی فینال بزرگ ایتالیا و برزیل، جدول و آمار مسابقات.'
+                : 'Official TM PROCLUBS Nations League Portal: Complete Quarter & Semi-Final results, Italy vs Brazil Grand Final match center, and tournament records.'}
             </p>
 
             {/* Primary & Secondary Action Controls */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
+            <div className="pt-2 flex flex-wrap items-center gap-3.5">
               <button
-                onClick={onNavigateToResults}
-                className="px-6 py-3.5 bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 text-sm font-black tracking-wide rounded-xl shadow-[0_8px_28px_rgba(245,158,11,0.3)] transition-all duration-200 flex items-center gap-2.5 cursor-pointer group whitespace-nowrap shrink-0"
+                onClick={onNavigateToPoll}
+                className="px-6 py-3.5 bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 text-sm font-black tracking-wide rounded-xl shadow-[0_8px_28px_rgba(245,158,11,0.35)] transition-all duration-200 flex items-center gap-2.5 cursor-pointer group whitespace-nowrap shrink-0"
               >
-                <span>{isRtl ? 'مشاهده نتایج بازی‌ها' : t.navResults}</span>
+                <span>{isRtl ? '🏆 بازی فینال بزرگ' : '🏆 Grand Final Match'}</span>
                 <ChevronRight
                   className={`w-4 h-4 transition-transform duration-200 ${
                     isRtl
@@ -75,14 +103,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               </button>
 
               <button
-                onClick={onNavigateToFixtures}
-                className="px-6 py-3.5 bg-[#0A1432]/90 hover:bg-blue-950/90 text-slate-100 hover:text-white border border-blue-800/70 hover:border-blue-400 text-sm font-bold tracking-wide rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0"
+                onClick={onNavigateToKnockout}
+                className="px-5 py-3.5 bg-blue-600/30 hover:bg-blue-600/50 text-white border border-blue-500/60 hover:border-blue-400 text-sm font-bold tracking-wide rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0"
               >
-                <span>
-                  {isRtl
-                    ? `بازی‌های باقی‌مانده (${REMAINING_FIXTURES.length})`
-                    : `${t.navFixtures} (${REMAINING_FIXTURES.length})`}
-                </span>
+                <span>{isRtl ? 'نتایج مرحله حذفی' : 'Knockout Bracket'}</span>
+              </button>
+
+              <button
+                onClick={onNavigateToResults}
+                className="px-5 py-3.5 bg-[#0A1432]/90 hover:bg-blue-950/90 text-slate-200 hover:text-white border border-blue-800/70 hover:border-blue-400 text-sm font-bold tracking-wide rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0"
+              >
+                <span>{isRtl ? 'نتایج گروهی (۳۰ بازی)' : 'Group Results (30)'}</span>
               </button>
             </div>
           </motion.div>

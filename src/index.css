@@ -3,114 +3,152 @@
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #050B1B;
+    color: #F5F7FF;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
   }
 
   [dir="rtl"] body,
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] .font-display,
   [dir="rtl"] {
-    font-family: 'Vazirmatn', 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-family: 'Vazirmatn', 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
   }
-  
+
   .font-mono-numbers {
     font-family: 'JetBrains Mono', monospace;
     font-variant-numeric: tabular-nums;
   }
 }
 
-/* Custom tournament chamfer card corners matching reference image */
-.chamfer-card {
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% calc(100% - 18px),
-    calc(100% - 18px) 100%,
-    0 100%
-  );
+/* Tabular numbers utility for all scores, rankings, and statistics */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 
-.chamfer-card-border {
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% calc(100% - 19px),
-    calc(100% - 19px) 100%,
-    0 100%
-  );
-}
-
-/* Slanted header banner */
-.slanted-badge {
-  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 100%, 0 100%);
-}
-
-/* Brush stroke effect for VS badge and group header matching IMG_1730.jpeg */
-.brush-badge {
-  background: #FFCC00;
-  clip-path: polygon(
-    4% 10%, 15% 3%, 35% 8%, 55% 2%, 80% 6%, 96% 2%, 100% 25%, 
-    94% 50%, 98% 75%, 92% 95%, 75% 90%, 50% 98%, 25% 92%, 5% 96%, 
-    1% 70%, 6% 45%, 0% 25%
-  );
-  box-shadow: 0 0 20px rgba(255, 204, 0, 0.45);
-}
-
-/* Glowing stadium aura & light flood */
-.stadium-glow {
-  background: radial-gradient(circle at 50% 20%, rgba(37, 99, 235, 0.35) 0%, rgba(11, 26, 61, 0.1) 60%, transparent 80%);
-}
-
-.gold-glow {
-  box-shadow: 0 0 25px rgba(255, 204, 0, 0.25);
-}
-
-/* Lively floating shimmer */
-@keyframes floatGentle {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-.animate-float-gentle {
-  animation: floatGentle 4.5s ease-in-out infinite;
-}
-
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.05); }
-}
-
-.animate-pulse-glow {
-  animation: pulseGlow 3.5s ease-in-out infinite;
-}
-
-/* Shimmer wave animation for data loading skeletons */
-@keyframes shimmerSweep {
+/* Smooth full-section page entrance transition */
+@keyframes pageEnter {
   0% {
-    transform: translateX(-100%);
+    opacity: 0;
+    transform: translateY(18px) scale(0.992);
+    filter: blur(4px);
   }
   100% {
-    transform: translateX(100%);
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
 }
 
-.shimmer-skeleton {
-  position: relative;
-  overflow: hidden;
-  background-color: rgba(15, 23, 42, 0.75);
+.animate-page-enter {
+  animation: pageEnter 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.shimmer-skeleton::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  transform: translateX(-100%);
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.03) 25%,
-    rgba(147, 197, 253, 0.16) 50%,
-    rgba(255, 255, 255, 0.03) 75%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  animation: shimmerSweep 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+/* Smooth view & tab panel entry transition */
+@keyframes panelEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-panel-enter {
+  animation: panelEnter 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 3-Line Menu Drawer Entrance & Staggered Items */
+@keyframes drawerEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-drawer-enter {
+  animation: drawerEnter 0.36s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes menuItemEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-menu-item {
+  opacity: 0;
+  animation: menuItemEnter 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 01. TMPROCLUBS Royal Blue Stadium Atmosphere */
+.tm-royal-glow {
+  background: radial-gradient(circle at 50% 0%, rgba(36, 91, 255, 0.28) 0%, rgba(5, 11, 27, 0.8) 55%, rgba(5, 11, 27, 1) 100%);
+}
+
+.tm-grid-pattern {
+  background-size: 64px 64px;
+  background-image: 
+    linear-gradient(to right, rgba(36, 91, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(36, 91, 255, 0.05) 1px, transparent 1px);
+}
+
+/* 02. IMMORTAL LEAGUE Deep Purple & Enchanted Mist Atmosphere */
+.immortal-glow {
+  background: radial-gradient(circle at 50% 15%, rgba(123, 44, 255, 0.34) 0%, rgba(24, 6, 48, 0.65) 50%, rgba(3, 1, 8, 1) 100%);
+}
+
+.immortal-card-surface {
+  background: linear-gradient(145deg, rgba(18, 7, 36, 0.92) 0%, rgba(7, 3, 16, 0.96) 100%);
+}
+
+/* 03. SUPERLEAGUE Midnight Navy & Champagne Starlight Atmosphere */
+.superleague-glow {
+  background: radial-gradient(circle at 50% 10%, rgba(36, 91, 255, 0.25) 0%, rgba(212, 175, 55, 0.07) 40%, rgba(4, 8, 23, 1) 85%);
+}
+
+/* 04. TM GLOBE Luxury Black & Metallic Champagne Gold Atmosphere */
+.ballondor-glow {
+  background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.22) 0%, rgba(26, 20, 8, 0.6) 45%, rgba(5, 5, 7, 1) 90%);
+}
+
+.gold-metallic-text {
+  background: linear-gradient(135deg, #FFF3B0 0%, #D4AF37 45%, #AA7C11 75%, #F3E5AB 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-metallic-border {
+  border-color: rgba(212, 175, 55, 0.35);
+}
+
+/* Subtle animations */
+@keyframes pulseSubtle {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.75; }
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 4.5s ease-in-out infinite;
 }
 
 /* Custom smooth dark scrollbar */
@@ -119,12 +157,12 @@
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #070D1E;
+  background: #050B1B;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
+  background: #162447;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563EB;
+  background: #245BFF;
 }
