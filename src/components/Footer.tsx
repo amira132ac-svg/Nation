@@ -8,19 +8,16 @@ export const Footer: React.FC = () => {
 
   const links: { id: PageId; labelEn: string; labelFa: string }[] = [
     { id: 'home', labelEn: 'Home', labelFa: 'صفحه اصلی' },
-    { id: 'immortal', labelEn: 'Immortal League', labelFa: 'لیگ ایمورتال' },
-    { id: 'superleague', labelEn: 'Superleague', labelFa: 'سوپرلیگ' },
     { id: 'ranking', labelEn: 'FC27 Ranking', labelFa: 'رنکینگ FC27' },
     { id: 'ballondor', labelEn: 'TM Globe', labelFa: 'تی‌ام گلوب' },
+    { id: 'superleague', labelEn: 'Superleague', labelFa: 'سوپرلیگ' },
     { id: 'news', labelEn: 'News', labelFa: 'اخبار' },
   ];
 
   return (
     <footer
       className={`border-t transition-colors ${
-        activePage === 'immortal'
-          ? 'bg-[#030108] border-[#7B2CFF]/25'
-          : activePage === 'ballondor'
+        activePage === 'ballondor'
           ? 'bg-[#050507] border-[#D4AF37]/20'
           : 'bg-[#030712] border-white/10'
       }`}
@@ -96,21 +93,12 @@ export const Footer: React.FC = () => {
                 <ArrowUpRight className="w-3.5 h-3.5 text-[#60A5FA]" />
               </a>
               <a
-                href={OFFICIAL_LINKS.immortalChannel}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full px-3.5 py-2.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 text-xs font-mono-numbers font-semibold text-[#C4A5FF] flex items-center justify-between transition-all"
-              >
-                <span dir="ltr">t.me/TM_IMMORTAL</span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-[#A855F7]" />
-              </a>
-              <a
                 href={OFFICIAL_LINKS.registrationTelegram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full px-3.5 py-2.5 rounded-lg bg-[#245BFF]/15 hover:bg-[#245BFF]/25 border border-[#245BFF]/35 text-xs font-mono-numbers font-semibold text-white flex items-center justify-between transition-all"
               >
-                <span dir="ltr">Register: @Perez_Himself</span>
+                <span dir="ltr">Contact: @Perez_Himself</span>
                 <Send className="w-3.5 h-3.5 text-[#60A5FA]" />
               </a>
             </div>

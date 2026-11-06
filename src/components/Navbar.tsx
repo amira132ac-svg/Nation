@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, ArrowUpRight } from 'lucide-react';
+import { ChevronRight, ArrowUpRight, Award } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
 import { OFFICIAL_ASSETS, OFFICIAL_LINKS, PageId } from '../data/tmproData';
 
 export const Navbar: React.FC = () => {
-  const { lang, activePage, navigateTo, config } = usePlatform();
+  const { lang, activePage, navigateTo } = usePlatform();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -16,19 +16,13 @@ export const Navbar: React.FC = () => {
 
   const navItems: { id: PageId; labelEn: string; labelFa: string; badge?: string }[] = [
     { id: 'home', labelEn: 'Home', labelFa: 'صفحه اصلی' },
-    { id: 'immortal', labelEn: 'Immortal League', labelFa: 'لیگ ایمورتال', badge: 'S01' },
-    { id: 'superleague', labelEn: 'Superleague', labelFa: 'سوپرلیگ', badge: lang === 'fa' ? 'به‌زودی' : 'SOON' },
-    { id: 'ranking', labelEn: 'FC27 Ranking', labelFa: 'رنکینگ FC27' },
+    { id: 'ranking', labelEn: 'FC27 Ranking', labelFa: 'رنکینگ FC27', badge: '17' },
     { id: 'ballondor', labelEn: 'TM Globe', labelFa: 'تی‌ام گلوب', badge: '10' },
+    { id: 'superleague', labelEn: 'Superleague', labelFa: 'سوپرلیگ', badge: lang === 'fa' ? 'به‌زودی' : 'SOON' },
     { id: 'news', labelEn: 'News', labelFa: 'اخبار و اطلاعیه‌ها' },
   ];
 
   const getHeaderSurface = () => {
-    if (activePage === 'immortal') {
-      return scrolled
-        ? 'bg-[#05020C]/95 border-b border-[#7B2CFF]/30 shadow-[0_12px_40px_rgba(3,1,8,0.9)]'
-        : 'bg-[#05020C]/80 border-b border-white/[0.08]';
-    }
     if (activePage === 'ballondor') {
       return scrolled
         ? 'bg-[#050507]/95 border-b border-[#D4AF37]/30 shadow-[0_12px_40px_rgba(0,0,0,0.9)]'
@@ -84,10 +78,7 @@ export const Navbar: React.FC = () => {
             let textColor = isActive ? 'text-white' : 'text-slate-400 hover:text-white';
             let barColor = 'bg-[#245BFF]';
 
-            if (item.id === 'immortal') {
-              textColor = isActive ? 'text-[#F7F2FF]' : 'text-slate-400 hover:text-[#C4A5FF]';
-              barColor = 'bg-[#A855F7]';
-            } else if (item.id === 'ballondor') {
+            if (item.id === 'ballondor') {
               textColor = isActive ? 'text-[#FFF3B0]' : 'text-slate-400 hover:text-[#F3E5AB]';
               barColor = 'bg-[#D4AF37]';
             }
@@ -109,30 +100,27 @@ export const Navbar: React.FC = () => {
           })}
         </nav>
 
-        {/* Right: Active Competition Status, Club Entry & Animated 3-Line Menu Trigger */}
+        {/* Right: TM Globe Quick Pill, Telegram & Animated 3-Line Menu Trigger */}
         <div className="flex items-center gap-3 shrink-0">
           <button
-            onClick={() => handleNavClick('immortal')}
-            className="hidden md:flex items-center gap-2.5 px-3.5 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 transition-all group cursor-pointer"
+            onClick={() => handleNavClick('ballondor')}
+            className="hidden md:flex items-center gap-2.5 px-3.5 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-[#D4AF37]/30 transition-all group cursor-pointer"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#A855F7] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#A855F7]" />
-            </span>
+            <Award className="w-3.5 h-3.5 text-[#D4AF37]" />
             <span dir="ltr" className="text-[11px] font-mono-numbers font-semibold tracking-wider text-slate-200">
-              IMMORTAL S01 <span className="text-slate-500 mx-1">·</span>{' '}
-              <span className="text-[#C4A5FF] font-bold">{config.immortalStatus}</span>
+              TM GLOBE <span className="text-slate-500 mx-1">·</span>{' '}
+              <span className="text-[#F3E5AB] font-bold">NOMINEES</span>
             </span>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-white group-hover:translate-x-0.5 rtl:rotate-180 transition-all" />
           </button>
 
           <a
-            href={OFFICIAL_LINKS.registrationTelegram}
+            href={OFFICIAL_LINKS.mainChannel}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#245BFF] hover:bg-[#1D4ED8] text-white text-xs font-display font-bold uppercase tracking-wider transition-all"
           >
-            <span>{lang === 'fa' ? 'ثبت‌نام باشگاه' : 'Club Entry'}</span>
+            <span dir="ltr">@TM_PROCLUBS</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </a>
 
@@ -170,17 +158,17 @@ export const Navbar: React.FC = () => {
         <div className="border-t border-white/10 bg-[#050B1B]/98 backdrop-blur-2xl px-4 sm:px-6 lg:px-8 pt-5 pb-7 shadow-[0_25px_70px_rgba(0,0,0,0.85)] animate-drawer-enter">
           <div className="max-w-[1440px] mx-auto space-y-4">
             <button
-              onClick={() => handleNavClick('immortal')}
+              onClick={() => handleNavClick('ballondor')}
               style={{ animationDelay: '20ms' }}
-              className="animate-menu-item w-full flex items-center justify-between px-4 py-3.5 rounded-xl bg-[#120626] hover:bg-[#190933] border border-[#7B2CFF]/45 text-start transition-colors cursor-pointer"
+              className="animate-menu-item w-full flex items-center justify-between px-4 py-3.5 rounded-xl bg-[#0D0A04] hover:bg-[#171206] border border-[#D4AF37]/45 text-start transition-colors cursor-pointer"
             >
               <div className="flex items-center gap-2.5">
-                <span className="w-2 h-2 rounded-full bg-[#A855F7]" />
-                <span dir="ltr" className="text-xs font-mono-numbers font-bold text-[#F7F2FF]">
-                  IMMORTAL LEAGUE S01 · REGISTRATION OPEN
+                <Award className="w-4 h-4 text-[#D4AF37]" />
+                <span dir="ltr" className="text-xs font-mono-numbers font-bold text-[#F3E5AB]">
+                  TM GLOBE · 10 OFFICIAL AWARDS & NOMINEES
                 </span>
               </div>
-              <ChevronRight className="w-4 h-4 text-[#C4A5FF] rtl:rotate-180" />
+              <ChevronRight className="w-4 h-4 text-[#D4AF37] rtl:rotate-180" />
             </button>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">

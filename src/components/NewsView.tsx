@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Newspaper,
-  Send,
   ArrowUpRight,
   ChevronRight,
   FileText,
@@ -34,7 +33,7 @@ export const NewsView: React.FC = () => {
               </h1>
             </div>
 
-            {/* Official Telegram Broadcast Links */}
+            {/* Official Telegram Broadcast Link */}
             <div className="flex flex-wrap items-center gap-3">
               <a
                 href={OFFICIAL_LINKS.mainChannel}
@@ -43,15 +42,6 @@ export const NewsView: React.FC = () => {
                 className="px-5 py-3 rounded-xl bg-[#245BFF] hover:bg-[#1D4ED8] text-white font-mono-numbers font-bold text-xs flex items-center gap-2 transition-all"
               >
                 <span dir="ltr">@TM_PROCLUBS</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </a>
-              <a
-                href={OFFICIAL_LINKS.immortalChannel}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-3 rounded-xl bg-[#7B2CFF] hover:bg-[#6D28D9] text-white font-mono-numbers font-bold text-xs flex items-center gap-2 transition-all"
-              >
-                <span dir="ltr">@TM_IMMORTAL</span>
                 <ArrowUpRight className="w-4 h-4" />
               </a>
             </div>
@@ -110,17 +100,6 @@ export const NewsView: React.FC = () => {
 
                 <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
                   <div className="flex flex-wrap items-center gap-2.5">
-                    {article.registrationUrl && (
-                      <a
-                        href={article.registrationUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-5 py-2.5 rounded-xl bg-[#7B2CFF] hover:bg-[#6D28D9] text-white font-display font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all"
-                      >
-                        <Send className="w-3.5 h-3.5" />
-                        <span dir="ltr">Register: @Perez_Himself</span>
-                      </a>
-                    )}
                     {article.telegramChannels.map((ch) => (
                       <a
                         key={ch.url}

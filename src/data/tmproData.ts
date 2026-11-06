@@ -124,180 +124,96 @@ export const OFFICIAL_LINKS = {
 };
 
 /**
- * 05 — IMMORTAL REGISTERED TEAMS (EXACT ORDER & SPELLING)
+ * FC27 OFFICIAL TEAM RANKING (EXACT ORDER & SPELLING — 01 TO 17)
  * 01 — ALGOORG
- * 02 — INVADERZ
- * 03 — AZADI
- * 04 — SOROUSHFC
- * 05 — MADRIDTVSHOW
+ * 02 — SOROUSH FC
+ * 03 — INVADERZ
+ * 04 — AZADI
+ * 05 — SHAMOOSHAK
  * 06 — WARRIORS
- * 07 — MADEINGOD
- * 08 — ACHMAZ FC
+ * 07 — MADRIDTVSHOW
+ * 08 — MADEINGOD
+ * 09 — ACHMAZ FC
+ * 10 — AFTABE
+ * 11 — GUARDIANS
+ * 12 — VERBOS
+ * 13 — SHIFT DELETE
+ * 14 — BATTERING RAM
+ * 15 — GODLY
+ * 16 — CASPIAN
+ * 17 — ADABFC
  */
-export const INITIAL_REGISTERED_CLUBS: RegisteredClub[] = [
-  {
-    id: 'algoorg',
-    slotNumber: '01',
-    licenseCode: 'TM-FC27-001',
-    name: 'ALGOORG',
-    monogram: 'ALG',
-    accentColor: '#7B2CFF',
-    secondaryColor: '#C4A5FF',
-    registrationStatus: 'CONFIRMED',
-    divisionEn: 'Seed Pot A',
-    divisionFa: 'سید اول',
-    rosterFormat: 'SEASON 01',
-    competitions: ['FC27 TEAM RANKING'],
-    seasonCycle: 'FC 27',
-    trophies: [],
-  },
-  {
-    id: 'invaderz',
-    slotNumber: '02',
-    licenseCode: 'TM-FC27-002',
-    name: 'INVADERZ',
-    monogram: 'INV',
-    accentColor: '#245BFF',
-    secondaryColor: '#60A5FA',
-    registrationStatus: 'CONFIRMED',
-    divisionEn: 'Seed Pot A',
-    divisionFa: 'سید اول',
-    rosterFormat: 'SEASON 01',
-    competitions: ['FC27 TEAM RANKING'],
-    seasonCycle: 'FC 27',
-    trophies: [],
-  },
-  {
-    id: 'azadi',
-    slotNumber: '03',
-    licenseCode: 'TM-FC27-003',
-    name: 'AZADI',
-    monogram: 'AZD',
-    accentColor: '#A855F7',
-    secondaryColor: '#E9D5FF',
-    registrationStatus: 'CONFIRMED',
-    divisionEn: 'Seed Pot A',
-    divisionFa: 'سید اول',
-    rosterFormat: 'SEASON 01',
-    competitions: ['FC27 TEAM RANKING'],
-    seasonCycle: 'FC 27',
-    trophies: [],
-  },
-  {
-    id: 'soroushfc',
-    slotNumber: '04',
-    licenseCode: 'TM-FC27-004',
-    name: 'SOROUSHFC',
-    monogram: 'SFC',
-    accentColor: '#3B82F6',
-    secondaryColor: '#93C5FD',
-    registrationStatus: 'CONFIRMED',
-    divisionEn: 'Seed Pot A',
-    divisionFa: 'سید اول',
-    rosterFormat: 'SEASON 01',
-    competitions: ['FC27 TEAM RANKING'],
-    seasonCycle: 'FC 27',
-    trophies: [],
-  },
-  {
-    id: 'madridtvshow',
-    slotNumber: '05',
-    licenseCode: 'TM-FC27-005',
-    name: 'MADRIDTVSHOW',
-    monogram: 'MTV',
-    accentColor: '#D4AF37',
-    secondaryColor: '#FEF08A',
-    registrationStatus: 'CONFIRMED',
-    divisionEn: 'Seed Pot B',
-    divisionFa: 'سید دوم',
-    rosterFormat: 'SEASON 01',
-    competitions: ['FC27 TEAM RANKING'],
-    seasonCycle: 'FC 27',
-    trophies: [],
-  },
-  {
-    id: 'warriors',
-    slotNumber: '06',
-    licenseCode: 'TM-FC27-006',
-    name: 'WARRIORS',
-    monogram: 'WAR',
-    accentColor: '#8B5CF6',
-    secondaryColor: '#DDD6FE',
-    registrationStatus: 'CONFIRMED',
-    divisionEn: 'Seed Pot B',
-    divisionFa: 'سید دوم',
-    rosterFormat: 'SEASON 01',
-    competitions: ['FC27 TEAM RANKING'],
-    seasonCycle: 'FC 27',
-    trophies: [],
-  },
-  {
-    id: 'madeingod',
-    slotNumber: '07',
-    licenseCode: 'TM-FC27-007',
-    name: 'MADEINGOD',
-    monogram: 'MIG',
-    accentColor: '#6366F1',
-    secondaryColor: '#C7D2FE',
-    registrationStatus: 'CONFIRMED',
-    divisionEn: 'Seed Pot B',
-    divisionFa: 'سید دوم',
-    rosterFormat: 'SEASON 01',
-    competitions: ['FC27 TEAM RANKING'],
-    seasonCycle: 'FC 27',
-    trophies: [],
-  },
-  {
-    id: 'achmaz-fc',
-    slotNumber: '08',
-    licenseCode: 'TM-FC27-008',
-    name: 'ACHMAZ FC',
-    monogram: 'AFC',
-    accentColor: '#EC4899',
-    secondaryColor: '#FBCFE8',
-    registrationStatus: 'CONFIRMED',
-    divisionEn: 'Seed Pot B',
-    divisionFa: 'سید دوم',
-    rosterFormat: 'SEASON 01',
-    competitions: ['FC27 TEAM RANKING'],
-    seasonCycle: 'FC 27',
-    trophies: [],
-  },
+const RAW_FC27_RANKED_TEAMS: { id: string; name: string; monogram: string; accentColor: string; secondaryColor: string }[] = [
+  { id: 'algoorg', name: 'ALGOORG', monogram: 'ALG', accentColor: '#D4AF37', secondaryColor: '#FEF08A' },
+  { id: 'soroush-fc', name: 'SOROUSH FC', monogram: 'SFC', accentColor: '#3B82F6', secondaryColor: '#93C5FD' },
+  { id: 'invaderz', name: 'INVADERZ', monogram: 'INV', accentColor: '#245BFF', secondaryColor: '#60A5FA' },
+  { id: 'azadi', name: 'AZADI', monogram: 'AZD', accentColor: '#A855F7', secondaryColor: '#E9D5FF' },
+  { id: 'shamooshak', name: 'SHAMOOSHAK', monogram: 'SHM', accentColor: '#F59E0B', secondaryColor: '#FDE68A' },
+  { id: 'warriors', name: 'WARRIORS', monogram: 'WAR', accentColor: '#8B5CF6', secondaryColor: '#DDD6FE' },
+  { id: 'madridtvshow', name: 'MADRIDTVSHOW', monogram: 'MTV', accentColor: '#EAB308', secondaryColor: '#FEF08A' },
+  { id: 'madeingod', name: 'MADEINGOD', monogram: 'MIG', accentColor: '#6366F1', secondaryColor: '#C7D2FE' },
+  { id: 'achmaz-fc', name: 'ACHMAZ FC', monogram: 'AFC', accentColor: '#EC4899', secondaryColor: '#FBCFE8' },
+  { id: 'aftabe', name: 'AFTABE', monogram: 'AFT', accentColor: '#14B8A6', secondaryColor: '#99F6E4' },
+  { id: 'guardians', name: 'GUARDIANS', monogram: 'GRD', accentColor: '#0EA5E9', secondaryColor: '#BAE6FD' },
+  { id: 'verbos', name: 'VERBOS', monogram: 'VRB', accentColor: '#10B981', secondaryColor: '#A7F3D0' },
+  { id: 'shift-delete', name: 'SHIFT DELETE', monogram: 'SHD', accentColor: '#F43F5E', secondaryColor: '#FECDD3' },
+  { id: 'battering-ram', name: 'BATTERING RAM', monogram: 'BTR', accentColor: '#F97316', secondaryColor: '#FED7AA' },
+  { id: 'godly', name: 'GODLY', monogram: 'GDL', accentColor: '#8B5CF6', secondaryColor: '#DDD6FE' },
+  { id: 'caspian', name: 'CASPIAN', monogram: 'CSP', accentColor: '#06B6D4', secondaryColor: '#A5F3FC' },
+  { id: 'adabfc', name: 'ADABFC', monogram: 'ADB', accentColor: '#3B82F6', secondaryColor: '#BFDBFE' },
 ];
+
+export const INITIAL_REGISTERED_CLUBS: RegisteredClub[] = RAW_FC27_RANKED_TEAMS.map((team, idx) => {
+  const rankNum = idx + 1;
+  const slotNumber = String(rankNum).padStart(2, '0');
+  return {
+    id: team.id,
+    slotNumber,
+    licenseCode: `TM-FC27-${ String(rankNum).padStart(3, '0') }`,
+    name: team.name,
+    monogram: team.monogram,
+    accentColor: team.accentColor,
+    secondaryColor: team.secondaryColor,
+    registrationStatus: 'CONFIRMED',
+    divisionEn: rankNum <= 5 ? 'Top 5 Tier' : rankNum <= 10 ? 'Top 10 Tier' : 'Official Ranked',
+    divisionFa: rankNum <= 5 ? '۵ تیم برتر' : rankNum <= 10 ? '۱۰ تیم برتر' : 'رنکینگ رسمی',
+    rosterFormat: 'FC 27',
+    competitions: ['FC27 TEAM RANKING'],
+    seasonCycle: 'FC 27',
+    trophies: [],
+  };
+});
 
 export const INITIAL_NEWS_ARTICLES: NewsArticle[] = [
   {
-    id: 'immortal-cup-s01-registration',
-    referenceCode: 'IMMORTAL CUP — S01',
-    category: 'IMMORTAL LEAGUE',
-    categoryFa: 'لیگ ایمورتال',
-    statusBadgeEn: 'REGISTRATION OPEN',
-    statusBadgeFa: 'ثبت‌نام باز است',
-    titleEn: 'Immortal Cup Season 01 Registration Is Officially Open',
-    titleFa: 'ثبت‌نام فصل اول رقابت‌های Immortal Cup آغاز شد',
+    id: 'tm-globe-ceremony-announcement',
+    referenceCode: 'TM GLOBE — OFFICIAL',
+    category: 'OFFICIAL ANNOUNCEMENT',
+    categoryFa: 'مراسم TM GLOBE',
+    statusBadgeEn: '10 AWARDS',
+    statusBadgeFa: '۱۰ جایزه فردی',
+    titleEn: 'TM GLOBE — Official Individual Awards & Nominees',
+    titleFa: 'مراسم TM GLOBE — تقدیر از برترین بازیکنان و مربیان سال',
     summaryEn:
-      'Immortal Cup kicks off this Thursday immediately following the conclusion of the Nations League. Entry for Season 01 is 100% free of charge.',
+      'Honoring the top players and managers of the past year across 10 official individual categories based on tournament performance.',
     summaryFa:
-      'رقابت‌های بزرگ Immortal Cup از روز پنجشنبه، بلافاصله بعد از پایان جام ملت‌ها رسماً آغاز می‌شود و ورودی فصل اول کاملاً رایگان است.',
+      'این مراسم با هدف تقدیر از برترین بازیکنان و مربیان سال گذشته در ۱۰ بخش مختلف فردی برگزار می‌شود.',
     bodyEn: [
-      'The Immortal Cup officially kicks off this Thursday, immediately following the conclusion of the Nations League.',
-      'Entry for Season 01 is 100% free of charge — register your team at zero cost and compete for the championship.',
-      'Spots are limited. Contact @Perez_Himself on Telegram to register your club.',
+      'TM GLOBE honors the best players and managers of the past year across 10 official award categories: Ballon d’Or, Copa Trophy, Golden Boot, Puskas Award, Yashin Award, Best Playmaker, Manager OTY, Best Defender, Gerd Muller, and Best Midfielder.',
+      'Nominees and rankings are evaluated based on official tournaments organized by TMPROCLUBS since the beginning of the year.',
+      'Managers and top community figures submit their official rankings to ensure a comprehensive and fair individual evaluation.',
     ],
     bodyFa: [
-      '🔥 ثبت‌نام فصل اول IMMORTAL CUP آغاز شد!',
-      'رقابت‌های بزرگ Immortal Cup از روز پنجشنبه، بلافاصله بعد از پایان جام ملت‌ها رسماً استارت می‌خوره و تیم‌ها وارد یک چالش جدی و رقابتی می‌شن.',
-      '💥 ورودی این فصل کاملاً رایگانه! بدون هیچ هزینه‌ای می‌تونید تیمتون رو وارد مسابقات کنید و برای قهرمانی بجنگید.',
-      '⏳ ظرفیت محدود است — جهت ثبت‌نام: @Perez_Himself',
+      '⚪️ این مراسم با هدف تقدیر از برترین بازیکنان و مربیان سال گذشته برگزار خواهد شد و جوایز فردی در ۱۰ بخش مختلف اهدا می‌شوند.',
+      'ملاک نامزدها و نفرات برتر، تورنمنت‌های برگزار شده توسط مجموعه از اول سال خواهد بود.',
+      '🥇 TM GLOBE — MORE THAN A GAME',
     ],
-    publishedLabelEn: 'SEASON 01 · OFFICIAL',
-    publishedLabelFa: 'فصل اول • اطلاعیه رسمی',
+    publishedLabelEn: 'TM GLOBE · OFFICIAL',
+    publishedLabelFa: 'TM GLOBE • اطلاعیه رسمی',
     readTimeEn: '1 min',
     readTimeFa: '۱ دقیقه',
-    imageAsset: OFFICIAL_ASSETS.immortalWolfHero,
-    registrationUrl: OFFICIAL_LINKS.registrationTelegram,
+    imageAsset: OFFICIAL_ASSETS.tmGlobeBallonDor,
     telegramChannels: [
-      { label: '@TM_IMMORTAL', url: OFFICIAL_LINKS.immortalChannel },
       { label: '@TM_PROCLUBS', url: OFFICIAL_LINKS.mainChannel },
     ],
   },

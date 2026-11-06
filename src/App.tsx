@@ -2,7 +2,6 @@ import React from 'react';
 import { PlatformProvider, usePlatform } from './context/PlatformContext';
 import { Navbar } from './components/Navbar';
 import { HomeView } from './components/HomeView';
-import { ImmortalLeagueView } from './components/ImmortalLeagueView';
 import { SuperleagueView } from './components/SuperleagueView';
 import { FC27RankingView } from './components/FC27RankingView';
 import { BallonDorView } from './components/BallonDorView';
@@ -20,8 +19,7 @@ const AppRouter: React.FC = () => {
 
       <main className="flex-1 overflow-x-hidden">
         <div key={activePage} className="animate-page-enter">
-          {activePage === 'home' && <HomeView />}
-          {activePage === 'immortal' && <ImmortalLeagueView />}
+          {(activePage === 'home' || activePage === 'immortal') && <HomeView />}
           {activePage === 'superleague' && <SuperleagueView />}
           {activePage === 'ranking' && <FC27RankingView />}
           {activePage === 'ballondor' && <BallonDorView />}
