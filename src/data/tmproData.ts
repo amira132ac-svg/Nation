@@ -2,15 +2,16 @@ export type Language = 'en' | 'fa';
 
 export type PageId =
   | 'home'
-  | 'immortal'
   | 'superleague'
+  | 'immortal'
   | 'ranking'
+  | 'tmglobe'
   | 'ballondor'
   | 'news';
 
 export interface RegisteredClub {
   id: string;
-  slotNumber: string; // "01" .. "08"
+  slotNumber: string; // "01" .. "17"
   licenseCode: string; // e.g. "TM-FC27-001"
   name: string;
   monogram: string;
@@ -108,6 +109,10 @@ export interface CompetitionConfig {
 export const OFFICIAL_ASSETS = {
   tmLogo: '/assets/aistudio/IMG_0663_e356cbff.jpeg',
   immortalWolfHero: '/assets/aistudio/IMG_1918_793610b7.jpeg',
+  superleagueCosmosHero: '/assets/aistudio/IMG_1986_021060f8.jpeg',
+  superleagueSchedulePoster: '/assets/aistudio/IMG_2063_2fed4ba6.jpeg',
+  superleagueDivisionsPoster: '/assets/aistudio/IMG_2100_40aabfdb.jpeg',
+  superleagueSupercupStadium: '/src/assets/images/superleague_supercup_stadium_1794677178323.jpg',
   tmGlobeBallonDor: '/assets/aistudio/IMG_1932_c140c38a.jpeg',
   tmGlobeMidfielder: '/assets/aistudio/IMG_1931_1747e461.jpeg',
   tmGlobeDefender: '/assets/aistudio/IMG_1930_40b902e1.jpeg',
@@ -120,28 +125,588 @@ export const OFFICIAL_ASSETS = {
 export const OFFICIAL_LINKS = {
   registrationTelegram: 'https://t.me/Perez_Himself',
   immortalChannel: 'https://t.me/TM_IMMORTAL',
-  mainChannel: 'https://t.me/TM_PROCLUBS',
+  mainChannel: 'https://t.me/TM_Proclubs',
 };
 
 /**
+ * ============================================================================
+ * SUPERLEAGUE INFINITY — OFFICIAL DIVISIONS (LEAGUE 1 & LEAGUE 2),
+ * VERIFIED RESULTS (WEEKS 1–3), AND 7-WEEK FIXTURE SCHEDULE
+ * ============================================================================
+ */
+export type SuperleagueDivisionId = 'league1' | 'league2';
+
+export interface SuperleagueClub {
+  id: string;
+  name: string;
+  shortName: string;
+  division: SuperleagueDivisionId;
+}
+
+export interface SuperleagueMatchLeg {
+  legNumber: 1 | 2;
+  teamAScore: number;
+  teamBScore: number;
+  isTechnical?: boolean;
+}
+
+export interface SuperleaguePairingResult {
+  id: string;
+  week: number;
+  division: SuperleagueDivisionId;
+  teamAId: string;
+  teamAName: string;
+  teamBId: string;
+  teamBName: string;
+  legs: [SuperleagueMatchLeg, SuperleagueMatchLeg];
+}
+
+export interface SuperleagueScheduledPairing {
+  id: string;
+  week: number;
+  division: SuperleagueDivisionId;
+  teamAId: string;
+  teamAName: string;
+  teamBId: string;
+  teamBName: string;
+  completedResult?: SuperleaguePairingResult;
+}
+
+export interface SuperleagueWeekSchedule {
+  week: number;
+  status: 'COMPLETED' | 'IN_PROGRESS' | 'UPCOMING';
+  league1Rest: string;
+  league2Rest: string;
+  league1Pairings: SuperleagueScheduledPairing[];
+  league2Pairings: SuperleagueScheduledPairing[];
+}
+
+export interface SuperleagueStandingRow {
+  rank: number;
+  club: SuperleagueClub;
+  played: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  goalDifference: number;
+  points: number;
+  form: ('W' | 'D' | 'L')[];
+}
+
+export const SUPERLEAGUE_LEAGUE_1_CLUBS: SuperleagueClub[] = [
+  { id: 'vipers', name: 'VIPERS (WARRIORS)', shortName: 'VIPERS', division: 'league1' },
+  { id: 'nooshmak', name: 'NOOSHMAK SAZI', shortName: 'NOOSHMAK', division: 'league1' },
+  { id: 'avengers', name: 'AVENGERS', shortName: 'AVENGERS', division: 'league1' },
+  { id: 'capitan', name: 'CAPITAN FC', shortName: 'CAPITAN', division: 'league1' },
+  { id: 'hadi-kojast', name: 'HADI KOJAST', shortName: 'HADI KOJAST', division: 'league1' },
+  { id: 'adab', name: 'FC ADAB', shortName: 'ADAB', division: 'league1' },
+  { id: 'achmaz', name: 'ACHMAZ', shortName: 'ACHMAZ', division: 'league1' },
+];
+
+export const SUPERLEAGUE_LEAGUE_2_CLUBS: SuperleagueClub[] = [
+  { id: 'aftabesazi', name: 'AFTABESAZI', shortName: 'AFTABESAZI', division: 'league2' },
+  { id: 'shamooshak', name: 'SHAMOOSHAK', shortName: 'SHAMOOSHAK', division: 'league2' },
+  { id: 'guardians', name: 'GUARDIANS', shortName: 'GUARDIANS', division: 'league2' },
+  { id: 'messhahr', name: 'MESSHAHR', shortName: 'MESSHAHR', division: 'league2' },
+  { id: 'chaeekhoran', name: 'CHAEE KHORAN', shortName: 'CHAEE KHORAN', division: 'league2' },
+  { id: 'bedehkaran', name: 'BEDEHKARAN', shortName: 'BEDEHKAR', division: 'league2' },
+  { id: 'wlf-og', name: 'WLF OG', shortName: 'WLF OG', division: 'league2' },
+];
+
+/**
+ * Official Sorted Match Results (Week 1, Week 2, Week 3 — All 18 Ties / 36 Matches)
+ * Exact scores and technical (فنی) rulings provided by TMPROCLUBS
+ */
+export const SUPERLEAGUE_SORTED_RESULTS: SuperleaguePairingResult[] = [
+  // ======================== WEEK 1 ========================
+  {
+    id: 'w1-guardians-bedehkaran',
+    week: 1,
+    division: 'league2',
+    teamAId: 'guardians',
+    teamAName: 'Guardians',
+    teamBId: 'bedehkaran',
+    teamBName: 'Bedehkaran',
+    legs: [
+      { legNumber: 1, teamAScore: 6, teamBScore: 0 },
+      { legNumber: 2, teamAScore: 3, teamBScore: 0, isTechnical: true },
+    ],
+  },
+  {
+    id: 'w1-adab-avengers',
+    week: 1,
+    division: 'league1',
+    teamAId: 'adab',
+    teamAName: 'FC Adab',
+    teamBId: 'avengers',
+    teamBName: 'Avengers',
+    legs: [
+      { legNumber: 1, teamAScore: 1, teamBScore: 2 },
+      { legNumber: 2, teamAScore: 6, teamBScore: 1 },
+    ],
+  },
+  {
+    id: 'w1-shamooshak-wlfog',
+    week: 1,
+    division: 'league2',
+    teamAId: 'shamooshak',
+    teamAName: 'Shamooshak',
+    teamBId: 'wlf-og',
+    teamBName: 'WLF OG',
+    legs: [
+      { legNumber: 1, teamAScore: 3, teamBScore: 1 },
+      { legNumber: 2, teamAScore: 5, teamBScore: 0 },
+    ],
+  },
+  {
+    id: 'w1-messhahr-chaeekhoran',
+    week: 1,
+    division: 'league2',
+    teamAId: 'messhahr',
+    teamAName: 'MesShahr',
+    teamBId: 'chaeekhoran',
+    teamBName: 'ChaeeKhoran',
+    legs: [
+      { legNumber: 1, teamAScore: 0, teamBScore: 3 },
+      { legNumber: 2, teamAScore: 2, teamBScore: 1 },
+    ],
+  },
+  {
+    id: 'w1-capitan-hadikojast',
+    week: 1,
+    division: 'league1',
+    teamAId: 'capitan',
+    teamAName: 'Capitan FC',
+    teamBId: 'hadi-kojast',
+    teamBName: 'Hadi Kojast',
+    legs: [
+      { legNumber: 1, teamAScore: 2, teamBScore: 1 },
+      { legNumber: 2, teamAScore: 4, teamBScore: 0 },
+    ],
+  },
+  {
+    id: 'w1-aftabesazi-wlfog',
+    week: 1,
+    division: 'league2',
+    teamAId: 'aftabesazi',
+    teamAName: 'Aftabesazi',
+    teamBId: 'wlf-og',
+    teamBName: 'WLF OG',
+    legs: [
+      { legNumber: 1, teamAScore: 6, teamBScore: 0 },
+      { legNumber: 2, teamAScore: 6, teamBScore: 1 },
+    ],
+  },
+
+  // ======================== WEEK 2 ========================
+  {
+    id: 'w2-capitan-avengers',
+    week: 2,
+    division: 'league1',
+    teamAId: 'capitan',
+    teamAName: 'Capitan FC',
+    teamBId: 'avengers',
+    teamBName: 'Avengers',
+    legs: [
+      { legNumber: 1, teamAScore: 2, teamBScore: 0 },
+      { legNumber: 2, teamAScore: 2, teamBScore: 1 },
+    ],
+  },
+  {
+    id: 'w2-nooshmak-achmaz',
+    week: 2,
+    division: 'league1',
+    teamAId: 'nooshmak',
+    teamAName: 'Nooshmak',
+    teamBId: 'achmaz',
+    teamBName: 'Achmaz',
+    legs: [
+      { legNumber: 1, teamAScore: 1, teamBScore: 0 },
+      { legNumber: 2, teamAScore: 0, teamBScore: 1 },
+    ],
+  },
+  {
+    id: 'w2-shamooshak-chaeekhoran',
+    week: 2,
+    division: 'league2',
+    teamAId: 'shamooshak',
+    teamAName: 'Shamooshak',
+    teamBId: 'chaeekhoran',
+    teamBName: 'ChaeeKhoran',
+    legs: [
+      { legNumber: 1, teamAScore: 2, teamBScore: 1 },
+      { legNumber: 2, teamAScore: 1, teamBScore: 0 },
+    ],
+  },
+  {
+    id: 'w2-nooshmak-hadikojast',
+    week: 2,
+    division: 'league1',
+    teamAId: 'nooshmak',
+    teamAName: 'Nooshmak Sazi',
+    teamBId: 'hadi-kojast',
+    teamBName: 'Hadi Kojast',
+    legs: [
+      { legNumber: 1, teamAScore: 3, teamBScore: 0, isTechnical: true },
+      { legNumber: 2, teamAScore: 3, teamBScore: 0, isTechnical: true },
+    ],
+  },
+  {
+    id: 'w2-achmaz-hadikojast',
+    week: 2,
+    division: 'league1',
+    teamAId: 'achmaz',
+    teamAName: 'Achmaz',
+    teamBId: 'hadi-kojast',
+    teamBName: 'Hadi Kojast',
+    legs: [
+      { legNumber: 1, teamAScore: 3, teamBScore: 0, isTechnical: true },
+      { legNumber: 2, teamAScore: 3, teamBScore: 0, isTechnical: true },
+    ],
+  },
+  {
+    id: 'w2-guardians-messhahr',
+    week: 2,
+    division: 'league2',
+    teamAId: 'guardians',
+    teamAName: 'Guardians',
+    teamBId: 'messhahr',
+    teamBName: 'MesShahr',
+    legs: [
+      { legNumber: 1, teamAScore: 1, teamBScore: 1 },
+      { legNumber: 2, teamAScore: 1, teamBScore: 1 },
+    ],
+  },
+  {
+    id: 'w2-vipers-achmaz',
+    week: 2,
+    division: 'league1',
+    teamAId: 'vipers',
+    teamAName: 'VIPERS',
+    teamBId: 'achmaz',
+    teamBName: 'Achmaz',
+    legs: [
+      { legNumber: 1, teamAScore: 3, teamBScore: 0, isTechnical: true },
+      { legNumber: 2, teamAScore: 3, teamBScore: 0, isTechnical: true },
+    ],
+  },
+
+  // ======================== WEEK 3 ========================
+  {
+    id: 'w3-aftabesazi-bedehkaran',
+    week: 3,
+    division: 'league2',
+    teamAId: 'aftabesazi',
+    teamAName: 'Aftabesazi',
+    teamBId: 'bedehkaran',
+    teamBName: 'Bedehkaran',
+    legs: [
+      { legNumber: 1, teamAScore: 3, teamBScore: 0, isTechnical: true },
+      { legNumber: 2, teamAScore: 3, teamBScore: 0, isTechnical: true },
+    ],
+  },
+  {
+    id: 'w3-shamooshak-guardians',
+    week: 3,
+    division: 'league2',
+    teamAId: 'shamooshak',
+    teamAName: 'Shamooshak',
+    teamBId: 'guardians',
+    teamBName: 'Guardians',
+    legs: [
+      { legNumber: 1, teamAScore: 0, teamBScore: 0 },
+      { legNumber: 2, teamAScore: 3, teamBScore: 0 },
+    ],
+  },
+  {
+    id: 'w3-avengers-nooshmak',
+    week: 3,
+    division: 'league1',
+    teamAId: 'avengers',
+    teamAName: 'Avengers',
+    teamBId: 'nooshmak',
+    teamBName: 'Nooshmak Sazi',
+    legs: [
+      { legNumber: 1, teamAScore: 6, teamBScore: 1 },
+      { legNumber: 2, teamAScore: 3, teamBScore: 0, isTechnical: true },
+    ],
+  },
+  {
+    id: 'w3-warriors-adab',
+    week: 3,
+    division: 'league1',
+    teamAId: 'vipers',
+    teamAName: 'Warriors',
+    teamBId: 'adab',
+    teamBName: 'FC Adab',
+    legs: [
+      { legNumber: 1, teamAScore: 4, teamBScore: 1 },
+      { legNumber: 2, teamAScore: 1, teamBScore: 1 },
+    ],
+  },
+  {
+    id: 'w3-chaeekhoran-wlfog',
+    week: 3,
+    division: 'league2',
+    teamAId: 'chaeekhoran',
+    teamAName: 'ChaeeKhoran',
+    teamBId: 'wlf-og',
+    teamBName: 'WLF OG',
+    legs: [
+      { legNumber: 1, teamAScore: 3, teamBScore: 0, isTechnical: true },
+      { legNumber: 2, teamAScore: 3, teamBScore: 0 },
+    ],
+  },
+];
+
+/**
+ * Helper to look up if a scheduled pairing has already been played
+ */
+function findPairingResult(team1Id: string, team2Id: string): SuperleaguePairingResult | undefined {
+  return SUPERLEAGUE_SORTED_RESULTS.find(
+    (r) =>
+      (r.teamAId === team1Id && r.teamBId === team2Id) ||
+      (r.teamAId === team2Id && r.teamBId === team1Id)
+  );
+}
+
+function buildScheduledPairing(
+  week: number,
+  division: SuperleagueDivisionId,
+  teamAId: string,
+  teamAName: string,
+  teamBId: string,
+  teamBName: string
+): SuperleagueScheduledPairing {
+  return {
+    id: `sched-w${week}-${division}-${teamAId}-${teamBId}`,
+    week,
+    division,
+    teamAId,
+    teamAName,
+    teamBId,
+    teamBName,
+    completedResult: findPairingResult(teamAId, teamBId),
+  };
+}
+
+/**
+ * Official 7-Week Fixture Schedule (Exact match with official schedule graphic)
+ */
+export const SUPERLEAGUE_WEEKLY_SCHEDULE: SuperleagueWeekSchedule[] = [
+  {
+    week: 1,
+    status: 'COMPLETED',
+    league1Rest: 'VIPERS',
+    league2Rest: 'AFTABESAZI',
+    league1Pairings: [
+      buildScheduledPairing(1, 'league1', 'nooshmak', 'NOOSHMAK', 'achmaz', 'ACHMAZ'),
+      buildScheduledPairing(1, 'league1', 'avengers', 'AVENGERS', 'adab', 'ADAB'),
+      buildScheduledPairing(1, 'league1', 'capitan', 'CAPITAN', 'hadi-kojast', 'HADI KOJAST'),
+    ],
+    league2Pairings: [
+      buildScheduledPairing(1, 'league2', 'shamooshak', 'SHAMOOSHAK', 'wlf-og', 'WLF OG'),
+      buildScheduledPairing(1, 'league2', 'guardians', 'GUARDIANS', 'bedehkaran', 'BEDEHKAR'),
+      buildScheduledPairing(1, 'league2', 'messhahr', 'MESSHAHR', 'chaeekhoran', 'CHAEE KHORAN'),
+    ],
+  },
+  {
+    week: 2,
+    status: 'COMPLETED',
+    league1Rest: 'ADAB',
+    league2Rest: 'BEDEHKAR',
+    league1Pairings: [
+      buildScheduledPairing(2, 'league1', 'vipers', 'VIPERS', 'achmaz', 'ACHMAZ'),
+      buildScheduledPairing(2, 'league1', 'nooshmak', 'NOOSHMAK', 'hadi-kojast', 'HADI KOJAST'),
+      buildScheduledPairing(2, 'league1', 'avengers', 'AVENGERS', 'capitan', 'CAPITAN'),
+    ],
+    league2Pairings: [
+      buildScheduledPairing(2, 'league2', 'aftabesazi', 'AFTABESAZI', 'wlf-og', 'WLF OG'),
+      buildScheduledPairing(2, 'league2', 'shamooshak', 'SHAMOOSHAK', 'chaeekhoran', 'CHAEE KHORAN'),
+      buildScheduledPairing(2, 'league2', 'guardians', 'GUARDIANS', 'messhahr', 'MESSHAHR'),
+    ],
+  },
+  {
+    week: 3,
+    status: 'COMPLETED',
+    league1Rest: 'CAPITAN',
+    league2Rest: 'MESSHAHR',
+    league1Pairings: [
+      buildScheduledPairing(3, 'league1', 'vipers', 'VIPERS (WARRIORS)', 'adab', 'ADAB'),
+      buildScheduledPairing(3, 'league1', 'achmaz', 'ACHMAZ', 'hadi-kojast', 'HADI KOJAST'),
+      buildScheduledPairing(3, 'league1', 'nooshmak', 'NOOSHMAK', 'avengers', 'AVENGERS'),
+    ],
+    league2Pairings: [
+      buildScheduledPairing(3, 'league2', 'aftabesazi', 'AFTABESAZI', 'bedehkaran', 'BEDEHKAR'),
+      buildScheduledPairing(3, 'league2', 'wlf-og', 'WLF OG', 'chaeekhoran', 'CHAEE KHORAN'),
+      buildScheduledPairing(3, 'league2', 'shamooshak', 'SHAMOOSHAK', 'guardians', 'GUARDIANS'),
+    ],
+  },
+  {
+    week: 4,
+    status: 'UPCOMING',
+    league1Rest: 'NOOSHMAK',
+    league2Rest: 'SHAMOOSHAK',
+    league1Pairings: [
+      buildScheduledPairing(4, 'league1', 'vipers', 'VIPERS', 'hadi-kojast', 'HADI KOJAST'),
+      buildScheduledPairing(4, 'league1', 'adab', 'ADAB', 'capitan', 'CAPITAN'),
+      buildScheduledPairing(4, 'league1', 'achmaz', 'ACHMAZ', 'avengers', 'AVENGERS'),
+    ],
+    league2Pairings: [
+      buildScheduledPairing(4, 'league2', 'aftabesazi', 'AFTABESAZI', 'chaeekhoran', 'CHAEE KHORAN'),
+      buildScheduledPairing(4, 'league2', 'bedehkaran', 'BEDEHKAR', 'messhahr', 'MESSHAHR'),
+      buildScheduledPairing(4, 'league2', 'wlf-og', 'WLF OG', 'guardians', 'GUARDIANS'),
+    ],
+  },
+  {
+    week: 5,
+    status: 'UPCOMING',
+    league1Rest: 'ACHMAZ',
+    league2Rest: 'WLF OG',
+    league1Pairings: [
+      buildScheduledPairing(5, 'league1', 'vipers', 'VIPERS', 'capitan', 'CAPITAN'),
+      buildScheduledPairing(5, 'league1', 'hadi-kojast', 'HADI KOJAST', 'avengers', 'AVENGERS'),
+      buildScheduledPairing(5, 'league1', 'adab', 'ADAB', 'nooshmak', 'NOOSHMAK'),
+    ],
+    league2Pairings: [
+      buildScheduledPairing(5, 'league2', 'aftabesazi', 'AFTABESAZI', 'messhahr', 'MESSHAHR'),
+      buildScheduledPairing(5, 'league2', 'chaeekhoran', 'CHAEE KHORAN', 'guardians', 'GUARDIANS'),
+      buildScheduledPairing(5, 'league2', 'bedehkaran', 'BEDEHKAR', 'shamooshak', 'SHAMOOSHAK'),
+    ],
+  },
+  {
+    week: 6,
+    status: 'UPCOMING',
+    league1Rest: 'HADI KOJAST',
+    league2Rest: 'CHAEE KHORAN',
+    league1Pairings: [
+      buildScheduledPairing(6, 'league1', 'vipers', 'VIPERS', 'avengers', 'AVENGERS'),
+      buildScheduledPairing(6, 'league1', 'capitan', 'CAPITAN', 'nooshmak', 'NOOSHMAK'),
+      buildScheduledPairing(6, 'league1', 'adab', 'ADAB', 'achmaz', 'ACHMAZ'),
+    ],
+    league2Pairings: [
+      buildScheduledPairing(6, 'league2', 'aftabesazi', 'AFTABESAZI', 'guardians', 'GUARDIANS'),
+      buildScheduledPairing(6, 'league2', 'messhahr', 'MESSHAHR', 'shamooshak', 'SHAMOOSHAK'),
+      buildScheduledPairing(6, 'league2', 'bedehkaran', 'BEDEHKAR', 'wlf-og', 'WLF OG'),
+    ],
+  },
+  {
+    week: 7,
+    status: 'UPCOMING',
+    league1Rest: 'AVENGERS',
+    league2Rest: 'GUARDIANS',
+    league1Pairings: [
+      buildScheduledPairing(7, 'league1', 'vipers', 'VIPERS', 'nooshmak', 'NOOSHMAK'),
+      buildScheduledPairing(7, 'league1', 'capitan', 'CAPITAN', 'achmaz', 'ACHMAZ'),
+      buildScheduledPairing(7, 'league1', 'hadi-kojast', 'HADI KOJAST', 'adab', 'ADAB'),
+    ],
+    league2Pairings: [
+      buildScheduledPairing(7, 'league2', 'aftabesazi', 'AFTABESAZI', 'shamooshak', 'SHAMOOSHAK'),
+      buildScheduledPairing(7, 'league2', 'messhahr', 'MESSHAHR', 'wlf-og', 'WLF OG'),
+      buildScheduledPairing(7, 'league2', 'chaeekhoran', 'CHAEE KHORAN', 'bedehkaran', 'BEDEHKAR'),
+    ],
+  },
+];
+
+/**
+ * Compute Live Standings for League 1 or League 2 from SUPERLEAGUE_SORTED_RESULTS
+ */
+export function calculateSuperleagueDivisionStandings(
+  division: SuperleagueDivisionId
+): SuperleagueStandingRow[] {
+  const clubs =
+    division === 'league1' ? SUPERLEAGUE_LEAGUE_1_CLUBS : SUPERLEAGUE_LEAGUE_2_CLUBS;
+
+  const statsMap = new Map<string, SuperleagueStandingRow>();
+
+  clubs.forEach((club, index) => {
+    statsMap.set(club.id, {
+      rank: index + 1,
+      club,
+      played: 0,
+      wins: 0,
+      draws: 0,
+      losses: 0,
+      goalsFor: 0,
+      goalsAgainst: 0,
+      goalDifference: 0,
+      points: 0,
+      form: [],
+    });
+  });
+
+  const divisionResults = SUPERLEAGUE_SORTED_RESULTS.filter((r) => r.division === division);
+
+  divisionResults.forEach((pairing) => {
+    const teamA = statsMap.get(pairing.teamAId);
+    const teamB = statsMap.get(pairing.teamBId);
+
+    pairing.legs.forEach((leg) => {
+      const aScore = leg.teamAScore;
+      const bScore = leg.teamBScore;
+
+      if (teamA) {
+        teamA.played += 1;
+        teamA.goalsFor += aScore;
+        teamA.goalsAgainst += bScore;
+        teamA.goalDifference = teamA.goalsFor - teamA.goalsAgainst;
+        if (aScore > bScore) {
+          teamA.wins += 1;
+          teamA.points += 3;
+          teamA.form = [...teamA.form.slice(-4), 'W'];
+        } else if (aScore === bScore) {
+          teamA.draws += 1;
+          teamA.points += 1;
+          teamA.form = [...teamA.form.slice(-4), 'D'];
+        } else {
+          teamA.losses += 1;
+          teamA.form = [...teamA.form.slice(-4), 'L'];
+        }
+      }
+
+      if (teamB) {
+        teamB.played += 1;
+        teamB.goalsFor += bScore;
+        teamB.goalsAgainst += aScore;
+        teamB.goalDifference = teamB.goalsFor - teamB.goalsAgainst;
+        if (bScore > aScore) {
+          teamB.wins += 1;
+          teamB.points += 3;
+          teamB.form = [...teamB.form.slice(-4), 'W'];
+        } else if (bScore === aScore) {
+          teamB.draws += 1;
+          teamB.points += 1;
+          teamB.form = [...teamB.form.slice(-4), 'D'];
+        } else {
+          teamB.losses += 1;
+          teamB.form = [...teamB.form.slice(-4), 'L'];
+        }
+      }
+    });
+  });
+
+  const rows = Array.from(statsMap.values());
+
+  // Sort by: 1. Points, 2. Goal Difference, 3. Goals For, 4. Wins, 5. Fewer Played
+  rows.sort((a, b) => {
+    if (b.points !== a.points) return b.points - a.points;
+    if (b.goalDifference !== a.goalDifference) return b.goalDifference - a.goalDifference;
+    if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
+    if (b.wins !== a.wins) return b.wins - a.wins;
+    if (a.played !== b.played) return a.played - b.played;
+    return a.club.name.localeCompare(b.club.name);
+  });
+
+  return rows.map((row, idx) => ({
+    ...row,
+    rank: idx + 1,
+  }));
+}
+
+/**
  * FC27 OFFICIAL TEAM RANKING (EXACT ORDER & SPELLING — 01 TO 17)
- * 01 — ALGOORG
- * 02 — SOROUSH FC
- * 03 — INVADERZ
- * 04 — AZADI
- * 05 — SHAMOOSHAK
- * 06 — WARRIORS
- * 07 — MADRIDTVSHOW
- * 08 — MADEINGOD
- * 09 — ACHMAZ FC
- * 10 — AFTABE
- * 11 — GUARDIANS
- * 12 — VERBOS
- * 13 — SHIFT DELETE
- * 14 — BATTERING RAM
- * 15 — GODLY
- * 16 — CASPIAN
- * 17 — ADABFC
  */
 const RAW_FC27_RANKED_TEAMS: { id: string; name: string; monogram: string; accentColor: string; secondaryColor: string }[] = [
   { id: 'algoorg', name: 'ALGOORG', monogram: 'ALG', accentColor: '#D4AF37', secondaryColor: '#FEF08A' },
@@ -169,7 +734,7 @@ export const INITIAL_REGISTERED_CLUBS: RegisteredClub[] = RAW_FC27_RANKED_TEAMS.
   return {
     id: team.id,
     slotNumber,
-    licenseCode: `TM-FC27-${ String(rankNum).padStart(3, '0') }`,
+    licenseCode: `TM-FC27-${String(rankNum).padStart(3, '0')}`,
     name: team.name,
     monogram: team.monogram,
     accentColor: team.accentColor,
@@ -186,13 +751,49 @@ export const INITIAL_REGISTERED_CLUBS: RegisteredClub[] = RAW_FC27_RANKED_TEAMS.
 
 export const INITIAL_NEWS_ARTICLES: NewsArticle[] = [
   {
+    id: 'superleague-infinity-launch',
+    referenceCode: 'SUPERLEAGUE INFINITY',
+    category: 'SUPERLEAGUE',
+    categoryFa: 'سوپرلیگ اینفینیتی',
+    statusBadgeEn: 'LIVE STANDINGS & RESULTS',
+    statusBadgeFa: 'جدول و نتایج زنده',
+    titleEn: 'SUPERLEAGUE INFINITY — League 1 & League 2 Standings & Match Results',
+    titleFa: '🚨 جدول رده‌بندی و نتایج رسمی SUPERLEAGUE INFINITY (لیگ ۱ و لیگ ۲) ⚡️',
+    summaryEn:
+      'Official match results for Weeks 1–3 and live standings tables for League 1 and League 2 are now updated.',
+    summaryFa:
+      '🤍 نتایج رسمی بازی‌های هفته اول تا سوم و جدول رده‌بندی لیگ ۱ و لیگ ۲ سوپرلیگ اینفینیتی بروزرسانی شد.',
+    bodyEn: [
+      '🚨 Pro Clubs SUPERLEAGUE INFINITY is officially underway across League 1 and League 2! ⚡️',
+      '🤍 League 1 Teams: VIPERS, NOOSHMAK SAZI, AVENGERS, CAPITAN FC, HADI KOJAST, FC ADAB, ACHMAZ.',
+      '🤍 League 2 Teams: AFTABESAZI, SHAMOOSHAK, GUARDIANS, MESSHAHR, CHAEE KHORAN, BEDEHKARAN, WLF OG.',
+      '🤍 Teams compete in two-legged (Match 1 & Match 2) fixtures across 7 official matchweeks.',
+      '☠️ CHAMPIONS SUPERCUP — At the conclusion of the leagues, the league champions will meet in a special Supercup showdown to determine the ultimate champion 💞',
+    ],
+    bodyFa: [
+      '🚨 رقابت‌های لیگ پروکلاب SUPERLEAGUE INFINITY در دو سطح لیگ ۱ و لیگ ۲ در حال برگزاری است! ⚡️',
+      '🤍 تیم‌های لیگ ۱: VIPERS، NOOSHMAK SAZI، AVENGERS، CAPITAN FC، HADI KOJAST، FC ADAB و ACHMAZ.',
+      '🤍 تیم‌های لیگ ۲: AFTABESAZI، SHAMOOSHAK، GUARDIANS، MESSHAHR، CHAEE KHORAN، BEDEHKARAN و WLF OG.',
+      '🤍 در پایان مسابقات، تیم‌ها بر اساس نتایج و امتیازات کسب‌شده در جدول رده‌بندی قرار می‌گیرند و قهرمان‌های دو لیگ در دیدار ویژه سوپرکاپ قهرمانان به مصاف هم می‌روند 🔥',
+    ],
+    publishedLabelEn: 'SUPERLEAGUE INFINITY · LIVE',
+    publishedLabelFa: 'سوپرلیگ اینفینیتی • بروزرسانی جدول',
+    readTimeEn: '2 min',
+    readTimeFa: '۲ دقیقه',
+    imageAsset: '/assets/aistudio/IMG_2063_2fed4ba6.jpeg',
+    registrationUrl: 'https://t.me/Perez_Himself',
+    telegramChannels: [
+      { label: '@TM_Proclubs', url: 'https://t.me/TM_Proclubs' },
+    ],
+  },
+  {
     id: 'tm-globe-ceremony-announcement',
     referenceCode: 'TM GLOBE — OFFICIAL',
     category: 'OFFICIAL ANNOUNCEMENT',
     categoryFa: 'مراسم TM GLOBE',
     statusBadgeEn: '10 AWARDS',
     statusBadgeFa: '۱۰ جایزه فردی',
-    titleEn: 'TM GLOBE — Official Individual Awards & Nominees',
+    titleEn: 'TM GLOBE & Ballon d’Or — Official Individual Honors',
     titleFa: 'مراسم TM GLOBE — تقدیر از برترین بازیکنان و مربیان سال',
     summaryEn:
       'Honoring the top players and managers of the past year across 10 official individual categories based on tournament performance.',
@@ -214,7 +815,7 @@ export const INITIAL_NEWS_ARTICLES: NewsArticle[] = [
     readTimeFa: '۱ دقیقه',
     imageAsset: OFFICIAL_ASSETS.tmGlobeBallonDor,
     telegramChannels: [
-      { label: '@TM_PROCLUBS', url: OFFICIAL_LINKS.mainChannel },
+      { label: '@TM_Proclubs', url: 'https://t.me/TM_Proclubs' },
     ],
   },
 ];
@@ -453,11 +1054,6 @@ export const BALLON_DOR_CATEGORIES: BallonDorCategory[] = [
   },
 ];
 
-/**
- * Official Ranking Calculation Engine
- * Win = 3 points | Draw = 1 point | Loss = 0 points | GD = GF - GA
- * Priority: 1. Points, 2. Goal Difference, 3. Goals For, 4. Wins
- */
 export function calculateClubStandings(
   clubs: RegisteredClub[],
   matches: VerifiedMatch[],
@@ -540,11 +1136,9 @@ export function calculateClubStandings(
   const rows = Array.from(statsMap.values());
 
   if (!hasAnyCompletedMatch) {
-    // Preserve official registration order 01 -> 08 when pending
     return rows.sort((a, b) => a.club.slotNumber.localeCompare(b.club.slotNumber));
   }
 
-  // Sort by: 1. Points, 2. Goal Difference, 3. Goals For, 4. Wins, 5. Slot Number
   rows.sort((a, b) => {
     if (b.points !== a.points) return b.points - a.points;
     if (b.goalDifference !== a.goalDifference) return b.goalDifference - a.goalDifference;

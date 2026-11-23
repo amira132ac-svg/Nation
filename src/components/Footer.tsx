@@ -8,23 +8,25 @@ export const Footer: React.FC = () => {
 
   const links: { id: PageId; labelEn: string; labelFa: string }[] = [
     { id: 'home', labelEn: 'Home', labelFa: 'صفحه اصلی' },
+    { id: 'superleague', labelEn: 'Superleague Infinity', labelFa: 'سوپرلیگ اینفینیتی' },
     { id: 'ranking', labelEn: 'FC27 Ranking', labelFa: 'رنکینگ FC27' },
     { id: 'ballondor', labelEn: 'TM Globe', labelFa: 'تی‌ام گلوب' },
-    { id: 'superleague', labelEn: 'Superleague', labelFa: 'سوپرلیگ' },
     { id: 'news', labelEn: 'News', labelFa: 'اخبار' },
   ];
 
   return (
     <footer
       className={`border-t transition-colors ${
-        activePage === 'ballondor'
+        activePage === 'superleague'
+          ? 'bg-[#050611] border-[#743CFF]/30'
+          : activePage === 'ballondor' || activePage === 'tmglobe'
           ? 'bg-[#050507] border-[#D4AF37]/20'
           : 'bg-[#030712] border-white/10'
       }`}
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 items-start">
-          {/* Col 1: Brand Identity (No Filler Text) */}
+          {/* Col 1: Brand Identity */}
           <div className="lg:col-span-5 space-y-3 text-start">
             <div className="flex items-center gap-3.5">
               <img
@@ -55,7 +57,7 @@ export const Footer: React.FC = () => {
               dir="ltr"
               className="text-[11px] font-mono-numbers font-bold uppercase tracking-[0.22em] text-slate-300"
             >
-              {lang === 'fa' ? 'بخش‌ها' : 'NAVIGATION'}
+              {lang === 'fa' ? 'بخش‌های رسمی' : 'ECOSYSTEM'}
             </div>
             <div className="grid grid-cols-2 gap-y-2.5 gap-x-4">
               {links.map((item) => (
@@ -80,26 +82,26 @@ export const Footer: React.FC = () => {
               dir="ltr"
               className="text-[11px] font-mono-numbers font-bold uppercase tracking-[0.22em] text-slate-300"
             >
-              {lang === 'fa' ? 'تلگرام رسمی' : 'OFFICIAL TELEGRAM'}
+              {lang === 'fa' ? 'ارتباط و تلگرام رسمی' : 'OFFICIAL TELEGRAM'}
             </div>
             <div className="space-y-2">
+              <a
+                href={OFFICIAL_LINKS.registrationTelegram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full px-3.5 py-2.5 rounded-lg bg-[#743CFF]/20 hover:bg-[#743CFF]/30 border border-[#C5A6FF]/40 text-xs font-mono-numbers font-semibold text-white flex items-center justify-between transition-all"
+              >
+                <span dir="ltr">Register: @Perez_Himself</span>
+                <Send className="w-3.5 h-3.5 text-[#C5A6FF]" />
+              </a>
               <a
                 href={OFFICIAL_LINKS.mainChannel}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full px-3.5 py-2.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 text-xs font-mono-numbers font-semibold text-slate-200 hover:text-white flex items-center justify-between transition-all"
               >
-                <span dir="ltr">t.me/TM_PROCLUBS</span>
+                <span dir="ltr">🟣 @TM_Proclubs</span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-[#60A5FA]" />
-              </a>
-              <a
-                href={OFFICIAL_LINKS.registrationTelegram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full px-3.5 py-2.5 rounded-lg bg-[#245BFF]/15 hover:bg-[#245BFF]/25 border border-[#245BFF]/35 text-xs font-mono-numbers font-semibold text-white flex items-center justify-between transition-all"
-              >
-                <span dir="ltr">Contact: @Perez_Himself</span>
-                <Send className="w-3.5 h-3.5 text-[#60A5FA]" />
               </a>
             </div>
           </div>
@@ -108,7 +110,7 @@ export const Footer: React.FC = () => {
         {/* Bottom Legal & Dedicated Language Switcher Bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div dir="ltr" className="font-mono-numbers text-[11px] tracking-wider text-slate-400">
-            © {new Date().getFullYear()} TMPROCLUBS
+            © {new Date().getFullYear()} TMPROCLUBS · POWERING SUPERLEAGUE INFINITY
           </div>
 
           {/* Dedicated Footer Language Switcher */}

@@ -132,6 +132,33 @@
   animation: stadiumSweepRight 11s ease-in-out infinite;
 }
 
+/* Slow Orbital & Planetary Drift */
+@keyframes orbitRotateSlow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-orbit-slow {
+  animation: orbitRotateSlow 38s linear infinite;
+}
+
+@keyframes planetFloat {
+  0%, 100% {
+    transform: scale(1.02) translateY(0px);
+  }
+  50% {
+    transform: scale(1.045) translateY(-8px);
+  }
+}
+
+.animate-planet-drift {
+  animation: planetFloat 14s ease-in-out infinite;
+}
+
 /* Subtle Floating Animation */
 @keyframes floatSlow {
   0%, 100% {
@@ -146,7 +173,7 @@
   animation: floatSlow 5s ease-in-out infinite;
 }
 
-/* Shimmer Sweep Effect for Gold & Royal Cards */
+/* Shimmer Sweep Effect for Gold, Royal, and Cosmic Infinity Typography */
 @keyframes shimmerSweep {
   0% {
     background-position: -200% 0;
@@ -172,6 +199,20 @@
   animation: shimmerSweep 8s linear infinite;
 }
 
+.infinity-metallic-text {
+  background: linear-gradient(135deg, #F4F2FF 0%, #C5A6FF 30%, #BFC6E5 50%, #A855F7 75%, #743CFF 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmerSweep 7s linear infinite;
+}
+
+.silver-metallic-text {
+  background: linear-gradient(135deg, #FFFFFF 0%, #BFC6E5 40%, #E2E8F0 60%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* 01. TMPROCLUBS Royal Blue Stadium Atmosphere */
 .tm-royal-glow {
   background:
@@ -186,6 +227,30 @@
     linear-gradient(to right, rgba(59, 130, 246, 0.07) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(59, 130, 246, 0.07) 1px, transparent 1px);
   mask-image: radial-gradient(ellipse 85% 70% at 50% 25%, black 30%, transparent 100%);
+}
+
+/* 02. SUPERLEAGUE INFINITY Cosmic Universe Atmosphere (#050611, #080D22, #743CFF, #A855F7, #BFC6E5) */
+.infinity-cosmos-glow {
+  background:
+    radial-gradient(ellipse 75% 55% at 70% 35%, rgba(116, 60, 255, 0.32) 0%, rgba(168, 85, 247, 0.14) 40%, rgba(5, 6, 17, 0) 75%),
+    radial-gradient(circle at 20% 20%, rgba(197, 166, 255, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 50% 90%, rgba(8, 13, 34, 0.9) 0%, rgba(5, 6, 17, 1) 100%);
+}
+
+.infinity-card-surface {
+  background: linear-gradient(160deg, rgba(14, 15, 38, 0.92) 0%, rgba(6, 7, 20, 0.97) 100%);
+  box-shadow:
+    0 24px 60px -15px rgba(0, 0, 0, 0.85),
+    0 0 35px -10px rgba(116, 60, 255, 0.22),
+    inset 0 1px 0 0 rgba(197, 166, 255, 0.22);
+}
+
+.infinity-elite-surface {
+  background: linear-gradient(160deg, rgba(22, 18, 48, 0.94) 0%, rgba(8, 9, 24, 0.98) 100%);
+  box-shadow:
+    0 24px 65px -15px rgba(0, 0, 0, 0.88),
+    0 0 40px -10px rgba(191, 198, 229, 0.18),
+    inset 0 1px 0 0 rgba(244, 242, 255, 0.28);
 }
 
 /* Broadcast Card Surface with Inner Highlight */
@@ -204,12 +269,21 @@
     inset 0 1px 0 0 rgba(255, 243, 176, 0.22);
 }
 
-/* 03. SUPERLEAGUE Midnight Navy & Champagne Starlight Atmosphere */
-.superleague-glow {
-  background: radial-gradient(circle at 50% 10%, rgba(36, 91, 255, 0.3) 0%, rgba(212, 175, 55, 0.1) 40%, rgba(4, 8, 23, 1) 85%);
+/* 03. IMMORTAL LEAGUE Deep Purple & Enchanted Mist Atmosphere */
+.immortal-glow {
+  background: radial-gradient(circle at 50% 15%, rgba(123, 44, 255, 0.34) 0%, rgba(24, 6, 48, 0.65) 50%, rgba(3, 1, 8, 1) 100%);
 }
 
-/* 04. TM GLOBE Luxury Black & Metallic Champagne Gold Atmosphere */
+.immortal-card-surface {
+  background: linear-gradient(145deg, rgba(18, 7, 36, 0.92) 0%, rgba(7, 3, 16, 0.96) 100%);
+}
+
+/* 04. SUPERLEAGUE Midnight Navy & Champagne Starlight Atmosphere */
+.superleague-glow {
+  background: radial-gradient(circle at 50% 10%, rgba(116, 60, 255, 0.34) 0%, rgba(191, 198, 229, 0.1) 40%, rgba(5, 6, 17, 1) 85%);
+}
+
+/* 05. BALLON D'OR Luxury Black & Metallic Champagne Gold Atmosphere */
 .ballondor-glow {
   background:
     radial-gradient(ellipse 75% 50% at 50% 0%, rgba(212, 175, 55, 0.28) 0%, rgba(26, 20, 8, 0.65) 50%, rgba(5, 5, 7, 1) 90%);

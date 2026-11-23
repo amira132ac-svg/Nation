@@ -36,7 +36,7 @@ interface PlatformContextValue {
 
 const DEFAULT_CONFIG: CompetitionConfig = {
   immortalStatus: 'REGISTRATION OPEN',
-  superleagueStatus: 'COMING SOON',
+  superleagueStatus: 'REGISTRATION OPEN',
   ballonDorStatus: 'NOMINEES REVEALED',
 };
 

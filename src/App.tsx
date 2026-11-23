@@ -14,7 +14,7 @@ const AppRouter: React.FC = () => {
   const { activePage } = usePlatform();
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#050B1B] text-[#F5F7FF]">
+    <div className="min-h-screen flex flex-col bg-[#030712] text-[#F5F7FF]">
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
@@ -22,7 +22,7 @@ const AppRouter: React.FC = () => {
           {(activePage === 'home' || activePage === 'immortal') && <HomeView />}
           {activePage === 'superleague' && <SuperleagueView />}
           {activePage === 'ranking' && <FC27RankingView />}
-          {activePage === 'ballondor' && <BallonDorView />}
+          {(activePage === 'ballondor' || activePage === 'tmglobe') && <BallonDorView />}
           {activePage === 'news' && <NewsView />}
         </div>
       </main>
